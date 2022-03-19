@@ -99,7 +99,6 @@ const DataViewDemo = () => {
         if (!product) {
             return;
         }
-
         if (layout === 'list')
             return renderListItem(product);
         else if (layout === 'grid')
@@ -108,7 +107,7 @@ const DataViewDemo = () => {
 
     const renderHeader = () => {
         return (
-            <div className="grid grid-nogutter">
+            <div className="grid">
                 <div className="col-6" style={{textAlign: 'left'}}>
                     <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange}/>
                 </div>

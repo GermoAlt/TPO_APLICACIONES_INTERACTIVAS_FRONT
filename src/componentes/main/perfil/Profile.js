@@ -30,7 +30,7 @@ const Profile = () => {
                     {user?
                         <div className="grid h-20rem">
                             <div className="col-3 flex flex-wrap align-items-center justify-content-center">
-                                <div clasName="">
+                                <div>
                                     <AdvancedImage cldImg={image} className="avatar-image"/>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@ const Profile = () => {
                     Mis Recetas
                 </div>
                 <br />
-                <div className="col-12 col-offset-1 flex flex-wrap justify-content-start">
+                <div className="col-12">
                     <RecipeList user={user}/>
                 </div>
             </div>
