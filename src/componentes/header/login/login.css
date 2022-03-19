@@ -1,0 +1,65 @@
+/*
+LOGIN
+ */
+.login-dialog{
+    width: 25vw;
+}
+
+.login-dialog-logo{
+    margin-top: 30px;
+}
+
+.login-dialog-header-text{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.login-dialog-content-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-dialog-footer{
+    margin-left: auto;
+    margin-top: auto;
+}
+
+.login-dialog-footer-container{
+    display: flex;
+    flex-direction: column;
+}
+.login-dialog-sign-up-text{
+    margin-left: auto;
+}
+
+.login-dialog-error-message{
+    display: flex;
+    margin: auto;
+}
+
+.login-dropdown-option-logout {
+    width: 100%;
+}
+
+.login-dropdown-option-logout-container{
+    /*display:flex;*/
+    /*flex-direction: column;*/
+}
+
+.login-dropdown-option-logout > .p-button-icon{
+    align-self: flex-start;
+}
+
+.p-submenu-list{
+    left: -100% !important;
+}
+
+.login-button-name-label{
+    color: white;
+}
+
+.p-button.button-login{
+    background:#C71FE9 !important;
+}

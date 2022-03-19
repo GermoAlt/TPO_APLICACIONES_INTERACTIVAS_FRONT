@@ -18,5 +18,5 @@ Si es necesario aplicar alguna transformacion (tamaño, color, etc.) debe hacers
 
 export function getImagen(nombre) {
     const cl = new Cloudinary({cloud: {cloudName: "remote-german"}, url: {secure: true}});
-    return cl.image(nombre)
+    return cl.image("recetas/" + nombre)
 }
