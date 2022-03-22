@@ -8,7 +8,7 @@ const LoginContainer = (props) => {
     if (props.actionType === "register") {
         return (
             <div className={"login-dialog-content-container"}>
-                <AdvancedImage cldImg={getImagen("logo_full_vertical")}/>
+                <AdvancedImage cldImg={getImagen("logo_full_vertical")} className={"login-dialog-logo"}/>
                 <div className={"login-dialog-header-text"}>
                     <h2>Crear cuenta</h2>
                 </div>

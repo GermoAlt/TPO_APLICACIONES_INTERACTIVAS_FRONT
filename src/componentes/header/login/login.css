@@ -2,11 +2,24 @@
 LOGIN
  */
 .login-dialog{
-    width: 25vw;
+    width: 30vw;
 }
 
-.login-dialog-logo{
-    margin-top: 30px;
+.login-dialog-content-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-dialog-content-container > img{
+    max-width: 75%;
+}
+
+.login-dialog-input-field-container{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
 }
 
 .login-dialog-header-text{
@@ -15,15 +28,9 @@ LOGIN
     text-align: center;
 }
 
-.login-dialog-content-container{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
 .login-dialog-footer{
-    margin-left: auto;
-    margin-top: auto;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .login-dialog-footer-container{
@@ -58,8 +65,4 @@ LOGIN
 
 .login-button-name-label{
     color: white;
-}
-
-.p-button.button-login{
-    background:#C71FE9 !important;
 }

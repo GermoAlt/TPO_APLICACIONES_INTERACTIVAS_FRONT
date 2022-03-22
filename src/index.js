@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import '/node_modules/primeflex/primeflex.css';
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 import 'primereact/resources/themes/saga-orange/theme.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';

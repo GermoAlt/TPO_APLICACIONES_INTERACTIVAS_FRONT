@@ -13,38 +13,9 @@ const AuthButton = props => {
     const storedUser = localStorage.getItem('user');
     useEffect(() => {
         if(storedUser) changeUser(JSON.parse(storedUser));
-    }, typeof(storedUser))
+    }, [typeof(storedUser)])
 
     const items = [
-        {
-            label: 'Panel de Control',
-            template: (item, options) => {
-                return adminOptionTemplate("pi-sliders-v", "", "login-dropdown-option-top", item, options)
-            },
-            items:[
-                {
-                    label:'ABM de Productos',
-                    template: (item, options) => {
-                        return adminOptionTemplate("pi-pencil", "/gestionProductos", "login-dropdown-option-nested", item, options)
-                    }
-                },
-                {
-                    label: 'Log de Transacciones',
-                    template: (item, options) => {
-                        return adminOptionTemplate("pi-list", "/transacciones", "login-dropdown-option-nested", item, options)
-                    }
-                }
-            ]
-        },
-        {
-            label: 'Perfil',
-            template: (item, options) => {
-                return userOptionTemplate("pi-cog", "/perfil", item, options)
-            }
-        },
-        {
-            separator:true
-        },
         {
             label:'Log out',
             command: () => {

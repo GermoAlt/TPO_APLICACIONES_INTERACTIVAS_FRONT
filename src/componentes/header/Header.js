@@ -2,15 +2,13 @@ import './header.css'
 
 import React from "react";
 import { Toolbar } from 'primereact/toolbar';
-import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom'
 import classNames from "classnames";
 import Login from "./login/Login";
 import useUser from "../../hooks/useUser";
-import {AdvancedImage} from "@cloudinary/react";
+import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../imagen/getImagenCloud";
-import {fill, scale} from "@cloudinary/url-gen/actions/resize";
-import {replaceColor} from "@cloudinary/url-gen/actions/adjust";
+import {scale} from "@cloudinary/url-gen/actions/resize";
 
 
 export default function Header(props) {
@@ -82,7 +80,7 @@ export default function Header(props) {
         <React.Fragment>
             <div style={{width:"20"}}/>
             <Link to={"/"}>
-                <AdvancedImage cldImg={getImagen("logo_full_horizontal").resize(scale().height(100))}/>
+                <AdvancedImage cldImg={getImagen("logo_full_horizontal").resize(scale().width(300))} plugins={[responsive({steps: [400, 300]})]}/>
             </Link>
         </React.Fragment>
     );
