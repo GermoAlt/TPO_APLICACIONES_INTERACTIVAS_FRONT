@@ -78,7 +78,6 @@ export default function Header(props) {
 
     const leftContents = (
         <React.Fragment>
-            <div style={{width:"20"}}/>
             <Link to={"/"}>
                 <AdvancedImage cldImg={getImagen("logo_full_horizontal").resize(scale().width(300))} plugins={[responsive({steps: [400, 300]})]}/>
             </Link>

@@ -1,0 +1,30 @@
+.info-receta-container{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-receta-container-card{
+    background-color: #F8F9FA;
+    border-radius: 25px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.info-receta-titulo{
+    font-family: 'Modak', cursive;
+    font-size: 2.5rem;
+}
+
+.info-receta-descripcion{
+
+}
+
+.info-receta-ingredientes{
+
+}
+
+.info-receta-pasos{
+
+}

@@ -2,7 +2,8 @@
 LOGIN
  */
 .login-dialog{
-    width: 30vw;
+    width: 35vw;
+    min-width: 300px;
 }
 
 .login-dialog-content-container{

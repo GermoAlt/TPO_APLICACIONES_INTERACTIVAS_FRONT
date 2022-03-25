@@ -54,7 +54,6 @@ HEADER
 .p-toolbar-group-left{
     flex-grow: 4;
     display:flex;
-    min-width: 400px;
     padding-left: 20px;
     justify-content: flex-start;
 }

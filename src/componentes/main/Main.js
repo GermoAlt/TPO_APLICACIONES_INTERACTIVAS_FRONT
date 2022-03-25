@@ -4,7 +4,7 @@ import InfoReceta from "./recetas/InfoReceta";
 
 export default function Main(){
     return (
-        <div>
+        <div className={"main-content-container"}>
             <Routes>
                 <Route exact path={"/"} element={<Home/>}/>
                 <Route path={"/receta/:id"} element={<InfoReceta/>}/>
