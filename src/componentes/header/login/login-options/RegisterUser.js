@@ -30,12 +30,10 @@ const RegisterUser = (props) => {
 
     return(
         <div>
-            <div className="p-fluid">
-                <small id="username1-help" className="p-d-block p-mb-1">Email</small>
+            <div className="p-fluid login-dialog-input-field-container">
                 <div className="p-field">
-                    <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={props.username} onChange={(e) => props.setUsername(e.target.value)} placeholder={"Usuario"}/>
+                    <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={props.username} onChange={(e) => props.setUsername(e.target.value)} placeholder={"E-mail"}/>
                 </div>
-                <small id="username1-help" className="p-d-block p-mb-1">Contraseña</small>
                 <div className="p-field">
                     <InputText keyfilter={/[^\s]/} className={`login-dialog-input ${error ? "p-invalid" : ""}`} type={"password"} value={props.password} onChange={(e) => props.setPassword(e.target.value)} placeholder={"Contraseña"}/>
                 </div>
@@ -44,12 +42,13 @@ const RegisterUser = (props) => {
                 <span className={`login-dialog-error-message ${!error ? "hidden" : ""}`}>
                     <small id="username2-help" className="p-error p-d-block p-ml-auto">{errorMessage}</small>
                 </span>
-                <div className={"login-dialog-sign-up-text  p-mt-2"}>
+                <div className={"login-dialog-sign-up-text p-mt-2"}>
                     <small>Ya tenes cuenta? <span className={"clickable"} onClick={() => props.setActionType('login')}>Hacé click aquí</span></small>
                 </div>
+                <br/>
                 <div className={"login-dialog-footer"}>
-                    <Button label="Registrarse" className="p-button-rounded p-mt-2 p-button-text" onClick={() => createUser()} />
-                    <Button label="Cancelar" className="p-button-rounded p-mt-2 p-button-secondary p-button-text" onClick={() => props.ocultar()} />
+                    <Button label="Registrarse" className="p-button-rounded" onClick={() => createUser()} />
+                    <Button label="Cancelar" className="p-button-rounded p-button-secondary" onClick={() => props.ocultar()} />
                 </div>
             </div>
         </div>
