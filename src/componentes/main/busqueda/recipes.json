@@ -1,0 +1,29 @@
+[
+    {
+        "name": "Receta cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 500,
+        "inventoryStatus": "Publicada"
+    },
+    {
+        "name": "Receta cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 500,
+        "inventoryStatus": "Publicada"
+    },
+    {
+        "name": "Receta cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 500,
+        "inventoryStatus": "Publicada"
+    }
+]

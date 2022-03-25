@@ -1,0 +1,17 @@
+.profile-name {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.proifle-description {
+    font-size: 18px;
+}
+
+.recipes-title {
+    font-weight: 600;
+    font-size: 26px;
+}
+
+.profile-container{
+    margin: 1%;
+}
