@@ -9,6 +9,9 @@
   justify-content: center;
   align-items: center;
   font-family: "Comfortaa", cursive;
+  background-image: url("background.png");
+  background-attachment: fixed;
+  background-position: left;
 }
 
 .gourmetic-font{
@@ -22,4 +25,5 @@
   max-width: 1000px;
   margin-left: 10px;
   margin-right: 10px;
+  min-height: 89vh;
 }
