@@ -24,6 +24,10 @@
     flex-direction: row;
 }
 
+.image-not-found > img{
+    width: 25% !important;
+}
+
 .info-receta-imagen >img{
 width: 100%;
 }
