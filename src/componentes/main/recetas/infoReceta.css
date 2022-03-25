@@ -6,10 +6,11 @@
 }
 
 .info-receta-container-card{
-    background-color: #F8F9FA;
+    background-color: white;
     border-radius: 25px;
-    padding: 10px;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    padding:10px;
+    border: #ECB100 solid 1px;
+    box-shadow: rgba(236, 177, 0, 0.35) 1.95px 1.95px 2.6px;
 }
 
 .info-receta-titulo{
@@ -17,14 +18,45 @@
     font-size: 2.5rem;
 }
 
+.info-receta-imagen{
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.image-not-found > img{
+    width: 25% !important;
+}
+
+.info-receta-imagen >img{
+width: 100%;
+}
+
 .info-receta-descripcion{
 
 }
 
 .info-receta-ingredientes{
-
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    align-items: flex-start;
+    text-align: start;
 }
 
 .info-receta-pasos{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    align-items: flex-start;
+    text-align: start;
+}
 
+.info-receta-ingredientes-card{
+    border: red solid 1px;
+    display: flex;
+    gap: 5px;
+    align-content: flex-start;
+    background-color: white;
+    min-height:40px;
 }
