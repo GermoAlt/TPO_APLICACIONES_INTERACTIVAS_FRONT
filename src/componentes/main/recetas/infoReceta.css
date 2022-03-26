@@ -7,9 +7,10 @@
 
 .info-receta-container-card{
     background-color: white;
-    border-radius: 25px;
-    padding:10px;
     border: #ECB100 solid 1px;
+    border-radius: 25px;
+    min-width: 300px;
+    padding:15px;
     box-shadow: rgba(236, 177, 0, 0.35) 1.95px 1.95px 2.6px;
 }
 
@@ -17,11 +18,57 @@
     font-family: 'Modak', cursive;
     font-size: 2.5rem;
 }
+.info-receta-central-panel{
+    display: flex;
+    flex-direction: row;
+    gap:25px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.info-receta-carousel-container{
+    width: 100%;
+    flex: 2;
+    min-width: 450px;
+}
+
+.info-receta-carousel{
+    width: 100%;
+
+}
 
 .info-receta-imagen{
     padding: 0;
     display: flex;
-    flex-direction: row;
+    flex:2;
+    min-width: 350px;
+}
+
+.info-receta-details{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-receta-details-item{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.info-receta-categorias{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.info-receta-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .image-not-found > img{
@@ -29,14 +76,17 @@
 }
 
 .info-receta-imagen >img{
-width: 100%;
+    width: 100%;
+    border: #ECB100 solid 1px;
+    border-radius: 25px;
 }
 
 .info-receta-descripcion{
-
+    font-size: 1.2rem;
 }
 
 .info-receta-ingredientes{
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 1px;
@@ -45,6 +95,7 @@ width: 100%;
 }
 
 .info-receta-pasos{
+    flex:2;
     display: flex;
     flex-direction: column;
     gap: 1px;

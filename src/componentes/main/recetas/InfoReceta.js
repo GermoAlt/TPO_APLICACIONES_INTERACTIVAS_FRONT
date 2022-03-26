@@ -3,44 +3,113 @@ import {useParams} from "react-router-dom";
 import "./infoReceta.css"
 import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../../imagen/getImagenCloud";
-import {fill} from "@cloudinary/url-gen/actions/resize";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
 import {useState} from "react";
+import {Carousel} from "primereact/carousel";
+import {Rating} from "primereact/rating";
+import {Tag} from "primereact/tag";
 
 
 export default function InfoReceta() {
     const [errorClass, setErrorClass] = useState("")
     const navigate = useParams()
     const receta = dataReceta.find(item => String(item.id) === navigate.id)
+
+    const imagenTemplate = (imagen) => {
+        return(
+            <div className={`info-receta-imagen${errorClass}`}>
+                <AdvancedImage cldImg={getImagen("receta/"+imagen).roundCorners(byRadius(25))}
+                               plugins={[responsive({steps:1})]} onError={(e) => {
+                    setErrorClass(" image-not-found")
+                    mostrarError(e)
+                }}/>
+            </div>
+        )
+    }
+
     return (
         <div className={"info-receta-container"}>
             <div className={"info-receta-container-card info-receta-titulo"}>
                 {receta.titulo}
             </div>
-            <div className={`info-receta-container-card info-receta-imagen ${errorClass}`}>
-                <AdvancedImage cldImg={getImagen("receta/"+receta.imagenes[0]).roundCorners(byRadius(25))}
-                               plugins={[responsive({steps:1})]} onError={(e) => {
-                                   setErrorClass("image-not-found")
-                                   mostrarError(e)
-                }}/>
-            </div>
             <div className={"info-receta-container-card info-receta-descripcion"}>
                 {receta.descripcion}
             </div>
-            <div className={"info-receta-container-card info-receta-ingredientes"}>
-                <h1>Ingredientes</h1>
-                <ul>
-                    {buildIngredients(receta.ingredientes)}
-                </ul>
+            <div className={"info-receta-central-panel"}>
+                {
+                    receta.categorias.length !== 1 ?
+                        <div className={`info-receta-imagen ${errorClass}`}>
+                            <AdvancedImage cldImg={getImagen("receta/"+receta.imagenes[0])}
+                                           plugins={[responsive({steps:1})]} onError={(e) => {
+                                setErrorClass("image-not-found")
+                                mostrarError(e)
+                            }}/>
+                        </div>
+                    :
+                    <div className={"info-receta-container-card info-receta-carousel-container"}>
+                        <Carousel  className={"info-receta-carousel"} value={receta.imagenes} numVisible={1} numScroll={1} itemTemplate={imagenTemplate}/>
+                    </div>
+                }
+
+                <div className={"info-receta-container-card info-receta-details"}>
+                    <div className={"info-receta-details-item"}>
+                    <span>Dificultad</span>
+                        <Rating value={receta.dificultad} readOnly stars={5} cancel={false}/>
+                    </div>
+                    <div className={"info-receta-details-item"}>
+                        Preparación
+                        <br/>
+                        <b>{buildTime(receta.tiempoPreparacion)}</b>
+                    </div>
+                    <div className={"info-receta-details-item"}>
+                        Elaboración
+                        <br/>
+                        <b>{buildTime(receta.tiempoElaboracion)}</b>
+                    </div>
+                    <div className={"info-receta-details-item"}>
+                        Categorias
+                        <br/>
+                        <div className={"info-receta-categorias"}>
+                            {buildCategories(receta.categorias)}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className={"info-receta-container-card info-receta-pasos"}>
-                <h1>Pasos</h1>
-                <ol>
-                    {buildSteps(receta.pasos)}
-                </ol>
+            <div className={"info-receta-central-panel"}>
+                <div className={"info-receta-container-card info-receta-ingredientes"}>
+                    <h1>Ingredientes</h1>
+                    <ul className={"info-receta-list"}>
+                        {buildIngredients(receta.ingredientes)}
+                    </ul>
+                </div>
+                <div className={"info-receta-container-card info-receta-pasos"}>
+                    <h1>Pasos</h1>
+                    <ol className={"info-receta-list"}>
+                        {buildSteps(receta.pasos)}
+                    </ol>
+                </div>
             </div>
         </div>
     )
+}
+
+function buildTime(tiempoEnMinutos){
+    const hours = Math.floor(tiempoEnMinutos / 60);
+    const minutes = tiempoEnMinutos % 60;
+    let res = ""
+    if (hours !== 0){
+        res += hours + " hr" + (hours > 1 ? "s " : " ")
+    }
+    if (minutes !== 0) {
+        res += minutes + " min"
+    }
+    return res
+}
+
+function buildCategories(categorias) {
+    return categorias.map(categoria => (
+        <Tag value={categoria} rounded />
+    ))
 }
 
 function buildIngredients(ingredientes){
