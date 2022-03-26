@@ -11,9 +11,12 @@
     },
     "descripcion": "My friends often request the Hyde Park Fudge Cake for their birthdays, which I've made a hundred times. This variation has a yummy coconut filling and a decadent ganache that I could eat with a spoon until I'm sick!",
     "imagenes": ["example-image"],
-    "dificultad": 3,
-    "categorias": [5, 7],
+    "dificultad": 4,
+    "categorias": ["CAKE","CHOCOLATE CAKE","AMERICAN", "CHOCOLATE", "COCONUT", "COFFEE", "CREAM CHEESE", "MAKE AHEAD", "DESSERT"],
     "rating": 4.5,
+    "tiempoPreparacion": 90,
+    "tiempoElaboracion": 180,
+    "porciones": "4",
     "ingredientes": [
       {
         "cantidad": "18 ounces",

@@ -12,6 +12,7 @@
   background-image: url("background.png");
   background-attachment: fixed;
   background-position: left;
+  min-width: 371px;
 }
 
 .gourmetic-font{
@@ -23,8 +24,6 @@
   align-items: center;
   justify-content: center;
   max-width: 1000px;
-  margin-top:100px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 100px 10px 15px;
   min-height: 89vh;
 }
