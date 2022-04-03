@@ -13,6 +13,7 @@
     "primeflex": "^3.1.3",
     "primeicons": "^5.0.0",
     "primereact": "^7.2.1",
+    "quill": "^1.3.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.2",

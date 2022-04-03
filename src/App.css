@@ -27,3 +27,7 @@
   margin: 100px 10px 15px;
   min-height: 89vh;
 }
+
+.override-opacity{
+ opacity: 1 !important;
+}

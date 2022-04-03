@@ -1,0 +1,39 @@
+[
+  {
+    "id": 123,
+    "autor":
+      {
+        "id": 3312,
+        "nombre": "Mariana Suarez",
+        "mail": "marianasuarez@gmail.com",
+        "telefono": "5491164856165"
+      },
+    "calificacion": 4,
+    "comentarios": "Excelente receta, buena para un cumpleaños!"
+  },
+  {
+    "id": 124,
+    "autor":
+      {
+        "id": 1565,
+        "nombre": "Juliana Rey",
+        "mail": "juliana_queen@gmail.com",
+        "telefono": "1168463651"
+      },
+    "calificacion": 5,
+    "comentarios": "Que buena idea!"
+  },
+  {
+    "id": 125,
+    "autor":
+      {
+        "id": 1564,
+        "nombre": "Enrique de la Fontaine",
+        "mail": "edlfontaine@gmail.com",
+        "telefono": "1168434554"
+      },
+    "calificacion": 1,
+    "comentarios": "Cambie la harina por lechuga y quedó horrible!!!"
+  }
+
+]

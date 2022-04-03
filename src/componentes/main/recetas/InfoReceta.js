@@ -1,4 +1,5 @@
 import dataReceta from '../../../api/recetas.json'
+import dataReviews from '../../../api/calificaciones.json'
 import {useParams} from "react-router-dom";
 import "./infoReceta.css"
 import {AdvancedImage, responsive} from "@cloudinary/react";
@@ -8,10 +9,17 @@ import {useState} from "react";
 import {Carousel} from "primereact/carousel";
 import {Rating} from "primereact/rating";
 import {Tag} from "primereact/tag";
+import {Button} from "primereact/button";
+import {InputTextarea} from "primereact/inputtextarea";
+import {opacity} from "@cloudinary/url-gen/actions/adjust";
+import {Editor} from "primereact/editor";
 
 
 export default function InfoReceta() {
     const [errorClass, setErrorClass] = useState("")
+    const [mostrarEditor, setMostrarEditor] = useState(false)
+    const [newRatingText, setNewRatingText] = useState("")
+    const [newRatingValue, setNewRatingValue] = useState(0)
     const navigate = useParams()
     const receta = dataReceta.find(item => String(item.id) === navigate.id)
 
@@ -26,6 +34,18 @@ export default function InfoReceta() {
             </div>
         )
     }
+
+    const renderHeader = () => {
+        return (
+            <span className="ql-formats">
+                <button className="ql-bold" aria-label="Bold"/>
+                <button className="ql-italic" aria-label="Italic"/>
+                <button className="ql-underline" aria-label="Underline"/>
+            </span>
+        );
+    }
+
+    const header = renderHeader();
 
     return (
         <div className={"info-receta-container"}>
@@ -54,7 +74,7 @@ export default function InfoReceta() {
                 <div className={"info-receta-container-card info-receta-details"}>
                     <div className={"info-receta-details-item"}>
                     <span>Dificultad</span>
-                        <Rating value={receta.dificultad} readOnly stars={5} cancel={false}/>
+                        <Rating value={receta.dificultad} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
                     </div>
                     <div className={"info-receta-details-item"}>
                         Preparación
@@ -89,9 +109,31 @@ export default function InfoReceta() {
                     </ol>
                 </div>
             </div>
+            <div className={"info-receta-container-calificaciones"}>
+                <div className={"info-recetas-nueva-calificacion info-receta-container-card"}>
+                    <div className={"info-recetas-calificaciones-header"}>
+                        <h1>Reviews</h1>
+                        <Button icon={"pi pi-plus"} label={"Nueva calificación"}
+                                onClick={() => setMostrarEditor(!mostrarEditor)} />
+                    </div>
+                    <div hidden={mostrarEditor}>
+                        <Rating cancel={false} value={newRatingValue}
+                                onChange={(e) => setNewRatingValue(e.target.value)}/>
+                        <Editor placeholder={"Escribe aqui tu calificacion"} value={newRatingText}
+                                       onTextChange={(e) => setNewRatingText(e.htmlValue)}
+                        headerTemplate={header}/>
+                        <Button label={"submit"} onClick={() => alert(newRatingText)}/>
+                    </div>
+                </div>
+                <div className={"info-receta-container-calificaciones"}>
+                    {buildReviews(receta.id)}
+                </div>
+            </div>
         </div>
     )
 }
+
+
 
 function buildTime(tiempoEnMinutos){
     const hours = Math.floor(tiempoEnMinutos / 60);
@@ -131,3 +173,17 @@ function buildSteps(pasos){
         </li>
     ))
 }
+
+function buildReviews(id) {
+    //get reviews by receta
+    const calificaciones = dataReviews
+    return calificaciones.map(calificacion => (
+            <div className={"info-receta-container-card info-receta-calificacion"} >
+                <Rating value={calificacion.calificacion} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
+                <b>{calificacion.autor.nombre}</b>
+                {calificacion.comentarios}
+            </div>
+        )
+    )
+}
+

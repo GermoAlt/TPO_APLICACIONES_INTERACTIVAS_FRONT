@@ -111,3 +111,23 @@
     background-color: white;
     min-height:40px;
 }
+
+.info-receta-container-calificaciones{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.info-recetas-calificaciones-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-receta-calificacion{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: start;
+}
