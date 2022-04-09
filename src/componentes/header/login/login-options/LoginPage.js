@@ -9,8 +9,9 @@ const LoginPage = (props) => {
     const [error, setError] = useState(false);
     const {user, changeUser} = useUser();
     const [errorMessage, setErrorMessage] = useState("");
-    const username = props.username;
-    const password = props.password;
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const validateLogin = () => {
         const userData = {username, password}
@@ -58,10 +59,10 @@ return(
     <div>
         <div className="p-fluid login-dialog-input-field-container">
             <div className="p-field">
-                <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={props.username} onChange={(e) => props.setUsername(e.target.value)} placeholder={"E-mail"}/>
+                <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={username} onChange={(e) => setUsername(e.target.value)} placeholder={"E-mail"}/>
             </div>
             <div className="p-field">
-                <InputText keyfilter={/[^\s]/} className={`login-dialog-input ${error ? "p-invalid" : ""}`} type={"password"} value={props.password} onChange={(e) => props.setPassword(e.target.value)} placeholder={"Contraseña"}/>
+                <InputText keyfilter={/[^\s]/} className={`login-dialog-input ${error ? "p-invalid" : ""}`} type={"password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Contraseña"}/>
             </div>
         </div>
         <div className={"login-dialog-footer-container"}>

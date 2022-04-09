@@ -13,8 +13,6 @@ const LoginContainer = (props) => {
                     <h2>Crear cuenta</h2>
                 </div>
                 <RegisterUser actionType={props.actionType} setActionType={(e) => props.setActionType(e)}
-                              username={props.username} password={props.password}
-                              setUsername={(e) => props.setUsername(e)} setPassword={(e) => props.setPassword(e)}
                               ocultar={() => props.ocultar()}/>
             </div>
         )
@@ -26,8 +24,6 @@ const LoginContainer = (props) => {
                     <h2>Acceder al sitio</h2>
                 </div>
                 <LoginPage actionType={props.actionType} setActionType={(e) => props.setActionType(e)}
-                           username={props.username} password={props.password}
-                           setUsername={(e) => props.setUsername(e)} setPassword={(e) => props.setPassword(e)}
                            ocultar={() => props.ocultar()}/>
             </div>
         )

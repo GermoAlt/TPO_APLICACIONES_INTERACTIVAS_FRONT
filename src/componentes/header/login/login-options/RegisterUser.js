@@ -8,12 +8,16 @@ import {Button} from "primereact/button";
 const RegisterUser = (props) => {
     const [error, setError] = useState(false);
     const {user, changeUser} = useUser();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [nombre, setNombre] = useState("")
+    const [numero, setNumero] = useState("")
     const [errorMessage, setErrorMessage] = useState("");
 
     const createUser = () => {
         axios.post("http://localhost:8000/api/users/create", {
-            "username": props.username,
-            "password": props.password,
+            "username": username,
+            "password": password,
             "tipo": "user"
         })
             .then(e => {
@@ -24,18 +28,20 @@ const RegisterUser = (props) => {
             })
     }
 
-    // const validateEmail = () => {
-    //     return props.username.match("^\S+@\S+$");
-    // }
-
     return(
         <div>
             <div className="p-fluid login-dialog-input-field-container">
                 <div className="p-field">
-                    <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={props.username} onChange={(e) => props.setUsername(e.target.value)} placeholder={"E-mail"}/>
+                    <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={username} onChange={(e) => setUsername(e.target.value)} placeholder={"E-mail"}/>
                 </div>
                 <div className="p-field">
-                    <InputText keyfilter={/[^\s]/} className={`login-dialog-input ${error ? "p-invalid" : ""}`} type={"password"} value={props.password} onChange={(e) => props.setPassword(e.target.value)} placeholder={"Contraseña"}/>
+                    <InputText keyfilter={/[^\s]/} className={`login-dialog-input ${error ? "p-invalid" : ""}`} type={"password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Contraseña"}/>
+                </div>
+                <div className="p-field">
+                    <InputText  className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder={"Nombre"}/>
+                </div>
+                <div className="p-field">
+                    <InputText className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={numero} onChange={(e) => setNumero(e.target.value)} placeholder={"Teléfono"}/>
                 </div>
             </div>
             <div className={"login-dialog-footer-container"}>

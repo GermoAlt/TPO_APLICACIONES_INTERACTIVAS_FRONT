@@ -12,8 +12,6 @@ import LoginContainer from "./login-options/LoginContainer";
 
 const Login = (props) => {
     const [displayBasic, setDisplayBasic] = useState(false);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const [actionType, setActionType] = useState("login");
 
 
@@ -35,8 +33,6 @@ const Login = (props) => {
             <Dialog className={"login-dialog"} visible={displayBasic} onHide={() => onHide('displayBasic')} position={"center"}
                     resizable={false} draggable={false} blockScroll={true} dismissableMask closable={false} showHeader={false}>
                 <LoginContainer actionType={actionType} setActionType={(e) => setActionType(e)}
-                                username={username} password={password}
-                                setUsername={(e) => setUsername(e)} setPassword={(e) => setPassword(e)}
                                 ocultar={() => onHide('displayBasic')}/>
             </Dialog>
         </div>
