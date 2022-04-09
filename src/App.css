@@ -9,7 +9,7 @@
   justify-content: center;
   align-items: center;
   font-family: "Comfortaa", cursive;
-  background-image: url("background.png");
+  background-image: url("background_alt.png");
   background-attachment: fixed;
   background-position: left;
   min-width: 371px;
@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: center;
   max-width: 1000px;
-  margin: 100px 10px 15px;
+  margin: 100px 10px 30px;
   min-height: 89vh;
 }
 

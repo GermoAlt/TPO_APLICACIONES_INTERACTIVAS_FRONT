@@ -10,8 +10,6 @@ import {Carousel} from "primereact/carousel";
 import {Rating} from "primereact/rating";
 import {Tag} from "primereact/tag";
 import {Button} from "primereact/button";
-import {InputTextarea} from "primereact/inputtextarea";
-import {opacity} from "@cloudinary/url-gen/actions/adjust";
 import {Editor} from "primereact/editor";
 
 
@@ -73,22 +71,19 @@ export default function InfoReceta() {
 
                 <div className={"info-receta-container-card info-receta-details"}>
                     <div className={"info-receta-details-item"}>
-                    <span>Dificultad</span>
+                        <span>Dificultad</span>
                         <Rating value={receta.dificultad} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
                     </div>
                     <div className={"info-receta-details-item"}>
-                        Preparación
-                        <br/>
+                        <span>Preparación</span>
                         <b>{buildTime(receta.tiempoPreparacion)}</b>
                     </div>
                     <div className={"info-receta-details-item"}>
-                        Elaboración
-                        <br/>
+                        <span>Elaboración</span>
                         <b>{buildTime(receta.tiempoElaboracion)}</b>
                     </div>
                     <div className={"info-receta-details-item"}>
-                        Categorias
-                        <br/>
+                        <span>Categorias</span>
                         <div className={"info-receta-categorias"}>
                             {buildCategories(receta.categorias)}
                         </div>
@@ -113,16 +108,22 @@ export default function InfoReceta() {
                 <div className={"info-recetas-nueva-calificacion info-receta-container-card"}>
                     <div className={"info-recetas-calificaciones-header"}>
                         <h1>Reviews</h1>
-                        <Button icon={"pi pi-plus"} label={"Nueva calificación"}
+                        <div className={"info-recetas-nueva-calificacion-button-container"}>
+                            <Button icon={"pi pi-plus"} label={"Nueva calificación"}
                                 onClick={() => setMostrarEditor(!mostrarEditor)} />
+                        </div>
                     </div>
-                    <div hidden={mostrarEditor}>
-                        <Rating cancel={false} value={newRatingValue}
-                                onChange={(e) => setNewRatingValue(e.target.value)}/>
+                    <div className={`${mostrarEditor ? "" : "hidden"}`}>
+                        <div className={"info-receta-calificacion-nueva-rating"}>
+                            <Rating cancel={false} value={newRatingValue}
+                                    onChange={(e) => setNewRatingValue(e.target.value)}/>
+                        </div>
                         <Editor placeholder={"Escribe aqui tu calificacion"} value={newRatingText}
-                                       onTextChange={(e) => setNewRatingText(e.htmlValue)}
-                        headerTemplate={header}/>
-                        <Button label={"submit"} onClick={() => alert(newRatingText)}/>
+                                onTextChange={(e) => setNewRatingText(e.htmlValue)}
+                                headerTemplate={header}/>
+                        <div className={"info-receta-calificacion-nueva-submit"}>
+                            <Button label={"submit"} onClick={() => alert(newRatingText)} style={{alignSelf: "flex-end"}}/>
+                        </div>
                     </div>
                 </div>
                 <div className={"info-receta-container-calificaciones"}>
@@ -150,13 +151,13 @@ function buildTime(tiempoEnMinutos){
 
 function buildCategories(categorias) {
     return categorias.map(categoria => (
-        <Tag value={categoria} rounded />
+        <Tag key={categoria} value={categoria} rounded />
     ))
 }
 
 function buildIngredients(ingredientes){
     return ingredientes.map(ingrediente => (
-        <li>
+        <li key={ingrediente}>
             <b>{ingrediente.cantidad}</b> {ingrediente.ingrediente}
         </li>
     ))
@@ -168,7 +169,7 @@ function mostrarError(e){
 
 function buildSteps(pasos){
     return pasos.map(paso => (
-        <li>
+        <li key={paso.orden}>
             {paso.paso}
         </li>
     ))
@@ -178,7 +179,7 @@ function buildReviews(id) {
     //get reviews by receta
     const calificaciones = dataReviews
     return calificaciones.map(calificacion => (
-            <div className={"info-receta-container-card info-receta-calificacion"} >
+            <div className={"info-receta-container-card info-receta-calificacion"} key={calificacion.id}>
                 <Rating value={calificacion.calificacion} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
                 <b>{calificacion.autor.nombre}</b>
                 {calificacion.comentarios}
