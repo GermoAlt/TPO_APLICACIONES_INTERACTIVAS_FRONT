@@ -4,6 +4,8 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 //import { ProductService } from '../service/ProductService';
 import { Rating } from 'primereact/rating';
+import { useNavigate } from "react-router-dom";
+
 import './recipes-list.css';
 
 import recipes from './recipes.json';
@@ -17,6 +19,7 @@ const RecipeList = ({user}) => {
 }
 
 const DataViewDemo = () => {
+    let navigate = useNavigate()
     const [products, setProducts] = useState(recipes);
     const [layout, setLayout] = useState('grid');
     const [sortKey, setSortKey] = useState(null);
@@ -32,6 +35,10 @@ const DataViewDemo = () => {
     useEffect(() => {
         //productService.getProducts().then(data => setProducts(data));
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const onSelectRecipe = (recipeId) => {
+        navigate(`/receta/${recipeId}`)
+    }
 
     const onSortChange = (event) => {
         const value = event.value;
@@ -61,7 +68,7 @@ const DataViewDemo = () => {
                     </div>
                     <div className="product-list-action">
                         <span className="product-price">${data.price}</span>
-                        <Button icon="pi pi-shopping-cart" label="Add to Cart" disabled={data.inventoryStatus === 'OUTOFSTOCK'}></Button>
+                        <Button icon="pi pi-shopping-cart" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'}  onClick={()=>onSelectRecipe(134652)}></Button>
                         <span className={`product-badge status-${data.inventoryStatus.toLowerCase()}`}>{data.inventoryStatus}</span>
                     </div>
                 </div>
@@ -88,7 +95,7 @@ const DataViewDemo = () => {
                     </div>
                     <div className="product-grid-item-bottom">
                         <span className="product-price">${data.price}</span>
-                        <Button icon="pi pi-shopping-cart" label="Add to Cart" disabled={data.inventoryStatus === 'OUTOFSTOCK'}></Button>
+                        <Button icon="pi pi-shopping-cart" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={()=>onSelectRecipe(134652)}></Button>
                     </div>
                 </div>
             </div>
@@ -124,7 +131,7 @@ const DataViewDemo = () => {
         <div className="dataview-demo">
             <div className="card">
                 <DataView value={products} layout={layout} header={header}
-                        itemTemplate={itemTemplate} paginator rows={9}
+                        itemTemplate={itemTemplate} paginator rows={6}
                         sortOrder={sortOrder} sortField={sortField} />
             </div>
         </div>

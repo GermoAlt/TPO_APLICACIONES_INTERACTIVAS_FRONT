@@ -26,15 +26,15 @@ const Profile = () => {
     return (
         <>
             <div className="grid profile-container">
-                <div className="col-12 col-offset-0">
+                <div className="col-12 col-offset-0 info-receta-container-card">
                     {user?
                         <div className="grid h-20rem">
-                            <div className="col-3 flex flex-wrap align-items-center justify-content-center">
+                            <div className="col-4 flex flex-wrap align-items-center justify-content-center">
                                 <div>
                                     <AdvancedImage cldImg={image} className="avatar-image"/>
                                 </div>
                             </div>
-                            <div className="col-3 flex flex-wrap align-items-center">
+                            <div className="col-8 flex flex-wrap align-items-center">
                                 <div className='grid flex flex-wrap align-items-center'>
                                     <div className="col-12 profile-name">
                                         {user.name}
@@ -50,12 +50,14 @@ const Profile = () => {
                         </>
                     }
                 </div>
-                <div className="col-12 col-offset-1 flex flex-wrap justify-content-start recipes-title">
-                    Mis Recetas
-                </div>
-                <br />
-                <div className="col-12">
-                    <RecipeList user={user}/>
+                <div className="col-12 info-receta-container-card" >
+                    <div className="col-12 flex flex-wrap justify-content-center recipes-title">
+                        Mis Recetas
+                    </div>
+                    <br />
+                    <div className="col-12">
+                        <RecipeList user={user}/>
+                    </div>
                 </div>
             </div>
         </>
