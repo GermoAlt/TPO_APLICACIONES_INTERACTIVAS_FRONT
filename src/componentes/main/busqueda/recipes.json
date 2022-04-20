@@ -1,11 +1,38 @@
 [
     {
-        "name": "Receta cheta",
+        "name": "Receta 54 cheta",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
+        "price": 1500,
+        "inventoryStatus": "Publicada"
+    },
+    {
+        "name": "Receta 2 cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 5200,
+        "inventoryStatus": "Publicada"
+    },
+    {
+        "name": "Receta 4 cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 5300,
+        "inventoryStatus": "Publicada"
+    },
+    {
+        "name": "Receta 6 cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 100,
         "inventoryStatus": "Publicada"
     },
     {
@@ -14,97 +41,70 @@
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
+        "price": 200,
         "inventoryStatus": "Publicada"
     },
     {
-        "name": "Receta cheta",
+        "name": "Receta bien cheta",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
+        "price": 5400,
         "inventoryStatus": "Publicada"
     },
     {
-        "name": "Receta cheta",
+        "name": "Receta muy cheta",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
+        "price": 2300,
         "inventoryStatus": "Publicada"
     },
     {
-        "name": "Receta cheta",
+        "name": "Alta Receta cheta",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
+        "price": 420,
         "inventoryStatus": "Publicada"
     },
     {
-        "name": "Receta cheta",
+        "name": "Receta no muy cheta",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
+        "price": 350,
         "inventoryStatus": "Publicada"
     },
     {
-        "name": "Receta cheta",
+        "name": "Receta cheeeta",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
+        "price": 1750,
         "inventoryStatus": "Publicada"
     },
     {
-        "name": "Receta cheta",
+        "name": "Receta cheta mal",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
+        "price": 5400,
         "inventoryStatus": "Publicada"
     },
     {
-        "name": "Receta cheta",
+        "name": "Receta nada cheta",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
-        "inventoryStatus": "Publicada"
-    },
-    {
-        "name": "Receta cheta",
-        "description": "Descripcion de la receta cheta",
-        "category": "Pasta",
-        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
-        "rating": 4,
-        "price": 500,
-        "inventoryStatus": "Publicada"
-    },
-    {
-        "name": "Receta cheta",
-        "description": "Descripcion de la receta cheta",
-        "category": "Pasta",
-        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
-        "rating": 4,
-        "price": 500,
-        "inventoryStatus": "Publicada"
-    },
-    {
-        "name": "Receta cheta",
-        "description": "Descripcion de la receta cheta",
-        "category": "Pasta",
-        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
-        "rating": 4,
-        "price": 500,
+        "price": 1050,
         "inventoryStatus": "Publicada"
     }
 ]

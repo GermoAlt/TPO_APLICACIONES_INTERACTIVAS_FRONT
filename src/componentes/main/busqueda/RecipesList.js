@@ -5,6 +5,7 @@ import { Dropdown } from 'primereact/dropdown';
 //import { ProductService } from '../service/ProductService';
 import { Rating } from 'primereact/rating';
 import { useNavigate } from "react-router-dom";
+import { InputText } from 'primereact/inputtext';
 
 import './recipes-list.css';
 
@@ -22,37 +23,11 @@ const DataViewDemo = () => {
     let navigate = useNavigate()
     const [products, setProducts] = useState(recipes);
     const [layout, setLayout] = useState('grid');
-    const [sortKey, setSortKey] = useState(null);
-    const [sortOrder, setSortOrder] = useState(null);
-    const [sortField, setSortField] = useState(null);
-    const sortOptions = [
-        {label: 'Price High to Low', value: '!price'},
-        {label: 'Price Low to High', value: 'price'},
-    ];
-
-    //const productService = new ProductService();
-
-    useEffect(() => {
-        //productService.getProducts().then(data => setProducts(data));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    const [sortOrder, setSortOrder] = useState(1);
+    const [sortField, setSortField] = useState("price");
 
     const onSelectRecipe = (recipeId) => {
         navigate(`/receta/${recipeId}`)
-    }
-
-    const onSortChange = (event) => {
-        const value = event.value;
-
-        if (value.indexOf('!') === 0) {
-            setSortOrder(-1);
-            setSortField(value.substring(1, value.length));
-            setSortKey(value);
-        }
-        else {
-            setSortOrder(1);
-            setSortField(value);
-            setSortKey(value);
-        }
     }
 
     const renderListItem = (data) => {
@@ -116,7 +91,7 @@ const DataViewDemo = () => {
         return (
             <div className="grid">
                 <div className="col-6" style={{textAlign: 'left'}}>
-                    <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange}/>
+                    <Filters setProducts={(value) => setProducts(value)}/>
                 </div>
                 <div className="col-6" style={{textAlign: 'right'}}>
                     <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
@@ -137,6 +112,131 @@ const DataViewDemo = () => {
         </div>
     );
 }
-                 
+
+const Filters = ({setProducts}) => {
+    const filters =[
+        {label: 'Categoria', value: 'Categoria'},
+        {label: 'Calificacion', value: 'Calificacion'},
+        {label: 'Ingredientes', value: 'Ingredientes'}
+    ];
+    const [filter,setFilter] = useState("");
+    const [inputValue, setInputValue] = useState("");
+
+    useEffect(() => {
+        handleInputChange(inputValue);
+    },[inputValue]);
+
+    const handleFilterChange = (value) => {
+        console.log("Filter: " + value);
+        setFilter(value);
+    }
+
+    // Refactor: segun el filtro que se selecciona, mostrar un input distinto por componente
+        // Para Categoria: el input de texto
+        // Para calificacion: las 5 estrellas modificables
+        // Para ingredientes: Un selector multiple
+
+    const CategoryFilterInput = ({}) => {
+        return (<></>);
+    }
+
+    const RatingFilterInput = ({}) => {
+        return (<></>);
+    }
+
+    const IngredientFilterInput = ({}) => {
+        return (<></>);
+    }
+        
+    const handleInputChange = (value) => {
+        setInputValue(value);
+        console.log("Input: " + inputValue)
+        let newProducts = [...recipes];
+        if(value!==""){
+            switch(filter){
+                case "Categoria":
+                    newProducts = newProducts.filter(recipe => recipe.category.toString().includes(inputValue.toString()));
+                    break;
+                case "Calificacion":
+                    newProducts = newProducts.filter(recipe => recipe.rating === parseFloat(inputValue));
+                    break;
+                case "Ingredientes":
+                    //newProducts = recipes.filter(recipe => recipe.ingredients.includes(inputValue));
+                    break;
+                default:
+                    alert("Could not apply filters");
+                    break;
+            }
+        }
+        setProducts([...newProducts]);
+    }
+
+    return (
+        <>
+            <div className="card">
+                <h5>Filters</h5>
+                <Dropdown value={filter} options={filters} onChange={(e) => handleFilterChange(e.value)} optionLabel="label"/>
+                {filter!==""?
+                    <span className="p-float-label">
+                        <InputText id="username" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+                        <label htmlFor="username"></label>
+                    </span>
+                    :<></>
+                }
+            </div>
+        </>
+    )
+}
+
+/*
+const RecipeOrder = ({setSortField}) => {
+    const sortOptions = [
+        {label: 'Price', value: 'price'},
+        {label: 'Name', value: 'name'},
+    ];
+    const [sortKey, setSortKey] = useState(null);
+    const handleChange = (event) => {
+        event.preventDefault();
+        const value = event.target.value;
+        setSortKey(value);
+        setSortField(value);
+    }
+
+    return(
+        <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By: " onChange={handleChange}/>
+    );
+}
+
+const RecipeFilter = ({setProducts}) => {
+    const sortOptions = [
+        {label: 'Price', value: 'price'},
+        {label: 'Name', value: 'name'},
+    ];
+    const [sortKey, setSortKey] = useState(null);
+    const handleChange = (event) => {
+        event.preventDefault();
+        const value = event.target.value;
+        console.log(value);
+        setSortKey(value)
+        let filteredProducts = [...recipes];
+        switch(value){
+            case 'name':
+                filteredProducts = filteredProducts.filter(recipe => recipe.name.toLowerCase().includes("muy") );
+                break;
+            case 'price':
+                filteredProducts = filteredProducts.filter(recipe => recipe.price > 1500);
+                break;
+            default:
+                alert("No matching filter");
+                break;
+        }
+        setProducts(filteredProducts);
+    }
+
+    return(
+        <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Filter By: " onChange={handleChange}/>
+    );
+}
+*/          
 
 export default RecipeList;
