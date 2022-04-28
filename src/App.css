@@ -13,6 +13,7 @@
   background-attachment: fixed;
   background-position: left;
   min-width: 371px;
+  overflow-x: hidden;
 }
 
 .gourmetic-font{
