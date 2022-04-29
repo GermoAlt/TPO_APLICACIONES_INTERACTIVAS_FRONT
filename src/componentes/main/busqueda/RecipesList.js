@@ -140,11 +140,11 @@ const Filters = ({products,setProducts}) => {
     const getAllIngredients = () => {
         let ingredients = []
         let recetas = [...recipes];
-        recetas.forEach(receta => {
-            let listaIngredientes = [...receta.ingredients];
+        recetas.forEach(receta => { // por cada receta
+            let listaIngredientes = [...receta.ingredients]; // tomo sus ingredientes
             listaIngredientes.forEach(ingrediente => {
-                if(ingredients === [] || ![...ingredients.map(ing => ing.name.toLowerCase())].includes(ingrediente)){
-                    ingredients.push({"name":ingrediente,"code": ingrediente});
+                if(ingredients === [] || ![...ingredients.map(ing => ing.name.toLowerCase())].includes(ingrediente)){ // compruebo que no se repitan
+                    ingredients.push({"name":ingrediente,"code": ingrediente}); // formato requerido por el selector
                 }
             });
         })
@@ -155,20 +155,14 @@ const Filters = ({products,setProducts}) => {
         if(inputValue===[]){
             return [...recipes];
         }
-        console.log("Input");
-        console.table(inputValue);
         let newProducts = [];
-        recipes.forEach(recipe => {
-            let recipeIngredients = [...recipe.ingredients].map(ingredient => ingredient.toLowerCase());
-            console.log("Ingredientes de la receta:")
-            console.table(recipeIngredients);
-            let targetedIngredients = [...searchedIngredients].map(ingredient => ingredient.name.toLowerCase())
-            console.log("Ingredientes buscados:")
-            console.table(targetedIngredients)
+        recipes.forEach(recipe => { // por cada receta
+            let recipeIngredients = [...recipe.ingredients].map(ingredient => ingredient.toLowerCase()); // tomo sus ingredientes
+            let targetedIngredients = [...searchedIngredients].map(ingredient => ingredient.name.toLowerCase()) // tomo los ingredientes seleccionados
             let addRecipe = true;
             targetedIngredients.forEach(ingredienteBuscado => {
-                if(!recipeIngredients.includes(ingredienteBuscado)){
-                    addRecipe = false;
+                if(!recipeIngredients.includes(ingredienteBuscado)){ //si la receta no posee alguno de los ingredientes seleccionsados
+                    addRecipe = false; // la filtro
                 }
             });
             if(addRecipe){
@@ -197,7 +191,7 @@ const Filters = ({products,setProducts}) => {
                     newProducts = newProducts.filter(recipe => recipe.category.toLowerCase().includes(inputValue.toLowerCase()));
                     break;
                 case "Calificacion":
-                    newProducts = newProducts.filter(recipe => parseInt(recipe.rating) === parseInt(inputValue));
+                    newProducts = newProducts.filter(recipe => parseInt(recipe.rating) === parseInt(inputValue)); // el parseInt, hace que cualquier nota mayor/igual a 4 y menor a 5 pase el filtro
                     break;
                 case "Ingredientes":
                     newProducts = filterIngredients(inputValue)
