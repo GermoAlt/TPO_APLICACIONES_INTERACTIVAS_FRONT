@@ -4,6 +4,10 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 //import { ProductService } from '../service/ProductService';
 import { Rating } from 'primereact/rating';
+import { useNavigate } from "react-router-dom";
+import { InputText } from 'primereact/inputtext';
+import { MultiSelect } from 'primereact/multiselect';
+
 import './recipes-list.css';
 
 import recipes from './recipes.json';
@@ -17,35 +21,18 @@ const RecipeList = ({user}) => {
 }
 
 const DataViewDemo = () => {
+    let navigate = useNavigate()
     const [products, setProducts] = useState(recipes);
     const [layout, setLayout] = useState('grid');
-    const [sortKey, setSortKey] = useState(null);
-    const [sortOrder, setSortOrder] = useState(null);
-    const [sortField, setSortField] = useState(null);
-    const sortOptions = [
-        {label: 'Price High to Low', value: '!price'},
-        {label: 'Price Low to High', value: 'price'},
-    ];
+    const sortOrder = 1;
+    const sortField = "price";
 
-    //const productService = new ProductService();
+    const traducirLayout = () => {
+        return layout === 'grid' ? "Grilla" : "Lista";
+    }
 
-    useEffect(() => {
-        //productService.getProducts().then(data => setProducts(data));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    const onSortChange = (event) => {
-        const value = event.value;
-
-        if (value.indexOf('!') === 0) {
-            setSortOrder(-1);
-            setSortField(value.substring(1, value.length));
-            setSortKey(value);
-        }
-        else {
-            setSortOrder(1);
-            setSortField(value);
-            setSortKey(value);
-        }
+    const onSelectRecipe = (recipeId) => {
+        navigate(`/receta/${recipeId}`)
     }
 
     const renderListItem = (data) => {
@@ -61,7 +48,7 @@ const DataViewDemo = () => {
                     </div>
                     <div className="product-list-action">
                         <span className="product-price">${data.price}</span>
-                        <Button icon="pi pi-shopping-cart" label="Add to Cart" disabled={data.inventoryStatus === 'OUTOFSTOCK'}></Button>
+                        <Button icon="pi pi-shopping-cart" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'}  onClick={()=>onSelectRecipe(134652)}></Button>
                         <span className={`product-badge status-${data.inventoryStatus.toLowerCase()}`}>{data.inventoryStatus}</span>
                     </div>
                 </div>
@@ -88,7 +75,7 @@ const DataViewDemo = () => {
                     </div>
                     <div className="product-grid-item-bottom">
                         <span className="product-price">${data.price}</span>
-                        <Button icon="pi pi-shopping-cart" label="Add to Cart" disabled={data.inventoryStatus === 'OUTOFSTOCK'}></Button>
+                        <Button icon="pi pi-shopping-cart" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={()=>onSelectRecipe(134652)}></Button>
                     </div>
                 </div>
             </div>
@@ -108,10 +95,11 @@ const DataViewDemo = () => {
     const renderHeader = () => {
         return (
             <div className="grid">
-                <div className="col-6" style={{textAlign: 'left'}}>
-                    <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange}/>
+                <div className="col-7" style={{textAlign: 'left'}}>
+                    <Filters products={products} setProducts={(value) => setProducts(value)}/>
                 </div>
-                <div className="col-6" style={{textAlign: 'right'}}>
+                <div className="col-5" style={{textAlign: 'right'}}>
+                    <h5>Tipo de vista: {traducirLayout()}</h5>
                     <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
                 </div>
             </div>
@@ -124,12 +112,146 @@ const DataViewDemo = () => {
         <div className="dataview-demo">
             <div className="card">
                 <DataView value={products} layout={layout} header={header}
-                        itemTemplate={itemTemplate} paginator rows={9}
+                        itemTemplate={itemTemplate} paginator rows={6}
                         sortOrder={sortOrder} sortField={sortField} />
             </div>
         </div>
     );
 }
-                 
+
+const Filters = ({products,setProducts}) => {
+    const filters =[
+        {label: 'Categoria', value: 'Categoria'},
+        {label: 'Calificacion', value: 'Calificacion'},
+        {label: 'Ingredientes', value: 'Ingredientes'}
+    ];
+    const [filter,setFilter] = useState("");
+    const [inputValue, setInputValue] = useState("");
+    const [allIngredients, setAllIngredients] = useState([]);
+
+    useEffect(() => {
+        getAllIngredients();
+    },[])
+
+    useEffect(() => {
+        handleInputChange(inputValue);
+    },[inputValue]);
+
+    const getAllIngredients = () => {
+        let ingredients = []
+        let recetas = [...recipes];
+        recetas.forEach(receta => { // por cada receta
+            let listaIngredientes = [...receta.ingredients]; // tomo sus ingredientes
+            listaIngredientes.forEach(ingrediente => {
+                if(ingredients === [] || ![...ingredients.map(ing => ing.name.toLowerCase())].includes(ingrediente)){ // compruebo que no se repitan
+                    ingredients.push({"name":ingrediente,"code": ingrediente}); // formato requerido por el selector
+                }
+            });
+        })
+        setAllIngredients([...ingredients]);
+    }
+
+    const filterIngredients = (searchedIngredients) => {
+        if(inputValue===[]){
+            return [...recipes];
+        }
+        let newProducts = [];
+        recipes.forEach(recipe => { // por cada receta
+            let recipeIngredients = [...recipe.ingredients].map(ingredient => ingredient.toLowerCase()); // tomo sus ingredientes
+            let targetedIngredients = [...searchedIngredients].map(ingredient => ingredient.name.toLowerCase()) // tomo los ingredientes seleccionados
+            let addRecipe = true;
+            targetedIngredients.forEach(ingredienteBuscado => {
+                if(!recipeIngredients.includes(ingredienteBuscado)){ //si la receta no posee alguno de los ingredientes seleccionsados
+                    addRecipe = false; // la filtro
+                }
+            });
+            if(addRecipe){
+                newProducts.push(recipe);
+            }
+        });
+        return [...newProducts];
+    }
+
+    const handleFilterChange = (value) => {
+        setFilter(value);
+        if(value==="Ingredientes"){
+            setInputValue([]);
+        }
+        else{
+            setInputValue("");
+        }
+    }
+
+    const handleInputChange = (value) => {
+        setInputValue(value);
+        let newProducts = [...recipes];
+        if(value!=="" && value!== []){
+            switch(filter){
+                case "Categoria":
+                    newProducts = newProducts.filter(recipe => recipe.category.toLowerCase().includes(inputValue.toLowerCase()));
+                    break;
+                case "Calificacion":
+                    newProducts = newProducts.filter(recipe => parseInt(recipe.rating) === parseInt(inputValue)); // el parseInt, hace que cualquier nota mayor/igual a 4 y menor a 5 pase el filtro
+                    break;
+                case "Ingredientes":
+                    newProducts = filterIngredients(inputValue)
+                    break;
+                default:
+                    alert("Could not apply filters");
+                    break;
+            }
+        }
+        setProducts([...newProducts]);
+    }
+
+    const CategoryFilterInput = () => {
+        return (<span className="p-float-label">
+            <InputText id="username" value={inputValue} onChange={(e) => handleInputChange(e.target.value)} />
+        </span>);
+    }
+
+    const RatingFilterInput = () => {
+        return (<span>
+            <Rating value={inputValue} cancel={false} onChange={(e) => handleInputChange(e.value)}/>
+        </span>);
+    }
+
+    const IngredientFilterInput = () => {
+        return (<span>
+            <MultiSelect value={inputValue} options={allIngredients} onChange={(e) => handleInputChange(e.value)} optionLabel="name" placeholder="Seleccione Ingredientes" display="chip" />
+        </span>);
+    }
+
+    const showSelector = (filter) => {
+        switch(filter){
+            case "Categoria":
+                return CategoryFilterInput();
+            case "Calificacion":
+                return RatingFilterInput();
+            case "Ingredientes":
+                return IngredientFilterInput();
+            default:
+                return (<div>No es posible aplicar filtros</div>);
+        }
+    }
+        
+    return (
+        <>
+            <div className="card">
+                <h5>Seleccione el filtro <span style={{color: 'rgba(0,0,0,0.3)'}}>(Elementos: {[...products].length})</span></h5>
+                <div className="grid" style={{alignItems: "center", justifyContent: (filter?"center":"flex-start") }}>
+                    <div className="col-6">
+                        <Dropdown value={filter} options={filters} onChange={(e) => handleFilterChange(e.value)} optionLabel="label"/>
+                    </div>
+                    {filter!==""?
+                        <div className="col-6">
+                            {showSelector(filter)}
+                        </div>
+                    :<></>}
+                </div>
+            </div>
+        </>
+    )
+}
 
 export default RecipeList;
