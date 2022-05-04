@@ -14,41 +14,57 @@ import recipes from './recipes.json';
 
 const RecipeList = ({browsed}) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [finalRecipes,setFinalRecipes] = useState([])
+    const [finalRecipes,setFinalRecipes] = useState([]);
 
     useEffect(async () => {
+        setIsLoading(true);
+        console.table(browsed)
         if(browsed !== ""){
-            setIsLoading(true);
+            setFinalRecipes([])
             let filteredRecipes = await filterContent(browsed);
             setFinalRecipes(filteredRecipes);
-            setIsLoading(false);
         }
         else{
             setFinalRecipes([...recipes]);
         }
-    },[]);
+        setIsLoading(false);
+        console.table(finalRecipes)
+    },[browsed]);
+
+    const recipeNotDuplicated = (recipeList,currentRecipe) => {
+        let isDuplicated = true;
+        recipeList.forEach(recipe => {
+            if(recipe.id === currentRecipe.id){
+                isDuplicated = false;
+            }
+        });
+        return isDuplicated;
+    }
 
     const filterContent = () => {
         return new Promise((resolve,reject) => {
             try{
+                let selectedRecipes = [];
                 recipes.forEach(recipe => {
                     console.log("Longitud: " + finalRecipes.length);
-                    if(recipe.name.toLowerCase().includes(browsed.toLowerCase())){
-                        finalRecipes.push(recipe)
+                    if(recipe.name.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
+                        selectedRecipes.push(recipe)
                     }
-                    if(recipe.description.toLowerCase().includes(browsed.toLowerCase())){
-                        finalRecipes.push(recipe)
+                    if(recipe.description.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
+                        selectedRecipes.push(recipe)
                     }
-                    if(recipe.category.toLowerCase().includes(browsed.toLowerCase())){
-                        finalRecipes.push(recipe)
+                    if(recipe.category.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
+                        selectedRecipes.push(recipe)
                     }
                     recipe.ingredients.forEach(ingredient => {
                         if(ingredient.toLowerCase().includes(browsed.toLowerCase())){
-                            finalRecipes.push(recipe);
+                            if(recipeNotDuplicated(selectedRecipes,recipe)){
+                                selectedRecipes.push(recipe);
+                            }
                         }
                     })
                 });
-                resolve([...finalRecipes]);
+                resolve([...selectedRecipes]);
             }
             catch(err){
                 alert("Something went wrong when searching for results: " + JSON.stringify(err));
@@ -77,14 +93,14 @@ const RecipeList = ({browsed}) => {
 const DataViewDemo = ({browsedRecipes}) => {
     let navigate = useNavigate()
     const [foundRecipes, setFoundRecipes] = useState([...browsedRecipes])
-    const [products, setProducts] = useState(foundRecipes);
+    const [products, setProducts] = useState([...browsedRecipes]);
     const [layout, setLayout] = useState('grid');
     const sortOrder = 1;
     const sortField = "price";
 
     useState(() => {
-        setProducts(foundRecipes);
-    },[])
+        setProducts([...foundRecipes]);
+    },[browsedRecipes])
 
     const traducirLayout = () => {
         return layout === 'grid' ? "Grilla" : "Lista";
