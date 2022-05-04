@@ -13,11 +13,11 @@ import './recipes-list.css';
 import recipes from './recipes.json';
 
 const RecipeList = ({browsed}) => {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [finalRecipes,setFinalRecipes] = useState([])
 
     useEffect(async () => {
-        if(browsed){
+        if(browsed !== ""){
             setIsLoading(true);
             let filteredRecipes = await filterContent(browsed);
             setFinalRecipes(filteredRecipes);
@@ -32,6 +32,7 @@ const RecipeList = ({browsed}) => {
         return new Promise((resolve,reject) => {
             try{
                 recipes.forEach(recipe => {
+                    console.log("Longitud: " + finalRecipes.length);
                     if(recipe.name.toLowerCase().includes(browsed.toLowerCase())){
                         finalRecipes.push(recipe)
                     }
@@ -59,10 +60,10 @@ const RecipeList = ({browsed}) => {
     return (
         <>
             {isLoading?
-                (<div>
+                (<div className="col-12">
                     Cargando...
                 </div>):
-                (<div>
+                (<div className="col-12" style={{width: '100%'}}>
                     {finalRecipes.length !== 0?
                         <DataViewDemo browsedRecipes={finalRecipes}/>:
                         <div>No se han encontrado recetas</div>
@@ -75,13 +76,14 @@ const RecipeList = ({browsed}) => {
 
 const DataViewDemo = ({browsedRecipes}) => {
     let navigate = useNavigate()
-    const [products, setProducts] = useState([]);
+    const [foundRecipes, setFoundRecipes] = useState([...browsedRecipes])
+    const [products, setProducts] = useState(foundRecipes);
     const [layout, setLayout] = useState('grid');
     const sortOrder = 1;
     const sortField = "price";
 
     useState(() => {
-        setProducts(browsedRecipes);
+        setProducts(foundRecipes);
     },[])
 
     const traducirLayout = () => {
@@ -153,7 +155,7 @@ const DataViewDemo = ({browsedRecipes}) => {
         return (
             <div className="grid">
                 <div className="col-7" style={{textAlign: 'left'}}>
-                    <Filters products={products} setProducts={(value) => setProducts(value)}/>
+                    <Filters products={products} setProducts={(value) => setProducts(value)} foundRecipes={foundRecipes} />
                 </div>
                 <div className="col-5" style={{textAlign: 'right'}}>
                     <h5>Tipo de vista: {traducirLayout()}</h5>
@@ -176,7 +178,7 @@ const DataViewDemo = ({browsedRecipes}) => {
     );
 }
 
-const Filters = ({products,setProducts}) => {
+const Filters = ({products,setProducts,foundRecipes}) => {
     const filters =[
         {label: 'Categoria', value: 'Categoria'},
         {label: 'Calificacion', value: 'Calificacion'},
@@ -196,7 +198,7 @@ const Filters = ({products,setProducts}) => {
 
     const getAllIngredients = () => {
         let ingredients = []
-        let recetas = [...products];
+        let recetas = [...foundRecipes];
         recetas.forEach(receta => { // por cada receta
             let listaIngredientes = [...receta.ingredients]; // tomo sus ingredientes
             listaIngredientes.forEach(ingrediente => {
@@ -210,10 +212,10 @@ const Filters = ({products,setProducts}) => {
 
     const filterIngredients = (searchedIngredients) => {
         if(inputValue===[]){
-            return [...products];
+            return [...foundRecipes];
         }
         let newProducts = [];
-        [...products].forEach(recipe => { // por cada receta
+        [...foundRecipes].forEach(recipe => { // por cada receta
             let recipeIngredients = [...recipe.ingredients].map(ingredient => ingredient.toLowerCase()); // tomo sus ingredientes
             let targetedIngredients = [...searchedIngredients].map(ingredient => ingredient.name.toLowerCase()) // tomo los ingredientes seleccionados
             let addRecipe = true;
@@ -233,15 +235,17 @@ const Filters = ({products,setProducts}) => {
         setFilter(value);
         if(value==="Ingredientes"){
             setInputValue([]);
+            setProducts(foundRecipes);
         }
         else{
             setInputValue("");
+            setProducts(foundRecipes);
         }
     }
 
     const handleInputChange = (value) => {
         setInputValue(value);
-        let newProducts = [...products];
+        let newProducts = [...foundRecipes];
         if(value!=="" && value!== []){
             switch(filter){
                 case "Categoria":

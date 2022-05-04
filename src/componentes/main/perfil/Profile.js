@@ -55,7 +55,7 @@ const Profile = () => {
                     </div>
                     <br />
                     <div className="col-12">
-                        <RecipeList />
+                        <RecipeList browsed={""} />
                     </div>
                 </div>
             </div>
