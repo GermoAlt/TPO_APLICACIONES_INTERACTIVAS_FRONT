@@ -5,11 +5,11 @@ import { Toolbar } from 'primereact/toolbar';
 import { Link } from 'react-router-dom'
 import classNames from "classnames";
 import Login from "./login/Login";
+import Browser from './browser/Browser';
 import useUser from "../../hooks/useUser";
 import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../imagen/getImagenCloud";
 import {scale} from "@cloudinary/url-gen/actions/resize";
-
 
 export default function Header(props) {
     const {user, setUser} = useUser()
@@ -87,6 +87,7 @@ export default function Header(props) {
 
     const rightContents = (
         <React.Fragment>
+            <Browser />
             {/*<Link to={"/instructor/nuevo"}>*/}
             {/*    <Button label={"Publicar"} icon="pi pi-plus" className="p-button-rounded p-mr-20"style={{textDecoration: 'none'}}/>*/}
             {/*</Link>*/}

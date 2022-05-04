@@ -12,20 +12,77 @@ import './recipes-list.css';
 
 import recipes from './recipes.json';
 
-const RecipeList = ({user}) => {
+const RecipeList = ({browsed}) => {
+    const [isLoading, setIsLoading] = useState(true);
+    const [finalRecipes,setFinalRecipes] = useState([])
+
+    useEffect(async () => {
+        if(browsed){
+            setIsLoading(true);
+            let filteredRecipes = await filterContent(browsed);
+            setFinalRecipes(filteredRecipes);
+            setIsLoading(false);
+        }
+        else{
+            setFinalRecipes([...recipes]);
+        }
+    },[]);
+
+    const filterContent = () => {
+        return new Promise((resolve,reject) => {
+            try{
+                recipes.forEach(recipe => {
+                    if(recipe.name.toLowerCase().includes(browsed.toLowerCase())){
+                        finalRecipes.push(recipe)
+                    }
+                    if(recipe.description.toLowerCase().includes(browsed.toLowerCase())){
+                        finalRecipes.push(recipe)
+                    }
+                    if(recipe.category.toLowerCase().includes(browsed.toLowerCase())){
+                        finalRecipes.push(recipe)
+                    }
+                    recipe.ingredients.forEach(ingredient => {
+                        if(ingredient.toLowerCase().includes(browsed.toLowerCase())){
+                            finalRecipes.push(recipe);
+                        }
+                    })
+                });
+                resolve([...finalRecipes]);
+            }
+            catch(err){
+                alert("Something went wrong when searching for results: " + JSON.stringify(err));
+                reject([...recipes]);
+            }
+        })
+    }
+
     return (
         <>
-            <DataViewDemo />
+            {isLoading?
+                (<div>
+                    Cargando...
+                </div>):
+                (<div>
+                    {finalRecipes.length !== 0?
+                        <DataViewDemo browsedRecipes={finalRecipes}/>:
+                        <div>No se han encontrado recetas</div>
+                    }
+                </div>)
+                }
         </>
     )
 }
 
-const DataViewDemo = () => {
+const DataViewDemo = ({browsedRecipes}) => {
     let navigate = useNavigate()
-    const [products, setProducts] = useState(recipes);
+    const [products, setProducts] = useState([]);
     const [layout, setLayout] = useState('grid');
     const sortOrder = 1;
     const sortField = "price";
+
+    useState(() => {
+        setProducts(browsedRecipes);
+    },[])
 
     const traducirLayout = () => {
         return layout === 'grid' ? "Grilla" : "Lista";
@@ -139,7 +196,7 @@ const Filters = ({products,setProducts}) => {
 
     const getAllIngredients = () => {
         let ingredients = []
-        let recetas = [...recipes];
+        let recetas = [...products];
         recetas.forEach(receta => { // por cada receta
             let listaIngredientes = [...receta.ingredients]; // tomo sus ingredientes
             listaIngredientes.forEach(ingrediente => {
@@ -153,10 +210,10 @@ const Filters = ({products,setProducts}) => {
 
     const filterIngredients = (searchedIngredients) => {
         if(inputValue===[]){
-            return [...recipes];
+            return [...products];
         }
         let newProducts = [];
-        recipes.forEach(recipe => { // por cada receta
+        [...products].forEach(recipe => { // por cada receta
             let recipeIngredients = [...recipe.ingredients].map(ingredient => ingredient.toLowerCase()); // tomo sus ingredientes
             let targetedIngredients = [...searchedIngredients].map(ingredient => ingredient.name.toLowerCase()) // tomo los ingredientes seleccionados
             let addRecipe = true;
@@ -184,7 +241,7 @@ const Filters = ({products,setProducts}) => {
 
     const handleInputChange = (value) => {
         setInputValue(value);
-        let newProducts = [...recipes];
+        let newProducts = [...products];
         if(value!=="" && value!== []){
             switch(filter){
                 case "Categoria":

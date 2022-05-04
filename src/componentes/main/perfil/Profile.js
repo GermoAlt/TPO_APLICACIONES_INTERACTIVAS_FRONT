@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 
 import { getImagen } from "../../imagen/getImagenCloud"
 
-import { AdvancedImage } from '@cloudinary/react';
-import { fill } from '@cloudinary/url-gen/actions/resize';
+import { AdvancedImage } from '@cloudinary/react'
 import {thumbnail} from "@cloudinary/url-gen/actions/resize";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
 import {focusOn} from "@cloudinary/url-gen/qualifiers/gravity";
@@ -56,7 +55,7 @@ const Profile = () => {
                     </div>
                     <br />
                     <div className="col-12">
-                        <RecipeList user={user}/>
+                        <RecipeList />
                     </div>
                 </div>
             </div>
