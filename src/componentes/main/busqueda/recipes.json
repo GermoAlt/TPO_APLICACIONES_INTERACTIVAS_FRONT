@@ -1,29 +1,145 @@
 [
     {
-        "name": "Receta cheta",
+        "id": 1,
+        "name": "Receta 4 cheta",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
-        "inventoryStatus": "Publicada"
+        "price": 5200,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","ajo","huevo","harina"]
     },
     {
-        "name": "Receta cheta",
+        "id": 2,
+        "name": "Receta 2 cheta",
         "description": "Descripcion de la receta cheta",
-        "category": "Pasta",
+        "category": "Carne",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
-        "inventoryStatus": "Publicada"
+        "price": 1500,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["carne","harina"]
     },
     {
+        "id": 3,
+        "name": "Receta 2 cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 5200,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","ajo","carne","harina"]
+    },
+    {
+        "id": 4,
+        "name": "Receta 4 cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 5300,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","ajo","carne","harina"]
+    },
+    {
+        "id": 5,
+        "name": "Receta 6 cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 100,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","ajo","huevo","harina"]
+    },
+    {
+        "id": 6,
         "name": "Receta cheta",
         "description": "Descripcion de la receta cheta",
         "category": "Pasta",
         "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
         "rating": 4,
-        "price": 500,
-        "inventoryStatus": "Publicada"
+        "price": 200,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","Sal","carne","harina"]
+    },
+    {
+        "id": 7,
+        "name": "Receta bien cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 3,
+        "price": 5400,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","ajo","carne","harina","huevo"]
+    },
+    {
+        "id": 8,
+        "name": "Receta muy cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Mariscos",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 3.5,
+        "price": 2300,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","ajo","carne","harina"]
+    },
+    {
+        "id": 9,
+        "name": "Alta Receta cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4.2,
+        "price": 420,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","ajo","carne","harina"]
+    },
+    {
+        "id": 10,
+        "name": "Receta no muy cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Sopas",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 350,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["ajo","carne","harina"]
+    },
+    {
+        "id": 11,
+        "name": "Receta cheeeta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Poste",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 5,
+        "price": 1750,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","carne","harina"]
+    },
+    {
+        "id": 12,
+        "name": "Receta cheta mal",
+        "description": "Descripcion de la receta cheta",
+        "category": "Vegetariano",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 4,
+        "price": 5400,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","ajo","carne","harina"]
+    },
+    {
+        "id": 13,
+        "name": "Receta nada cheta",
+        "description": "Descripcion de la receta cheta",
+        "category": "Pasta",
+        "image": "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png",
+        "rating": 2.8,
+        "price": 1050,
+        "inventoryStatus": "Publicada",
+        "ingredients": ["agua","ajo","carne","harina"]
     }
 ]

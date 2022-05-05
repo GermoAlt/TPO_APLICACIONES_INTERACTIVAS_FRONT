@@ -18,8 +18,27 @@ export default function InfoReceta() {
     const [mostrarEditor, setMostrarEditor] = useState(false)
     const [newRatingText, setNewRatingText] = useState("")
     const [newRatingValue, setNewRatingValue] = useState(0)
+    const [reviews, setReviews] = useState([...dataReviews]);
     const navigate = useParams()
     const receta = dataReceta.find(item => String(item.id) === navigate.id)
+
+    const submitReview = (e) => {
+        // autor luego cambia por la data del user dinamico
+        e.preventDefault();
+        let newReview = {
+            "id": reviews.length,
+            "autor":
+              {
+                "id": 3312,
+                "nombre": "Mariana Suarez",
+                "mail": "marianasuarez@gmail.com",
+                "telefono": "5491164856165"
+              },
+            "calificacion": newRatingValue,
+            "comentarios": newRatingText
+        }
+        setReviews([...reviews,newReview]);
+    }
 
     const imagenTemplate = (imagen) => {
         return(
@@ -109,7 +128,7 @@ export default function InfoReceta() {
                     <div className={"info-recetas-calificaciones-header"}>
                         <h1>Reviews</h1>
                         <div className={"info-recetas-nueva-calificacion-button-container"}>
-                            <Button icon={"pi pi-plus"} label={"Nueva calificación"}
+                            <Button icon={mostrarEditor?"":"pi pi-plus"} label={mostrarEditor?"Cancelar":"Nueva calificación"}
                                 onClick={() => setMostrarEditor(!mostrarEditor)} />
                         </div>
                     </div>
@@ -119,15 +138,15 @@ export default function InfoReceta() {
                                     onChange={(e) => setNewRatingValue(e.target.value)}/>
                         </div>
                         <Editor placeholder={"Escribe aqui tu calificacion"} value={newRatingText}
-                                onTextChange={(e) => setNewRatingText(e.htmlValue)}
+                                onTextChange={(e) => setNewRatingText(e.htmlValue.toString().split("<p>")[1].split("</p>")[0])}
                                 headerTemplate={header}/>
                         <div className={"info-receta-calificacion-nueva-submit"}>
-                            <Button label={"submit"} onClick={() => alert(newRatingText)} style={{alignSelf: "flex-end"}}/>
+                            <Button label={"submit"} onClick={(e) => submitReview(e)} style={{alignSelf: "flex-end"}}/>
                         </div>
                     </div>
                 </div>
                 <div className={"info-receta-container-calificaciones"}>
-                    {buildReviews(receta.id)}
+                    {buildReviews(reviews)}
                 </div>
             </div>
         </div>
@@ -175,9 +194,9 @@ function buildSteps(pasos){
     ))
 }
 
-function buildReviews(id) {
-    //get reviews by receta
-    const calificaciones = dataReviews
+function buildReviews(calificaciones) {
+    //get reviews by receta => despues agregar de nuevo el idReceta para pegarle a la api
+    //const calificaciones = dataReviews;
     return calificaciones.map(calificacion => (
             <div className={"info-receta-container-card info-receta-calificacion"} key={calificacion.id}>
                 <Rating value={calificacion.calificacion} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
