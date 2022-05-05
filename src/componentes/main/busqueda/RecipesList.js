@@ -18,7 +18,6 @@ const RecipeList = ({browsed}) => {
 
     useEffect(async () => {
         setIsLoading(true);
-        console.table(browsed)
         if(browsed !== ""){
             setFinalRecipes([])
             let filteredRecipes = await filterContent(browsed);
@@ -28,7 +27,6 @@ const RecipeList = ({browsed}) => {
             setFinalRecipes([...recipes]);
         }
         setIsLoading(false);
-        console.table(finalRecipes)
     },[browsed]);
 
     const recipeNotDuplicated = (recipeList,currentRecipe) => {
@@ -46,7 +44,6 @@ const RecipeList = ({browsed}) => {
             try{
                 let selectedRecipes = [];
                 recipes.forEach(recipe => {
-                    console.log("Longitud: " + finalRecipes.length);
                     if(recipe.name.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
                         selectedRecipes.push(recipe)
                     }
@@ -123,7 +120,7 @@ const DataViewDemo = ({browsedRecipes}) => {
                     </div>
                     <div className="product-list-action">
                         <span className="product-price">${data.price}</span>
-                        <Button icon="pi pi-shopping-cart" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'}  onClick={()=>onSelectRecipe(134652)}></Button>
+                        <Button style={{marginTop: '2%'}} icon="" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'}  onClick={()=>onSelectRecipe(134652)}></Button>
                         <span className={`product-badge status-${data.inventoryStatus.toLowerCase()}`}>{data.inventoryStatus}</span>
                     </div>
                 </div>
@@ -150,7 +147,7 @@ const DataViewDemo = ({browsedRecipes}) => {
                     </div>
                     <div className="product-grid-item-bottom">
                         <span className="product-price">${data.price}</span>
-                        <Button icon="pi pi-shopping-cart" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={()=>onSelectRecipe(134652)}></Button>
+                        <Button style={{marginTop: '5%'}} icon="" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={()=>onSelectRecipe(134652)}></Button>
                     </div>
                 </div>
             </div>
