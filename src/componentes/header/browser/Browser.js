@@ -8,7 +8,6 @@ const Browser = () => {
     let navigate = useNavigate();
     const [browsed, setBrowsed] = useState("");
     const handleBrowse = () => {
-        //refrescar pagina si ya estoy en /resultados/:browsed!!! => sino no recarga el dato
         navigate(`/resultados/${browsed}`);
     }
 
