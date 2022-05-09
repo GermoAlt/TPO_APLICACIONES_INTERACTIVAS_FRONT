@@ -62,7 +62,7 @@ return(
                 <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={username} onChange={(e) => setUsername(e.target.value)} placeholder={"E-mail"}/>
             </div>
             <div className="p-field">
-                <InputText keyfilter={/[^\s]/} className={`login-dialog-input ${error ? "p-invalid" : ""}`} type={"password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Contraseña"}/>
+                <InputText className={`login-dialog-input ${error ? "p-invalid" : ""}`} type={"password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Contraseña"}/>
             </div>
         </div>
         <div className={"login-dialog-footer-container"}>

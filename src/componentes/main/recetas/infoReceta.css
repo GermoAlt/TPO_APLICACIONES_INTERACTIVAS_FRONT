@@ -5,15 +5,6 @@
     gap: 20px;
 }
 
-.info-receta-container-card{
-    background-color: white;
-    border: #ECB100 solid 1px;
-    border-radius: 25px;
-    min-width: 300px;
-    padding:15px;
-    box-shadow: rgba(236, 177, 0, 0.35) 1.95px 1.95px 2.6px;
-}
-
 .info-receta-titulo{
     font-family: 'Modak', cursive;
     font-size: 2.5rem;

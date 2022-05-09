@@ -66,10 +66,10 @@ export default function InfoReceta() {
 
     return (
         <div className={"info-receta-container"}>
-            <div className={"info-receta-container-card info-receta-titulo"}>
+            <div className={"gourmetic-card info-receta-titulo"}>
                 {receta.titulo}
             </div>
-            <div className={"info-receta-container-card info-receta-descripcion"}>
+            <div className={"gourmetic-card info-receta-descripcion"}>
                 {receta.descripcion}
             </div>
             <div className={"info-receta-central-panel"}>
@@ -83,12 +83,12 @@ export default function InfoReceta() {
                             }}/>
                         </div>
                     :
-                    <div className={"info-receta-container-card info-receta-carousel-container"}>
+                    <div className={"gourmetic-card info-receta-carousel-container"}>
                         <Carousel  className={"info-receta-carousel"} value={receta.imagenes} numVisible={1} numScroll={1} itemTemplate={imagenTemplate}/>
                     </div>
                 }
 
-                <div className={"info-receta-container-card info-receta-details"}>
+                <div className={"gourmetic-card info-receta-details"}>
                     <div className={"info-receta-details-item"}>
                         <span>Dificultad</span>
                         <Rating value={receta.dificultad} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
@@ -110,13 +110,13 @@ export default function InfoReceta() {
                 </div>
             </div>
             <div className={"info-receta-central-panel"}>
-                <div className={"info-receta-container-card info-receta-ingredientes"}>
+                <div className={"gourmetic-card info-receta-ingredientes"}>
                     <h1>Ingredientes</h1>
                     <ul className={"info-receta-list"}>
                         {buildIngredients(receta.ingredientes)}
                     </ul>
                 </div>
-                <div className={"info-receta-container-card info-receta-pasos"}>
+                <div className={"gourmetic-card info-receta-pasos"}>
                     <h1>Pasos</h1>
                     <ol className={"info-receta-list"}>
                         {buildSteps(receta.pasos)}
@@ -124,7 +124,7 @@ export default function InfoReceta() {
                 </div>
             </div>
             <div className={"info-receta-container-calificaciones"}>
-                <div className={"info-recetas-nueva-calificacion info-receta-container-card"}>
+                <div className={"info-recetas-nueva-calificacion gourmetic-card"}>
                     <div className={"info-recetas-calificaciones-header"}>
                         <h1>Reviews</h1>
                         <div className={"info-recetas-nueva-calificacion-button-container"}>
@@ -198,7 +198,7 @@ function buildReviews(calificaciones) {
     //get reviews by receta => despues agregar de nuevo el idReceta para pegarle a la api
     //const calificaciones = dataReviews;
     return calificaciones.map(calificacion => (
-            <div className={"info-receta-container-card info-receta-calificacion"} key={calificacion.id}>
+            <div className={"gourmetic-card info-receta-calificacion"} key={calificacion.id}>
                 <Rating value={calificacion.calificacion} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
                 <b>{calificacion.autor.nombre}</b>
                 {calificacion.comentarios}

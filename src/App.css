@@ -22,8 +22,7 @@
 
 .main-content-container{
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
   max-width: 1000px;
   margin: 100px 10px 30px;
   min-height: 89vh;
@@ -31,4 +30,13 @@
 
 .override-opacity{
  opacity: 1 !important;
+}
+
+.gourmetic-card{
+  background-color: white;
+  border: #ECB100 solid 1px;
+  border-radius: 25px;
+  min-width: 300px;
+  padding:15px;
+  box-shadow: rgba(236, 177, 0, 0.35) 1.95px 1.95px 2.6px;
 }

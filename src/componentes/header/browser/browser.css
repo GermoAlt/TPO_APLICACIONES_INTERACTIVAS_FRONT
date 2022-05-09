@@ -1,0 +1,5 @@
+.search-bar-container{
+    max-width: 350px;
+    flex:1;
+    padding: 10px;
+}
