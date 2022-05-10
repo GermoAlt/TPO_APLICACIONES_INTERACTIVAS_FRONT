@@ -1,0 +1,166 @@
+.new-receta-container{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.new-receta-container-card{
+    background-color: white;
+    border: #ECB100 solid 1px;
+    border-radius: 25px;
+    min-width: 300px;
+    padding:15px;
+    box-shadow: rgba(236, 177, 0, 0.35) 1.95px 1.95px 2.6px;
+}
+
+.new-receta-titulo{
+    font-family: 'Modak', cursive;
+    font-size: 2.5rem;
+}
+.new-receta-central-panel{
+    display: flex;
+    flex-direction: row;
+    gap:25px;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.new-receta-carousel-container{
+    width: 100%;
+    flex: 2;
+    min-width: 450px;
+}
+
+.new-receta-carousel{
+    width: 100%;
+
+}
+
+.new-receta-imagen{
+    padding: 0;
+    display: flex;
+    flex:2;
+    min-width: 350px;
+}
+
+.new-receta-details{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-evenly;
+}
+
+.new-receta-details-item{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.new-receta-categorias{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.new-receta-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.image-not-found > img{
+    width: 25% !important;
+}
+
+.new-receta-imagen >img{
+    width: 100%;
+    border: #ECB100 solid 1px;
+    border-radius: 25px;
+}
+
+.new-receta-descripcion{
+    font-size: 1.2rem;
+}
+
+.new-receta-ingredientes{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    align-items: flex-start;
+    text-align: start;
+}
+
+.new-receta-pasos{
+    flex:2;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    align-items: flex-start;
+    text-align: start;
+}
+
+.new-receta-ingredientes-card{
+    border: red solid 1px;
+    display: flex;
+    gap: 5px;
+    align-content: flex-start;
+    background-color: white;
+    min-height:40px;
+    transition: flex 0.3s ease-out
+}
+
+.new-receta-container-calificaciones{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    transition: flex 0.3s ease-out
+}
+
+.new-recetas-calificaciones-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.new-receta-calificacion{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: start;
+}
+
+.new-recetas-nueva-calificacion{
+    transition: all 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.new-receta-nueva-calificacion-container{
+    transition: flex 0.3s ease-out
+}
+
+.new-recetas-nueva-calificacion-button-container{
+    align-items: center;
+    display: flex;
+}
+
+.new-receta-calificacion-nueva-rating{
+    display: flex;
+    justify-content: flex-start;
+    padding: 15px;
+}
+
+.new-receta-calificacion-nueva-submit{
+    display: flex;
+    align-content: flex-end;
+    justify-content: flex-end;
+    padding: 15px 0 0;
+}

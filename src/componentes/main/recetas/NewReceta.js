@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import "./infoReceta.css"
+import "./newReceta.css"
 import dataReceta from '../../../api/recetas.json'
 import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../../imagen/getImagenCloud";
@@ -57,6 +57,8 @@ const [recetaDialog, setMensaje] = useState(false);
 const [receta, setReceta] = useState(recetaLimpia);
 const [submitted, setSubmitted] = useState(false);
 const toast = useRef(null);
+const [selectedCategories, setSelectedCategories] = useState(categorias.slice(0,0));
+const [checked, setChecked] = useState(false);
 
 
 
@@ -122,8 +124,6 @@ const cargarCamposNumericos = (e, name) => {
     setReceta(recipe);
 }
 
-const [selectedCategories, setSelectedCategories] = useState(receta.categorias.slice(1,3));
-
 const onCategoryChange = (e) => {
     let recipe = { ...receta };
     let _selectedCategories = [...selectedCategories];
@@ -144,55 +144,117 @@ const onCategoryChange = (e) => {
     setSelectedCategories(_selectedCategories);
     recipe.categorias = _selectedCategories;
     setReceta(recipe);
+
 }
+
+
+const [stepList, setStepList] = useState([{ orden: 1, paso: '' }]);
+
+const handleInputChange = (e, index) => {
+    const prueba = e.value;
+    let recipe = { ...receta };
+    const { name, value } = e.target;
+    const list = [...stepList];
+    list[index][name] = value;
+    setStepList(list);
+    recipe.pasos = list;
+    setReceta(recipe);
+};
+
+  const handleRemove = index => {
+    const list = [...stepList];
+    list.splice(index, 1);
+    setStepList(list);
+  };
+
+  const handleAdd = (cant) => {
+    let nroOrden= cant+1;
+    setStepList([...stepList, { orden: nroOrden , paso: '' }]);
+  };
 
     return (
         
-            <div className={"info-receta-container"}>
+            <div className={"new-receta-container"}>
                 <Toast ref={toast} />
-                        <div className={"info-receta-details-item"}>
+                        <div className={"new-receta-details-item"}>
                             <span>Título de la receta</span>
                             <InputText id="titulo" value={receta.titulo} onChange={(e) => cargarCamposReceta(e, 'titulo')} required autoFocus className={classNames({ 'p-invalid': submitted && !receta.titulo })} />
                             {submitted && !receta.titulo && <small className="p-invalid">El nombre es obligatorio</small>}
                         </div>
-                    <div className={"info-receta-container-card info-receta-details"}>
-                        <div className={"info-receta-details-item"}>
+                    <div className={"new-receta-container-card new-receta-details"}>
+                        <div className={"new-receta-details-item"}>
                             <label>Descripción</label>
                             <InputTextarea id="descripcion" value={receta.descripcion} onChange={(e) => cargarCamposReceta(e, 'descripcion')} required rows={3} cols={20} />
+                            {submitted && !receta.descripcion && <small className="p-invalid">La descripción es obligatoria</small>}
                         </div>
                 
-                        <div className={"info-receta-details-item"}>
+                        <div className={"new-receta-details-item"}>
                             <span>Dificultad</span>
                             <Rating id="dificultad" value={receta.dificultad} cancel={false} onChange={(e) => cargarCamposReceta(e, 'dificultad')}/>
                         </div>
-                        <div className={"info-receta-details-item"}>
+                        <div className={"new-receta-details-item"}>
                             <span>Preparación</span>
-                            <b><InputNumber id="tiempoPreparacion" value={receta.tiempoPreparacion} onValueChange={(e) => cargarCamposNumericos(e, 'tiempoPreparacion')} integeronly/></b>
+                            <b><InputNumber id="tiempoPreparacion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoPreparacion')} integeronly/></b>
                         </div>
-                        <div className={"info-receta-details-item"}>
+                        <div className={"new-receta-details-item"}>
                             <span>Elaboración</span>
-                            <b><InputNumber id="tiempoElaboracion" value={receta.tiempoElaboracion} onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly /></b>
+                            <b><InputNumber id="tiempoElaboracion" placeholder='Cantidad de minutos' value={receta.tiempoElaboracion} onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly /></b>
                         </div>
-                        <div className={"info-receta-details-item"}>
-                            <span>Categoría</span>
-                            <div className={"info-receta-categorias"}>
-                                {
-                                    categorias.map((categoria) => {
-                                        return (
-                                            <div key={categoria} className="field-checkbox">
-                                                <Checkbox inputId={categoria} name="categoria" value={categoria} onChange={onCategoryChange} checked={selectedCategories.some((item) => item.key === categoria)} disabled={categoria === 'R'} />
-                                                <label htmlFor={categoria}>{categoria}</label>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
+                    </div>
+                    <div className={"new-receta-container-card new-receta-details"}>
+                                <div className={"new-receta-details-item"}>
+                                    <span>Categoría</span>
+                                    <div className={"new-receta-categorias"}>
+                                        {
+                                            categorias.map((categoria) => {
+                                                return (
+                                                    <div key={categoria} className="field-checkbox">
+                                                        <Checkbox inputId={categoria} name="categoria" value={categoria} onChange={onCategoryChange} checked={selectedCategories.some((item) => item === categoria)} />
+                                                        <label htmlFor={categoria}>{categoria}</label>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </div>
+
+                        <div className={"new-receta-details-item"}>
+                            <span>Pasos de preparación</span>
+                            {stepList.map((x, i) => {
+                                    return (
+                                    <div>
+                                        <InputText readOnly
+                                            name="orden"
+                                            placeholder="Número de orden"
+                                            value={x.orden}
+                                            onChange={(e) => handleInputChange(e, i)}
+                                        />
+                                        <InputText
+                                            name="paso"
+                                            placeholder="Explicación del paso"
+                                            value={x.paso}
+                                            onChange={(e) => handleInputChange(e, i)}
+                                        />
+                                        <div>
+                                        {stepList.length !== 1 && (
+                                            <Button className="mr10" onClick={() => handleRemove(i)} icon ="pi pi-minus-circle"/>
+                                        )}
+                                        {stepList.length - 1 === i && (
+                                          <Button onClick={() => handleAdd(stepList.length)} icon="pi pi-plus-circle"/>
+                                        )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                            
+                        </div>                   
                     </div>
 
                         <div>
-                            <Button label="Guardar" icon="pi pi-check" className="p-button-text" onClick={guardarProducto} />   
+                            <Button onClick={guardarProducto}>Guardar</Button>  
                         </div>
+
+
             </div>
 
         );
