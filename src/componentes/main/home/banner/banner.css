@@ -1,11 +1,10 @@
 .home-banner-container{
     width: 103vw;
-    height: 75vh;
+    height: 50vh;
     display: flex;
     align-content: center;
     justify-content: center;
     gap: 10vw;
-    background: lightblue;
     padding: 10vh;
     text-align: start;
     flex-wrap: wrap;

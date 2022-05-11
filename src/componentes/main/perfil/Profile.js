@@ -25,7 +25,7 @@ const Profile = () => {
     return (
         <>
             <div className="grid profile-container">
-                <div className="col-12 col-offset-0 info-receta-container-card">
+                <div className="col-12 col-offset-0 gourmetic-card">
                     {user?
                         <div className="grid h-20rem">
                             <div className="col-4 flex flex-wrap align-items-center justify-content-center">
@@ -49,7 +49,7 @@ const Profile = () => {
                         </>
                     }
                 </div>
-                <div className="col-12 info-receta-container-card" >
+                <div className="col-12 gourmetic-card" >
                     <div className="col-12 flex flex-wrap justify-content-center recipes-title">
                         Mis Recetas
                     </div>

@@ -1,16 +1,38 @@
 import Banner from "./banner/Banner";
+import {AdvancedImage} from "@cloudinary/react";
+import {getImagen} from "../../imagen/getImagenCloud";
+import Login from "../../header/login/Login";
+import React from "react";
+import "./home.css"
 
 export default function Home() {
     return (
-        <div> 
-            <div>
-                <Banner isGuest={false}/>
-                {/*<h1>
-                    si lees esto, el proyecto levantó :)
-                </h1>
-                <h2>
-                    este texto esta en la home (Home.js)
-                </h2>*/}
+        <div className={"home-container"}>
+            <Banner isGuest={false}/>
+            <Banner isGuest={true}/>
+            <div className={"home-banner-container"}>
+                <div className={"home-banner-content-container"}>
+                    <h1>
+                        texto titulo ejemplo
+                    </h1>
+                    <h3>
+                        texto subtitulo ejemplo
+                    </h3>
+                    <Login/>
+                </div>
+                <AdvancedImage cldImg={getImagen("logo_no_text")} />
+            </div>
+            <div className={"home-banner-container"}>
+                <AdvancedImage cldImg={getImagen("logo_no_text")} />
+                <div className={"home-banner-content-container"}>
+                    <h1>
+                        texto titulo ejemplo
+                    </h1>
+                    <h3>
+                        texto subtitulo ejemplo
+                    </h3>
+                    <Login/>
+                </div>
             </div>
         </div>
     )

@@ -131,7 +131,7 @@ const DataViewDemo = ({browsedRecipes}) => {
     const renderGridItem = (data) => {
         return (
             <div className="col-12 md:col-4">
-                <div className="product-grid-item card">
+                <div className="product-grid-item gourmetic-card">
                     <div className="product-grid-item-top">
                         <div>
                             <i className="pi pi-tag product-category-icon"></i>
@@ -182,10 +182,11 @@ const DataViewDemo = ({browsedRecipes}) => {
 
     return (
         <div className="dataview-demo">
-            <div className="card">
+            <div className="gourmetic-card">
                 <DataView value={products} layout={layout} header={header}
                         itemTemplate={itemTemplate} paginator rows={6}
-                        sortOrder={sortOrder} sortField={sortField} />
+                        // sortOrder={sortOrder} sortField={sortField}
+                />
             </div>
         </div>
     );
@@ -311,7 +312,7 @@ const Filters = ({products,setProducts,foundRecipes}) => {
         
     return (
         <>
-            <div className="card">
+            <div className="gourmetic-card">
                 <h5>Seleccione el filtro <span style={{color: 'rgba(0,0,0,0.3)'}}>(Elementos: {[...products].length})</span></h5>
                 <div className="grid" style={{alignItems: "center", justifyContent: (filter?"center":"flex-start") }}>
                     <div className="col-6">
