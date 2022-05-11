@@ -7,9 +7,6 @@ HEADER
     width: 100%;
     flex-direction:row;
     justify-content: flex-end;
-    position: fixed;
-    top: 0;
-    z-index: 1000;
 }
 
 .p-tabmenu-nav{
@@ -66,7 +63,7 @@ HEADER
     flex-grow: 1;
     justify-content: flex-end;
     gap: 10px;
-    margin-right: 10px;
+    margin-right: 20px;
 }
 
 .header-cart-badge{
@@ -75,4 +72,14 @@ HEADER
     border: black solid 2px;
     display: flex;
     align-items: center;
+}
+
+.header-logo-container{
+    max-width: 350px;
+}
+
+.header-logo{
+    width:100%;
+    height:100%;
+    object-fit: contain;
 }

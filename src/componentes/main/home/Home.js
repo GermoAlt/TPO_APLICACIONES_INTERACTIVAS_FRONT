@@ -4,13 +4,14 @@ import {getImagen} from "../../imagen/getImagenCloud";
 import Login from "../../header/login/Login";
 import React from "react";
 import "./home.css"
+import RecipeList from "../busqueda/RecipesList";
 
 export default function Home() {
     return (
         <div className={"home-container"}>
             <Banner isGuest={false}/>
             <Banner isGuest={true}/>
-            <div className={"home-banner-container"}>
+            <div className={"home-banner-container gourmetic-card"}>
                 <div className={"home-banner-content-container"}>
                     <h1>
                         texto titulo ejemplo
@@ -22,7 +23,7 @@ export default function Home() {
                 </div>
                 <AdvancedImage cldImg={getImagen("logo_no_text")} />
             </div>
-            <div className={"home-banner-container"}>
+            <div className={"home-banner-container gourmetic-card"}>
                 <AdvancedImage cldImg={getImagen("logo_no_text")} />
                 <div className={"home-banner-content-container"}>
                     <h1>
@@ -34,6 +35,7 @@ export default function Home() {
                     <Login/>
                 </div>
             </div>
+            <RecipeList browsed={""}/>
         </div>
     )
 }

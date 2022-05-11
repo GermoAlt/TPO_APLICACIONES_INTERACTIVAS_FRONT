@@ -10,7 +10,7 @@ export default function Banner(props){
 
     if (isGuest){
         return (
-            <div className={"home-banner-container"}>
+            <div className={"home-banner-container gourmetic-card"}>
                 <AdvancedImage cldImg={getImagen("logo_no_text")} />
                 <div className={"home-banner-content-container"}>
                     <h1>
@@ -25,7 +25,7 @@ export default function Banner(props){
         )
     } else {
         return (
-            <div className={"home-banner-container"}>
+            <div className={"home-banner-container gourmetic-card"}>
                 <AdvancedImage cldImg={getImagen("logo_no_text")}/>
                 <div className={"home-banner-content-container"}>
                     <h1>

@@ -16,14 +16,35 @@ export default function Footer() {
                         } className={"footer-logo"}/>
                 </Link>
             </div>
-            <div className={"footer-link-section gourmetic-card"}>
-                <Link to={""}>
-                    sasdasdas
-                </Link>
-            </div>
-            <div className={"footer-link-section gourmetic-card"}>
+            <div className={"footer-link-section"}>
+                <div className={"footer-link-subsection gourmetic-card"}>
+                    <Link to={""}>
+                        Postres
+                    </Link>
+                    <Link to={""}>
+                        Ensaladas
+                    </Link>
+                    <Link to={""}>
+                        Sopa
+                    </Link>
+                    <Link to={""}>
+                        Guisos
+                    </Link>
+                    <Link to={""}>
+                        Carnes
+                    </Link>
+                    <Link to={""}>
+                        Sin  gluten
+                    </Link>
+                    <Link to={""}>
+                        Vegetariano
+                    </Link>
+                </div>
+                <div className={"footer-link-subsection gourmetic-card"}>
 
+                </div>
             </div>
         </div>
     )
 }
+
