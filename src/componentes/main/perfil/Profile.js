@@ -10,7 +10,7 @@ import {FocusOn} from "@cloudinary/url-gen/qualifiers/focusOn";
 
 import './profile.css';
 import profileData from './profile.json';
-import RecipeList from '../busqueda/RecipesList';
+import RecipeList from '../busqueda/RecipeList';
 
 const Profile = () => {
     const [user, setUser] = useState(profileData);

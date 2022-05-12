@@ -4,7 +4,7 @@ import {getImagen} from "../../imagen/getImagenCloud";
 import Login from "../../header/login/Login";
 import React from "react";
 import "./home.css"
-import RecipeList from "../busqueda/RecipesList";
+import RecipeList from "../busqueda/RecipeList";
 
 export default function Home() {
     return (

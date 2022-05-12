@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from "react-router-dom";
-import RecipeList from './RecipesList';
+import RecipeList from './RecipeList';
 
 export default function PanelBusqueda() {
     const params = useParams()

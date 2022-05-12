@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-//import { ProductService } from '../service/ProductService';
 import { Rating } from 'primereact/rating';
 import { useNavigate } from "react-router-dom";
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 
-import './recipes-list.css';
+import './recipe-list.css';
 
 import recipes from './recipes.json';
 
@@ -71,7 +70,7 @@ const RecipeList = ({browsed}) => {
     }
 
     return (
-        <>
+        <div>
             {isLoading?
                 (<div className="col-12">
                     Cargando...
@@ -83,7 +82,7 @@ const RecipeList = ({browsed}) => {
                     }
                 </div>)
                 }
-        </>
+        </div>
     )
 }
 
@@ -114,14 +113,12 @@ const DataViewDemo = ({browsedRecipes}) => {
                     <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={data.name} />
                     <div className="product-list-detail">
                         <div className="product-name">{data.name}</div>
-                        <div className="product-description">{data.description}</div>
                         <Rating value={data.rating} readOnly cancel={false}></Rating>
-                        <i className="pi pi-tag product-category-icon"></i><span className="product-category">{data.category}</span>
+                        <div className="product-description">{data.description}</div>
                     </div>
                     <div className="product-list-action">
-                        <span className="product-price">${data.price}</span>
+                        <div><span className="product-category">{data.category}</span><i className="pi pi-tag product-category-icon"></i></div>
                         <Button style={{marginTop: '2%'}} icon="" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'}  onClick={()=>onSelectRecipe(134652)}></Button>
-                        <span className={`product-badge status-${data.inventoryStatus.toLowerCase()}`}>{data.inventoryStatus}</span>
                     </div>
                 </div>
             </div>
@@ -137,16 +134,14 @@ const DataViewDemo = ({browsedRecipes}) => {
                             <i className="pi pi-tag product-category-icon"></i>
                             <span className="product-category">{data.category}</span>
                         </div>
-                        <span className={`product-badge status-${data.inventoryStatus.toLowerCase()}`}>{data.inventoryStatus}</span>
                     </div>
                     <div className="product-grid-item-content">
                     <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={data.name} />
+                        <Rating value={data.rating} readOnly cancel={false}></Rating>
                         <div className="product-name">{data.name}</div>
                         <div className="product-description">{data.description}</div>
-                        <Rating value={data.rating} readOnly cancel={false}></Rating>
                     </div>
                     <div className="product-grid-item-bottom">
-                        <span className="product-price">${data.price}</span>
                         <Button style={{marginTop: '5%'}} icon="" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={()=>onSelectRecipe(134652)}></Button>
                     </div>
                 </div>
@@ -166,12 +161,11 @@ const DataViewDemo = ({browsedRecipes}) => {
 
     const renderHeader = () => {
         return (
-            <div className="grid">
+            <div className="grid recipe-list-dataview-header">
                 <div className="col-7" style={{textAlign: 'left'}}>
                     <Filters products={products} setProducts={(value) => setProducts(value)} foundRecipes={foundRecipes} />
                 </div>
                 <div className="col-5" style={{textAlign: 'right'}}>
-                    <h5>Tipo de vista: {traducirLayout()}</h5>
                     <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
                 </div>
             </div>
@@ -311,12 +305,10 @@ const Filters = ({products,setProducts,foundRecipes}) => {
     }
         
     return (
-        <>
-            <div className="gourmetic-card">
-                <h5>Seleccione el filtro <span style={{color: 'rgba(0,0,0,0.3)'}}>(Elementos: {[...products].length})</span></h5>
+        <div>
                 <div className="grid" style={{alignItems: "center", justifyContent: (filter?"center":"flex-start") }}>
                     <div className="col-6">
-                        <Dropdown value={filter} options={filters} onChange={(e) => handleFilterChange(e.value)} optionLabel="label"/>
+                        <Dropdown placeholder={"Filtrar"} value={filter} options={filters} onChange={(e) => handleFilterChange(e.value)} optionLabel="label"/>
                     </div>
                     {filter!==""?
                         <div className="col-6">
@@ -324,8 +316,7 @@ const Filters = ({products,setProducts,foundRecipes}) => {
                         </div>
                     :<></>}
                 </div>
-            </div>
-        </>
+        </div>
     )
 }
 

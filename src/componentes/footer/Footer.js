@@ -12,7 +12,7 @@ export default function Footer() {
             <div className={"footer-logo-container"}>
                 <Link to={"/"}>
                     <AdvancedImage cldImg={getImagen("logo_full_horizontal")
-                        .adjust(Adjust.replaceColor("#FFFFFF"))
+                        .adjust(Adjust.replaceColor("#FFFFFF").fromColor().tolerance())
                         } className={"footer-logo"}/>
                 </Link>
             </div>

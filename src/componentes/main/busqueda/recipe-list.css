@@ -14,7 +14,7 @@
 
 .dataview-demo .product-category-icon {
     vertical-align: middle;
-    margin-right: .5rem;
+    margin-left: .5rem;
 }
 
 .dataview-demo .product-category {
@@ -53,6 +53,8 @@
 .dataview-demo .product-list-item .product-list-action {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
+    align-self: stretch;
 }
 
 .dataview-demo .product-list-item .p-button {
@@ -65,11 +67,16 @@
     padding: 2rem;
 }
 
-.dataview-demo .product-grid-item .product-grid-item-top,
-    .dataview-demo .product-grid-item .product-grid-item-bottom {
+.dataview-demo .product-grid-item .product-grid-item-top{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+}
+
+.dataview-demo .product-grid-item .product-grid-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .dataview-demo .product-grid-item img {
@@ -143,4 +150,8 @@
 .multiselect-demo .multiselect-custom .country-item-value img.flag {
     width: 17px;
 }
-    
+
+.dataview-demo .p-dataview-header{
+    background: transparent;
+    border: none;
+}
