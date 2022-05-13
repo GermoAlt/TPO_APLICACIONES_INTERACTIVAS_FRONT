@@ -2,7 +2,7 @@ import Banner from "./banner/Banner";
 import {AdvancedImage} from "@cloudinary/react";
 import {getImagen} from "../../imagen/getImagenCloud";
 import Login from "../../header/login/Login";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./home.css"
 import RecipeList from "../busqueda/RecipeList";
 import {Button} from "primereact/button";
@@ -11,7 +11,9 @@ import {Dropdown} from "primereact/dropdown";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
 export default function Home() {
-    window.scrollTo(0,0)
+    useEffect(() => {
+        window.scrollTo(0,0)
+    }, []);
     const categorias = ["Pasta", "Carne", "Postre", "Ensalada",
         "Sopas", "Guisos", "Carnes", "Sin Gluten", "Vegetariano", "Mariscos"]
     const [categoria, setCategoria] = useState()

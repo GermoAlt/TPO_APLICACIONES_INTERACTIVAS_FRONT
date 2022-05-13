@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import { getImagen } from "../../imagen/getImagenCloud"
 
@@ -15,7 +15,9 @@ import RecipeList from '../busqueda/RecipeList';
 const Profile = () => {
     const [user, setUser] = useState(profileData);
     const image = getImagen(user.imageId).resize(thumbnail().width(250).height(250).gravity(focusOn(FocusOn.face()))).roundCorners(byRadius(150))
-    window.scrollTo(0,0)
+    useEffect(() => {
+        window.scrollTo(0,0)
+    }, []);
     return (
             <div className="grid profile-container">
                 <div className="col-12 col-offset-0 gourmetic-card">

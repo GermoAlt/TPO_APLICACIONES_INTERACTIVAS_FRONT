@@ -5,7 +5,7 @@ import "./infoReceta.css"
 import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../../imagen/getImagenCloud";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Carousel} from "primereact/carousel";
 import {Rating} from "primereact/rating";
 import {Tag} from "primereact/tag";
@@ -13,10 +13,13 @@ import {Button} from "primereact/button";
 import {Editor} from "primereact/editor";
 import {Navigation} from "swiper";
 import {SwiperSlide, Swiper} from "swiper/react";
+import {Panel} from "primereact/panel";
 
 
 export default function InfoReceta() {
-    window.scrollTo(0,0)
+    useEffect(() => {
+        window.scrollTo(0,0)
+    }, []);
     const [errorClass, setErrorClass] = useState("")
     const [mostrarEditor, setMostrarEditor] = useState(false)
     const [newRatingText, setNewRatingText] = useState("")
@@ -136,21 +139,21 @@ export default function InfoReceta() {
                         <h1>Reviews</h1>
                         <div className={"info-recetas-nueva-calificacion-button-container"}>
                             <Button icon={mostrarEditor?"":"pi pi-plus"} label={mostrarEditor?"Cancelar":"Nueva calificación"}
-                                onClick={() => setMostrarEditor(!mostrarEditor)} />
+                                onClick={() => setMostrarEditor(!mostrarEditor)} className={mostrarEditor?"p-button-danger":""} />
                         </div>
                     </div>
-                    <div className={`${mostrarEditor ? "" : "hidden"}`}>
+                    <Panel toggleable collapsed={!mostrarEditor} headerTemplate={<div/>} onToggle={() => setMostrarEditor(!mostrarEditor)}>
                         <div className={"info-receta-calificacion-nueva-rating"}>
                             <Rating cancel={false} value={newRatingValue}
                                     onChange={(e) => setNewRatingValue(e.target.value)}/>
                         </div>
-                        <Editor placeholder={"Escribe aqui tu calificacion"} value={newRatingText}
+                        <Editor placeholder={"Escribe aqui tu calificación"} value={newRatingText}
                                 onTextChange={(e) => setNewRatingText(e.htmlValue.toString().split("<p>")[1].split("</p>")[0])}
                                 headerTemplate={header}/>
                         <div className={"info-receta-calificacion-nueva-submit"}>
-                            <Button label={"submit"} onClick={(e) => submitReview(e)} style={{alignSelf: "flex-end"}}/>
+                            <Button label={"Enviar calificación"} onClick={(e) => submitReview(e)} style={{alignSelf: "flex-end"}}/>
                         </div>
-                    </div>
+                    </Panel>
                 </div>
                 <div className={"info-receta-container-calificaciones"}>
                     {buildReviews(reviews)}
