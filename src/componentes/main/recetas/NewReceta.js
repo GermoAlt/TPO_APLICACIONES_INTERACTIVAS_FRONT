@@ -70,6 +70,27 @@ let recetaLimpia = {
     const [totalSize, setTotalSize] = useState(0);
     const fileUploadRef = useRef(null);
 
+const confirmarCreacion = () =>{
+    toast.current.show(                
+        { severity: 'info', life:2000, closable: false, content: (
+        <div className="flex flex-column" style={{flex: '1'}}>
+            <div className="text-center">
+                <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                <h4>¿Confirma la creación de la receta?</h4>
+            </div>
+            <div className="grid p-fluid">
+                <div className="col-6">
+                    <Button type="button" label="Si" className="p-button-success" onClick={guardarProducto}/>
+                </div>
+                <div className="col-6">
+                    <Button type="button" label="No" className="p-button-secondary" />
+                </div>
+            </div>
+        </div>
+        )}
+    );
+}
+
 const guardarProducto = () => {
     setSubmitted(true);
     if (receta.titulo.trim() && receta.descripcion.trim() && receta.dificultad!=null && receta.tiempoPreparacion!=0 && 
@@ -86,7 +107,7 @@ const guardarProducto = () => {
         else {
             recetaNueva.id = createId();
             listaRecetas.push(recetaNueva);
-            toast.current.show({ severity: 'success', summary: 'Perfecto', detail: 'Receta creada', life: 3000 });
+                toast.current.show({ severity: 'success',detail: 'Receta ' + recetaNueva.id + ' creada!', life: 3000 });
         }
 
         setRecetas(listaRecetas);
@@ -96,7 +117,6 @@ const guardarProducto = () => {
         toast.current.show({ severity: 'error', detail: 'Faltan datos para completar su receta', life: 2000 });
     }
 }
-
 
 const findIndexById = (id) => {
     let index = -1;
@@ -293,7 +313,7 @@ const handleInputChangeIngredientes = (e, index) => {
     return (
         
             <div className={"new-receta-container"}>
-                <Toast ref={toast} />
+                <Toast ref={toast} position="bottom-right" />
                         <div className={"new-receta-details-item"}>
                             <span><h3>Título de la receta</h3></span>
                             <InputText id="titulo" value={receta.titulo} onChange={(e) => cargarCamposReceta(e, 'titulo')} required autoFocus className={classNames({ 'p-invalid': submitted && !receta.titulo })} />
@@ -402,7 +422,7 @@ const handleInputChangeIngredientes = (e, index) => {
                     </div>
 
                         <div>
-                            <Button onClick={guardarProducto}>Guardar</Button>  
+                            <Button onClick={confirmarCreacion} className="ui-button-warning">Guardar</Button>  
                         </div>
 
 
