@@ -7,10 +7,13 @@ import classNames from 'classnames';
 import { Button } from 'primereact/button';
 import { Rating } from 'primereact/rating';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Checkbox } from 'primereact/checkbox';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
+import { AutoComplete } from 'primereact/autocomplete';
+import { FileUpload } from 'primereact/fileupload';
+import { Tag } from 'primereact/tag';
+
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import useUser from "../../../hooks/useUser";
@@ -51,21 +54,22 @@ let recetaLimpia = {
         ]
     }
 
-const categorias= ["CAKE","CHOCOLATE CAKE","AMERICAN", "CHOCOLATE", "COCONUT", "COFFEE", "CREAM CHEESE", "MAKE AHEAD", "DESSERT"];
+const categorias= ["Postre", "Ensalada", "Sopa", "Guiso", "Carnes", "Libre gluten", "Vegetariano"];
 const [recetas, setRecetas] = useState([...dataReceta]);
 const [recetaDialog, setMensaje] = useState(false);
 const [receta, setReceta] = useState(recetaLimpia);
 const [submitted, setSubmitted] = useState(false);
 const toast = useRef(null);
 const [selectedCategories, setSelectedCategories] = useState(categorias.slice(0,0));
-const [checked, setChecked] = useState(false);
-
+const [filteredCategorias, setFilteredCategorias] = useState(null);
+const [selectedCategorias, setSelectedCategorias] = useState(null);
 
 
 const guardarProducto = () => {
     setSubmitted(true);
 
-    if (receta.titulo.trim()) {
+    if (receta.titulo.trim() && receta.descripcion.trim() && receta.dificultad.trim() &&
+        receta.ingredientes.trim() && receta.pasos.trim() && receta.imagenes.trim()) {
         let listaRecetas = [...recetas];
         let recetaNueva = { ...receta };
         if (receta.id) {
@@ -149,9 +153,9 @@ const onCategoryChange = (e) => {
 
 
 const [stepList, setStepList] = useState([{ orden: 1, paso: '' }]);
+const [listaIngredientes, setListaIngredientes] = useState([{ cantidad: '', ingrediente: '' }]);
 
 const handleInputChange = (e, index) => {
-    const prueba = e.value;
     let recipe = { ...receta };
     const { name, value } = e.target;
     const list = [...stepList];
@@ -172,54 +176,169 @@ const handleInputChange = (e, index) => {
     setStepList([...stepList, { orden: nroOrden , paso: '' }]);
   };
 
+
+  
+const handleInputChangeIngredientes = (e, index) => {
+    let recipe = { ...receta };
+    const { name, value } = e.target;
+    const list = [...stepList];
+    list[index][name] = value;
+    setListaIngredientes(list);
+    recipe.pasos = list;
+    setReceta(recipe);
+};
+
+  const handleRemoveIngrediente = index => {
+    const list = [...listaIngredientes];
+    list.splice(index, 1);
+    setListaIngredientes(list);
+  };
+
+  const handleAddIngrediente = () => {
+    setListaIngredientes([...listaIngredientes, { cantidad: '' , ingrediente: '' }]);
+  };
+
+  const searchCategoria = (event) => {
+    setTimeout(() => {
+        let _filteredCategorias;
+        if (!event.query.trim().length) {
+            _filteredCategorias = [...categorias];
+        }
+        else {
+            _filteredCategorias = categorias.filter((categoria) => {
+                return categoria.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+
+        setFilteredCategorias(_filteredCategorias);
+    }, 250);
+};
+
+    const chooseOptions = {icon: 'pi pi-fw pi-images', iconOnly: true, className: 'custom-choose-btn p-button-rounded p-button-outlined'};
+    const uploadOptions = {icon: 'pi pi-fw pi-cloud-upload', iconOnly: true, className: 'custom-upload-btn p-button-success p-button-rounded p-button-outlined'};
+    const cancelOptions = {icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined'};
+
+    const [totalSize, setTotalSize] = useState(0);
+    const fileUploadRef = useRef(null);
+
+
+    const onTemplateSelect = (e) => {
+        let _totalSize = totalSize;
+        Array.from(e.files).forEach(file => {
+            _totalSize += file.size;
+        });
+
+        setTotalSize(_totalSize);
+    }
+
+    const onTemplateUpload = (e) => {
+        let _totalSize = 0;
+        e.files.forEach(file => {
+            _totalSize += (file.size || 0);
+        });
+
+        setTotalSize(_totalSize);
+        toast.current.show({severity: 'info', summary: 'Success', detail: 'File Uploaded'});
+    }
+
+    const onTemplateRemove = (file, callback) => {
+        setTotalSize(totalSize - file.size);
+        callback();
+    }
+
+    const onTemplateClear = () => {
+        setTotalSize(0);
+    }
+
+    const headerTemplate = (options) => {
+        const { className, chooseButton, uploadButton, cancelButton } = options;
+        const value = totalSize/10000;
+        const formatedValue = fileUploadRef && fileUploadRef.current ? fileUploadRef.current.formatSize(totalSize) : '0 B';
+
+        return (
+            <div className={className} style={{backgroundColor: 'transparent', display: 'flex', alignItems: 'center'}}>
+                {chooseButton}
+                {uploadButton}
+                {cancelButton}
+            </div>
+        );
+    }
+
+    const itemTemplate = (file, props) => {
+        return (
+            <div className="flex align-items-center flex-wrap">
+                <div className="flex align-items-center" style={{width: '40%'}}>
+                    <img alt={file.name} role="presentation" src={file.objectURL} width={100} />
+                    <span className="flex flex-column text-left ml-3">
+                        {file.name}
+                        <small>{new Date().toLocaleDateString()}</small>
+                    </span>
+                </div>
+                <Tag value={props.formatSize} severity="warning" className="px-3 py-2" />
+                <Button type="button" icon="pi pi-times" className="p-button-outlined p-button-rounded p-button-danger ml-auto" onClick={() => onTemplateRemove(file, props.onRemove)} />
+            </div>
+        )
+    }
+
+    const emptyTemplate = () => {
+        return (
+            <div className="flex align-items-center flex-column">
+                <i className="pi pi-image mt-3 p-5" style={{'fontSize': '5em', borderRadius: '50%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)'}}></i>
+                <span style={{'fontSize': '1.2em', color: 'var(--text-color-secondary)'}} className="my-5">Arrastre sus imágenes</span>
+            </div>
+        )
+    }
+    
     return (
         
             <div className={"new-receta-container"}>
                 <Toast ref={toast} />
                         <div className={"new-receta-details-item"}>
-                            <span>Título de la receta</span>
+                            <span><h3>Título de la receta</h3></span>
                             <InputText id="titulo" value={receta.titulo} onChange={(e) => cargarCamposReceta(e, 'titulo')} required autoFocus className={classNames({ 'p-invalid': submitted && !receta.titulo })} />
                             {submitted && !receta.titulo && <small className="p-invalid">El nombre es obligatorio</small>}
                         </div>
+
+                        <div className={"new-receta-details-item"}>
+                            <FileUpload ref={fileUploadRef} name="demo[]" url="https://primefaces.org/primereact/showcase/upload.php" multiple accept="image/*" maxFileSize={1000000}
+                                onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
+                                headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
+                                chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
+                    </div>
+
+
                     <div className={"new-receta-container-card new-receta-details"}>
                         <div className={"new-receta-details-item"}>
-                            <label>Descripción</label>
-                            <InputTextarea id="descripcion" value={receta.descripcion} onChange={(e) => cargarCamposReceta(e, 'descripcion')} required rows={3} cols={20} />
-                            {submitted && !receta.descripcion && <small className="p-invalid">La descripción es obligatoria</small>}
+                            <label><h3>Descripción</h3></label>
+                            <InputTextarea id="descripcion" value={receta.descripcion} onChange={(e) => cargarCamposReceta(e, 'descripcion')} className={classNames({ 'p-invalid': submitted && !receta.descripcion })}/>
+                            {submitted && !receta.descripcion && <small className="p-invalid">La descripcion es obligatoria</small>}
                         </div>
                 
                         <div className={"new-receta-details-item"}>
-                            <span>Dificultad</span>
+                            <span><h3>Dificultad</h3></span>
                             <Rating id="dificultad" value={receta.dificultad} cancel={false} onChange={(e) => cargarCamposReceta(e, 'dificultad')}/>
                         </div>
                         <div className={"new-receta-details-item"}>
-                            <span>Preparación</span>
+                            <span><h3>Preparación</h3></span>
                             <b><InputNumber id="tiempoPreparacion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoPreparacion')} integeronly/></b>
                         </div>
                         <div className={"new-receta-details-item"}>
-                            <span>Elaboración</span>
+                            <span><h3>Elaboración</h3></span>
                             <b><InputNumber id="tiempoElaboracion" placeholder='Cantidad de minutos' value={receta.tiempoElaboracion} onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly /></b>
                         </div>
                     </div>
                     <div className={"new-receta-container-card new-receta-details"}>
                                 <div className={"new-receta-details-item"}>
-                                    <span>Categoría</span>
+                                    <span><h3>Categoría</h3></span>
                                     <div className={"new-receta-categorias"}>
-                                        {
-                                            categorias.map((categoria) => {
-                                                return (
-                                                    <div key={categoria} className="field-checkbox">
-                                                        <Checkbox inputId={categoria} name="categoria" value={categoria} onChange={onCategoryChange} checked={selectedCategories.some((item) => item === categoria)} />
-                                                        <label htmlFor={categoria}>{categoria}</label>
-                                                    </div>
-                                                )
-                                            })
-                                        }
+                                        <span className="p-fluid">
+                                            <AutoComplete value={selectedCategorias} suggestions={filteredCategorias} completeMethod={searchCategoria} multiple onChange={(e) => setSelectedCategorias(e.value)} />
+                                        </span>
                                     </div>
                                 </div>
 
                         <div className={"new-receta-details-item"}>
-                            <span>Pasos de preparación</span>
+                            <span><h3>Pasos de preparación</h3></span>
                             {stepList.map((x, i) => {
                                     return (
                                     <div>
@@ -241,6 +360,38 @@ const handleInputChange = (e, index) => {
                                         )}
                                         {stepList.length - 1 === i && (
                                           <Button onClick={() => handleAdd(stepList.length)} icon="pi pi-plus-circle"/>
+                                        )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                            
+                        </div>                   
+                    </div>
+                    <div className={"new-receta-container-card new-receta-details"}>
+                        <div className={"new-receta-details-item"}>
+                            <span><h3>Ingredientes</h3></span>
+                            {listaIngredientes.map((x, i) => {
+                                    return (
+                                    <div>
+                                        <InputText
+                                            name="cantidad"
+                                            placeholder="Cantidad"
+                                            value={x.cantidad}
+                                            onChange={(e) => handleInputChangeIngredientes(e, i)}
+                                        />
+                                        <InputText
+                                            name="ingrediente"
+                                            placeholder="Ingrediente"
+                                            value={x.ingrediente}
+                                            onChange={(e) => handleInputChangeIngredientes(e, i)}
+                                        />
+                                        <div>
+                                        {listaIngredientes.length !== 1 && (
+                                            <Button className="mr10" onClick={() => handleRemoveIngrediente(i)} icon ="pi pi-minus-circle"/>
+                                        )}
+                                        {listaIngredientes.length - 1 === i && (
+                                          <Button onClick={handleAddIngrediente} icon="pi pi-plus-circle"/>
                                         )}
                                         </div>
                                     </div>
