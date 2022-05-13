@@ -15,6 +15,7 @@ import {Tooltip} from "primereact/tooltip";
 const RecipeList = (props) => {
     let browsed = props.browsed ? props.browsed : ""
     let rows = props.rows ? props.rows : 6
+    let isProfile = props.isProfile ? props.isProfile : false
     const [isLoading, setIsLoading] = useState(false);
     const [finalRecipes,setFinalRecipes] = useState([]);
 
@@ -80,7 +81,7 @@ const RecipeList = (props) => {
                 </div>):
                 (<div className="col-12" style={{width: '100%'}}>
                     {finalRecipes.length !== 0?
-                        <DataViewDemo browsedRecipes={finalRecipes} rows={rows}/>:
+                        <DataViewDemo browsedRecipes={finalRecipes} rows={rows} isProfile={isProfile}/>:
                         <div>No se han encontrado recetas</div>
                     }
                 </div>)
@@ -91,6 +92,7 @@ const RecipeList = (props) => {
 
 const DataViewDemo = (props) => {
     let browsedRecipes = props.browsedRecipes
+    let isProfile = props.isProfile
     let navigate = useNavigate()
     const [foundRecipes, setFoundRecipes] = useState([...browsedRecipes])
     const [products, setProducts] = useState([...browsedRecipes]);
@@ -106,7 +108,12 @@ const DataViewDemo = (props) => {
         navigate(`/receta/${recipeId}`)
     }
 
+    const goToEditRecipe = (id) => {
+        navigate(`/receta/${id}/edit`)
+    }
+
     const renderListItem = (data) => {
+        console.log(isProfile)
         return (
             <div className="col-12">
                 <div className="product-list-item">
@@ -118,7 +125,8 @@ const DataViewDemo = (props) => {
                     </div>
                     <div className="product-list-action">
                         <div><span className="product-category">{data.category}</span><i className="pi pi-tag product-category-icon"></i></div>
-                        <Button style={{marginTop: '2%'}} icon="" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'}  onClick={()=>onSelectRecipe(134652)}></Button>
+                        <Button style={{marginTop: '2%'}} label="Ver Receta" onClick={()=>onSelectRecipe(134652)}></Button>
+                        {isProfile ? <Button style={{marginTop: '2%'}} label="Editar Receta" onClick={()=>goToEditRecipe(134652)}></Button>:""}
                     </div>
                 </div>
             </div>
@@ -145,7 +153,8 @@ const DataViewDemo = (props) => {
                         <div className="grid-tooltip product-description">{data.description}</div>
                     </div>
                     <div className="product-grid-item-bottom">
-                        <Button style={{marginTop: '5%'}} icon="" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={()=>onSelectRecipe(134652)}></Button>
+                        <Button style={{marginTop: '5%'}} label="Ver Receta" onClick={()=>onSelectRecipe(134652)}></Button>
+                        {isProfile ? <Button style={{marginTop: '5%', marginLeft:"2px"}} label="Editar Receta" onClick={()=>goToEditRecipe(134652)}></Button>:""}
                     </div>
                 </div>
         );

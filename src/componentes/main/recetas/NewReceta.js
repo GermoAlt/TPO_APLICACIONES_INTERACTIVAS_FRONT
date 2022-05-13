@@ -32,9 +32,9 @@ let recetaLimpia = {
           "telefono": ""
         },
         "descripcion": "",
-        "imagenes": [""],
+        "imagenes": [],
         "dificultad": null,
-        "categorias": [""],
+        "categorias": [],
         "rating": null,
         "tiempoPreparacion": 0,
         "tiempoElaboracion": 0,
@@ -55,13 +55,14 @@ let recetaLimpia = {
 
     const categorias= ["Postre", "Ensalada", "Sopa", "Guiso", "Carnes", "Sin gluten", "Vegetariano"];
     const [recetas, setRecetas] = useState([...dataReceta]);
+    const recetaAEditar = dataReceta.find(item => String(item.id) === props.id)
     const [recetaDialog, setMensaje] = useState(false);
-    const [receta, setReceta] = useState(recetaLimpia);
+    const [receta, setReceta] = useState(recetaAEditar || recetaLimpia);
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
     const [selectedCategories, setSelectedCategories] = useState(categorias.slice(0,0));
     const [filteredCategorias, setFilteredCategorias] = useState(null);
-    const [selectedCategorias, setSelectedCategorias] = useState(null);
+    const [selectedCategorias, setSelectedCategorias] = useState(receta.categorias);
     
     const chooseOptions = {icon: 'pi pi-fw pi-images', iconOnly: true, className: 'custom-choose-btn p-button-rounded p-button-outlined'};
     const uploadOptions = {icon: 'pi pi-fw pi-cloud-upload', iconOnly: true, className: 'custom-upload-btn p-button-success p-button-rounded p-button-outlined'};
@@ -184,8 +185,8 @@ const onCategoryChange = (e) => {
 }
 
 
-const [stepList, setStepList] = useState([{ orden: 1, paso: '' }]);
-const [listaIngredientes, setListaIngredientes] = useState([{ cantidad: '', ingrediente: '' }]);
+const [stepList, setStepList] = useState(receta.pasos);
+const [listaIngredientes, setListaIngredientes] = useState(receta.ingredientes);
 
 const handleInputChange = (e, index) => {
     let recipe = { ...receta };
@@ -316,7 +317,9 @@ const handleInputChangeIngredientes = (e, index) => {
                 <Toast ref={toast} position="bottom-right" />
                 <div className={"new-receta-details-item gourmetic-card"}>
                             <span><h1>Título de la receta</h1></span>
-                            <InputText id="titulo" value={receta.titulo} onChange={(e) => cargarCamposReceta(e, 'titulo')} required autoFocus className={classNames({ 'p-invalid': submitted && !receta.titulo })} />
+                            <InputText id="titulo" value={receta.titulo} required autoFocus
+                                       onChange={(e) => cargarCamposReceta(e, 'titulo')}
+                                       className={classNames({ 'p-invalid': submitted && !receta.titulo })} />
                             {submitted && !receta.titulo && <small className="p-invalid">El nombre es obligatorio</small>}
                         </div>
 
@@ -344,12 +347,12 @@ const handleInputChangeIngredientes = (e, index) => {
                     </div>
                     <div className={"new-receta-details-item"}>
                         <span><h3>Preparación</h3></span>
-                        <b><InputNumber id="tiempoPreparacion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoPreparacion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoPreparacion })}/></b>
+                        <b><InputNumber value={receta.tiempoPreparacion} id="tiempoPreparacion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoPreparacion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoPreparacion })}/></b>
                         {submitted && !receta.tiempoPreparacion && <small className="p-invalid">Debe ingresar tiempo de preparación</small>}
                     </div>
                     <div className={"new-receta-details-item"}>
                         <span><h3>Elaboración</h3></span>
-                        <b><InputNumber id="tiempoElaboracion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoElaboracion })}/></b>
+                        <b><InputNumber id="tiempoElaboracion" value={receta.tiempoPreparacion} placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoElaboracion })}/></b>
                         {submitted && !receta.tiempoElaboracion && <small className="p-invalid">Debe ingresar tiempo de elaboración</small>}
                     </div>
                     <div className={"new-receta-details-item"}>
@@ -370,22 +373,28 @@ const handleInputChangeIngredientes = (e, index) => {
                             <span><h3>Pasos de preparación</h3></span>
                             {stepList.map((x, i) => {
                                     return (
-                                    <div>
-                                        <InputText
-                                            name="paso"
-                                            placeholder="Explicación del paso"
-                                            value={x.paso}
-                                            onChange={(e) => handleInputChange(e, i)}
-                                        />
-                                        <div>
-                                        {stepList.length !== 1 && (
-                                            <Button className="mr10" onClick={() => handleRemove(i)} icon ="pi pi-minus-circle"/>
-                                        )}
-                                        {stepList.length - 1 === i && (
-                                          <Button onClick={() => handleAdd(stepList.length)} icon="pi pi-plus-circle"/>
-                                        )}
+                                        <div style={{justifyContent:"space-around"}}>
+                                            <div style={{display:"flex", justifyContent: "space-between", alignItems:"space-between", flex:"1"}}>
+                                                <div style={{flex:"1", justifyContent:"flex-start"}}>
+                                                    <span>{x.orden}. </span>
+                                                    <InputText
+                                                        style={{flex:"1", width:"90%"}}
+                                                        name="paso"
+                                                        placeholder="Explicación del paso"
+                                                        value={x.paso}
+                                                        onChange={(e) => handleInputChange(e, i)}
+                                                    />
+                                                </div>
+                                                {stepList.length !== 1 && (
+                                                    <Button className="mr10" onClick={() => handleRemove(i)} icon ="pi pi-minus-circle"/>
+                                                )}
+                                            </div>
+                                            <div style={{alignItems:"flex-end", display:"flex", marginTop:"10px"}}>
+                                                {stepList.length - 1 === i && (
+                                                  <Button style={{marginLeft:"auto"}} onClick={() => handleAdd(stepList.length)} icon="pi pi-plus-circle"/>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
                                 );
                             })}
                             {submitted && !receta.pasos && <small className="p-invalid">Debe ingresar los pasos de su receta</small>}
@@ -396,25 +405,31 @@ const handleInputChangeIngredientes = (e, index) => {
                         <span><h3>Ingredientes</h3></span>
                         {listaIngredientes.map((x, i) => {
                                 return (
-                                <div>
-                                    <InputText
-                                        name="cantidad"
-                                        placeholder="Cantidad y medida"
-                                        value={x.cantidad}
-                                        onChange={(e) => handleInputChangeIngredientes(e, i)}
-                                    />
-                                    <InputText
-                                        name="ingrediente"
-                                        placeholder="Ingrediente"
-                                        value={x.ingrediente}
-                                        onChange={(e) => handleInputChangeIngredientes(e, i)}
-                                    />
-                                    <div>
-                                    {listaIngredientes.length !== 1 && (
-                                        <Button className="mr10" onClick={() => handleRemoveIngrediente(i)} icon ="pi pi-minus-circle"/>
-                                    )}
+                                    <div style={{justifyContent:"space-around"}}>
+                                        <div style={{display:"flex", justifyContent: "space-between", alignItems:"space-between", flex:"1", flexDirection:"row", flexWrap:"nowrap"}}>
+                                            <div style={{flex:"1", justifyContent:"space-between", alignItems:"flex-start"}}>
+                                        <InputText
+                                            style={{flex:"1", width:"49%"}}
+                                            name="cantidad"
+                                            placeholder="Cantidad y medida"
+                                            value={x.cantidad}
+                                            onChange={(e) => handleInputChangeIngredientes(e, i)}
+                                        />
+                                        <InputText
+                                            style={{flex:"1", width:"49%"}}
+                                            name="ingrediente"
+                                            placeholder="Ingrediente"
+                                            value={x.ingrediente}
+                                            onChange={(e) => handleInputChangeIngredientes(e, i)}
+                                        />
+                                            </div>
+                                        {listaIngredientes.length !== 1 && (
+                                            <Button className="mr10" onClick={() => handleRemoveIngrediente(i)} icon ="pi pi-minus-circle"/>
+                                        )}
+                                    </div>
+                                    <div style={{alignItems:"flex-end", display:"flex", marginTop:"10px"}}>
                                     {listaIngredientes.length - 1 === i && (
-                                      <Button onClick={handleAddIngrediente} icon="pi pi-plus-circle"/>
+                                      <Button style={{marginLeft:"auto"}} onClick={handleAddIngrediente} icon="pi pi-plus-circle"/>
                                     )}
                                     </div>
                                 </div>
@@ -428,6 +443,7 @@ const handleInputChangeIngredientes = (e, index) => {
 
                 <div>
                     <Button onClick={confirmarCreacion} className="ui-button-warning">Guardar</Button>
+                    {recetaAEditar ? <Button className="p-button-danger" label={"Eliminar"} icon={"pi pi-times"} style={{marginLeft:"20px"}}/> : ""}
                 </div>
             </div>
         );

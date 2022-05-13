@@ -47,7 +47,7 @@ const Profile = () => {
                 <div className="col-12 flex flex-wrap justify-content-center recipes-title gourmetic-card">
                     <h3>Mis Recetas</h3>
                 </div>
-                <RecipeList browsed={""} />
+                <RecipeList isProfile={true} />
             </div>
     );
 

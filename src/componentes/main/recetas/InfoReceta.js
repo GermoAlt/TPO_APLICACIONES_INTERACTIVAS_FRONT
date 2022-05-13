@@ -14,6 +14,7 @@ import {Editor} from "primereact/editor";
 import {Navigation} from "swiper";
 import {SwiperSlide, Swiper} from "swiper/react";
 import {Panel} from "primereact/panel";
+import {SpeedDial} from "primereact/speeddial";
 
 
 export default function InfoReceta() {
