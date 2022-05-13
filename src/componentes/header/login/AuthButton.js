@@ -17,6 +17,12 @@ const AuthButton = props => {
 
     const items = [
         {
+            label:'Perfil',
+            template: (item, options) => {
+                return userOptionTemplate("pi-user", "/profile", item, options)
+            }
+        },
+        {
             label:'Log out',
             command: () => {
                 changeUser({tipo:"guest"})
@@ -47,7 +53,7 @@ const AuthButton = props => {
 
     const userOptionTemplate = (icon, path, item, options) => {
         return (
-            <li className={`p-menuitem ${user.tipo === "admin" ? "hidden" : ""}`}>
+            <li className={`p-menuitem`}>
                 <Link to={`${path}`} className={"p-menuitem-link"}>
                     <span className={classNames(options.iconClassName, `pi pi-fw ${icon}`)}/>
                     <span className={options.labelClassName}>{item.label}</span>

@@ -14,6 +14,7 @@ import {Editor} from "primereact/editor";
 
 
 export default function InfoReceta() {
+    window.scrollTo(0,0)
     const [errorClass, setErrorClass] = useState("")
     const [mostrarEditor, setMostrarEditor] = useState(false)
     const [newRatingText, setNewRatingText] = useState("")

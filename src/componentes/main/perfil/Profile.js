@@ -16,18 +16,12 @@ const Profile = () => {
     const [user, setUser] = useState(profileData);
     const image = getImagen(user.imageId).resize(thumbnail().width(250).height(250).gravity(focusOn(FocusOn.face()))).roundCorners(byRadius(150))
 
-    /*
-    useEffect(() => {
-        // getUserData from API or assign useUser() on state declaration (depending on where the API is hit)
-    }. [])
-    */
-
     return (
         <>
             <div className="grid profile-container">
                 <div className="col-12 col-offset-0 gourmetic-card">
                     {user?
-                        <div className="grid h-20rem">
+                        <div className="grid h-20rem flex flex-wrap flex-row">
                             <div className="col-4 flex flex-wrap align-items-center justify-content-center">
                                 <div>
                                     <AdvancedImage cldImg={image} className="avatar-image"/>

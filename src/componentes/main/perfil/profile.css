@@ -16,3 +16,8 @@
     margin: 1%;
     gap: 10px;
 }
+
+.avatar-image{
+    height: 100%;
+    width: 100%;
+}

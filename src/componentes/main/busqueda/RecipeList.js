@@ -11,7 +11,9 @@ import './recipe-list.css';
 
 import recipes from './recipes.json';
 
-const RecipeList = ({browsed}) => {
+const RecipeList = (props) => {
+    let browsed = props.browsed ? props.browsed : ""
+    let rows = props.rows ? props.rows : 6
     const [isLoading, setIsLoading] = useState(false);
     const [finalRecipes,setFinalRecipes] = useState([]);
 
@@ -77,7 +79,7 @@ const RecipeList = ({browsed}) => {
                 </div>):
                 (<div className="col-12" style={{width: '100%'}}>
                     {finalRecipes.length !== 0?
-                        <DataViewDemo browsedRecipes={finalRecipes}/>:
+                        <DataViewDemo browsedRecipes={finalRecipes} rows={rows}/>:
                         <div>No se han encontrado recetas</div>
                     }
                 </div>)
@@ -86,7 +88,8 @@ const RecipeList = ({browsed}) => {
     )
 }
 
-const DataViewDemo = ({browsedRecipes}) => {
+const DataViewDemo = (props) => {
+    let browsedRecipes = props.browsedRecipes
     let navigate = useNavigate()
     const [foundRecipes, setFoundRecipes] = useState([...browsedRecipes])
     const [products, setProducts] = useState([...browsedRecipes]);
@@ -97,10 +100,6 @@ const DataViewDemo = ({browsedRecipes}) => {
     useState(() => {
         setProducts([...foundRecipes]);
     },[browsedRecipes])
-
-    const traducirLayout = () => {
-        return layout === 'grid' ? "Grilla" : "Lista";
-    }
 
     const onSelectRecipe = (recipeId) => {
         navigate(`/receta/${recipeId}`)
@@ -127,7 +126,6 @@ const DataViewDemo = ({browsedRecipes}) => {
 
     const renderGridItem = (data) => {
         return (
-            <div className="col-12 md:col-4">
                 <div className="product-grid-item gourmetic-card">
                     <div className="product-grid-item-top">
                         <div>
@@ -136,7 +134,7 @@ const DataViewDemo = ({browsedRecipes}) => {
                         </div>
                     </div>
                     <div className="product-grid-item-content">
-                    <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={data.name} />
+                        <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={data.name} />
                         <Rating value={data.rating} readOnly cancel={false}></Rating>
                         <div className="product-name">{data.name}</div>
                         <div className="product-description">{data.description}</div>
@@ -145,7 +143,6 @@ const DataViewDemo = ({browsedRecipes}) => {
                         <Button style={{marginTop: '5%'}} icon="" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={()=>onSelectRecipe(134652)}></Button>
                     </div>
                 </div>
-            </div>
         );
     }
 
@@ -174,12 +171,23 @@ const DataViewDemo = ({browsedRecipes}) => {
 
     const header = renderHeader();
 
+    const paginatorTemplate = {
+        layout: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown CurrentPageReport',
+        'CurrentPageReport': (options) => {
+            return (
+                <span style={{ color: 'var(--text-color)', userSelect: 'none', width: '120px', textAlign: 'center' }}>
+                    {options.first} - {options.last} de {options.totalRecords}
+                </span>
+            )
+        }
+    }
+
     return (
         <div className="dataview-demo">
             <div className="gourmetic-card">
                 <DataView value={products} layout={layout} header={header}
-                        itemTemplate={itemTemplate} paginator rows={6}
-                        // sortOrder={sortOrder} sortField={sortField}
+                          itemTemplate={itemTemplate} paginator rows={props.rows}
+                          paginatorTemplate={paginatorTemplate} emptyMessage={"No hay recetas disponibles con esas características"}
                 />
             </div>
         </div>

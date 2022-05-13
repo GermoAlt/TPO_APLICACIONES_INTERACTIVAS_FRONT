@@ -13,6 +13,7 @@ export default function Main(){
                 <Route path={"/receta/:id"} element={<InfoReceta/>}/>
                 <Route exact path={"/profile"} element={<Profile/>}/>
                 <Route path={"/resultados/:browsed"} element={<PanelBusqueda/>} />
+                <Route path={"/resultados/"} element={<PanelBusqueda/>} />
                 <Route exact path={"/receta/new"} element={<NewReceta/>}/>
             </Routes>
         </div>

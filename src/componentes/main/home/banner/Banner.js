@@ -4,11 +4,12 @@ import {AdvancedImage} from "@cloudinary/react";
 import {getImagen} from "../../../imagen/getImagenCloud";
 import Login from "../../../header/login/Login";
 import {Button} from "primereact/button";
+import useUser from "../../../../hooks/useUser";
 
 export default function Banner(props){
-    const [isGuest, setIsGuest] = useState(props.isGuest)
+    const {user, changeUser} = useUser();
 
-    if (isGuest){
+    if (user.tipo === "guest"){
         return (
             <div className={"home-banner-container gourmetic-card"}>
                 <AdvancedImage cldImg={getImagen("logo_no_text")} />

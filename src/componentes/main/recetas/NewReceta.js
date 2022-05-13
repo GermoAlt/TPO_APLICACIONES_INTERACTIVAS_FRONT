@@ -53,7 +53,7 @@ let recetaLimpia = {
         ]
     }
 
-    const categorias= ["Postre", "Ensalada", "Sopa", "Guiso", "Carnes", "Libre gluten", "Vegetariano"];
+    const categorias= ["Postre", "Ensalada", "Sopa", "Guiso", "Carnes", "Sin gluten", "Vegetariano"];
     const [recetas, setRecetas] = useState([...dataReceta]);
     const [recetaDialog, setMensaje] = useState(false);
     const [receta, setReceta] = useState(recetaLimpia);
@@ -278,7 +278,7 @@ const handleInputChangeIngredientes = (e, index) => {
         const { className, chooseButton, uploadButton, cancelButton } = options;
 
         return (
-            <div className={className} style={{backgroundColor: 'transparent', display: 'flex', alignItems: 'center'}}>
+            <div className={className} style={{display: 'flex', alignItems: 'center'}}>
                 {chooseButton}
                 {cancelButton}
             </div>
@@ -314,54 +314,58 @@ const handleInputChangeIngredientes = (e, index) => {
         
             <div className={"new-receta-container"}>
                 <Toast ref={toast} position="bottom-right" />
-                        <div className={"new-receta-details-item"}>
-                            <span><h3>Título de la receta</h3></span>
+                <div className={"new-receta-details-item gourmetic-card"}>
+                            <span><h1>Título de la receta</h1></span>
                             <InputText id="titulo" value={receta.titulo} onChange={(e) => cargarCamposReceta(e, 'titulo')} required autoFocus className={classNames({ 'p-invalid': submitted && !receta.titulo })} />
                             {submitted && !receta.titulo && <small className="p-invalid">El nombre es obligatorio</small>}
                         </div>
 
-                        <div className={"new-receta-details-item"}>
+                <div className={"new-receta-container new-receta-container-large"}>
+                    <div className={"new-receta-details-item gourmetic-card new-receta-medium-container"}>
+                        <label><h3>Carga de imágenes</h3></label>
+                        <div className={"new-receta-details-image-upload-container"}>
                             <FileUpload ref={fileUploadRef} url="https://api.cloudinary.com/v1_1/dgse81k8x/upload" multiple accept="image/*" maxFileSize={1000000}
                                 onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
                                 headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                                 chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
                         </div>
+                    </div>
+                    <div className={"new-receta-container-card new-receta-details new-receta-medium-container"}>
+                    <div className={"new-receta-details-item"}>
+                        <label><h3>Descripción</h3></label>
+                        <InputTextarea id="descripcion" value={receta.descripcion} onChange={(e) => cargarCamposReceta(e, 'descripcion')} className={classNames({ 'p-invalid': submitted && !receta.descripcion })}/>
+                        {submitted && !receta.descripcion && <small className="p-invalid">La descripcion es obligatoria</small>}
+                    </div>
 
-
-                    <div className={"new-receta-container-card new-receta-details"}>
-                        <div className={"new-receta-details-item"}>
-                            <label><h3>Descripción</h3></label>
-                            <InputTextarea id="descripcion" value={receta.descripcion} onChange={(e) => cargarCamposReceta(e, 'descripcion')} className={classNames({ 'p-invalid': submitted && !receta.descripcion })}/>
-                            {submitted && !receta.descripcion && <small className="p-invalid">La descripcion es obligatoria</small>}
-                        </div>
-                
-                        <div className={"new-receta-details-item"}>
-                            <span><h3>Dificultad</h3></span>
-                            <Rating id="dificultad" value={receta.dificultad} cancel={false} onChange={(e) => cargarCamposReceta(e, 'dificultad')} className={classNames({ 'p-invalid': submitted && !receta.dificultad })}/>
-                            {submitted && !receta.dificultad && <small className="p-invalid">La dificultad es obligatoria</small>}
-                        </div>
-                        <div className={"new-receta-details-item"}>
-                            <span><h3>Preparación</h3></span>
-                            <b><InputNumber id="tiempoPreparacion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoPreparacion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoPreparacion })}/></b>
-                            {submitted && !receta.tiempoPreparacion && <small className="p-invalid">Debe ingresar tiempo de preparación</small>}
-                        </div>
-                        <div className={"new-receta-details-item"}>
-                            <span><h3>Elaboración</h3></span>
-                            <b><InputNumber id="tiempoElaboracion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoElaboracion })}/></b>
-                            {submitted && !receta.tiempoElaboracion && <small className="p-invalid">Debe ingresar tiempo de elaboración</small>}
+                    <div className={"new-receta-details-item"}>
+                        <span><h3>Dificultad</h3></span>
+                        <Rating id="dificultad" value={receta.dificultad} cancel={false} onChange={(e) => cargarCamposReceta(e, 'dificultad')} className={classNames({ 'p-invalid': submitted && !receta.dificultad })}/>
+                        {submitted && !receta.dificultad && <small className="p-invalid">La dificultad es obligatoria</small>}
+                    </div>
+                    <div className={"new-receta-details-item"}>
+                        <span><h3>Preparación</h3></span>
+                        <b><InputNumber id="tiempoPreparacion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoPreparacion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoPreparacion })}/></b>
+                        {submitted && !receta.tiempoPreparacion && <small className="p-invalid">Debe ingresar tiempo de preparación</small>}
+                    </div>
+                    <div className={"new-receta-details-item"}>
+                        <span><h3>Elaboración</h3></span>
+                        <b><InputNumber id="tiempoElaboracion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoElaboracion })}/></b>
+                        {submitted && !receta.tiempoElaboracion && <small className="p-invalid">Debe ingresar tiempo de elaboración</small>}
+                    </div>
+                    <div className={"new-receta-details-item"}>
+                        <span><h3>Categoría</h3></span>
+                        <div className={"new-receta-categorias"}>
+                                    <span className="p-fluid">
+                                        <AutoComplete value={selectedCategorias} suggestions={filteredCategorias} completeMethod={searchCategoria} multiple onChange={(e) => {setSelectedCategorias(e.value); cargarCategorias(e.value);}} className={classNames({ 'p-invalid': submitted && !receta.categorias.length })}/>
+                                    </span>
+                            {submitted && !receta.categorias.length && <small className="p-invalid">Debe ingresar al menos una categoría</small>}
                         </div>
                     </div>
-                    <div className={"new-receta-container-card new-receta-details"}>
-                                <div className={"new-receta-details-item"}>
-                                    <span><h3>Categoría</h3></span>
-                                    <div className={"new-receta-categorias"}>
-                                        <span className="p-fluid">
-                                            <AutoComplete value={selectedCategorias} suggestions={filteredCategorias} completeMethod={searchCategoria} multiple onChange={(e) => {setSelectedCategorias(e.value); cargarCategorias(e.value);}} className={classNames({ 'p-invalid': submitted && !receta.categorias.length })}/>
-                                        </span>
-                                        {submitted && !receta.categorias.length && <small className="p-invalid">Debe ingresar al menos una categoría</small>}
-                                    </div>
-                                </div>
+                </div>
+                </div>
 
+                <div className={"new-receta-container new-receta-container-large"}>
+                    <div className={"new-receta-container-card new-receta-details new-receta-medium-container"}>
                         <div className={"new-receta-details-item"}>
                             <span><h3>Pasos de preparación</h3></span>
                             {stepList.map((x, i) => {
@@ -385,52 +389,50 @@ const handleInputChangeIngredientes = (e, index) => {
                                 );
                             })}
                             {submitted && !receta.pasos && <small className="p-invalid">Debe ingresar los pasos de su receta</small>}
-                        </div>                   
+                        </div>
                     </div>
-                    <div className={"new-receta-container-card new-receta-details"}>
-                        <div className={"new-receta-details-item"}>
-                            <span><h3>Ingredientes</h3></span>
-                            {listaIngredientes.map((x, i) => {
-                                    return (
+                    <div className={"new-receta-container-card new-receta-details new-receta-medium-container"}>
+                    <div className={"new-receta-details-item"}>
+                        <span><h3>Ingredientes</h3></span>
+                        {listaIngredientes.map((x, i) => {
+                                return (
+                                <div>
+                                    <InputText
+                                        name="cantidad"
+                                        placeholder="Cantidad y medida"
+                                        value={x.cantidad}
+                                        onChange={(e) => handleInputChangeIngredientes(e, i)}
+                                    />
+                                    <InputText
+                                        name="ingrediente"
+                                        placeholder="Ingrediente"
+                                        value={x.ingrediente}
+                                        onChange={(e) => handleInputChangeIngredientes(e, i)}
+                                    />
                                     <div>
-                                        <InputText
-                                            name="cantidad"
-                                            placeholder="Cantidad y medida"
-                                            value={x.cantidad}
-                                            onChange={(e) => handleInputChangeIngredientes(e, i)}
-                                        />
-                                        <InputText
-                                            name="ingrediente"
-                                            placeholder="Ingrediente"
-                                            value={x.ingrediente}
-                                            onChange={(e) => handleInputChangeIngredientes(e, i)}
-                                        />
-                                        <div>
-                                        {listaIngredientes.length !== 1 && (
-                                            <Button className="mr10" onClick={() => handleRemoveIngrediente(i)} icon ="pi pi-minus-circle"/>
-                                        )}
-                                        {listaIngredientes.length - 1 === i && (
-                                          <Button onClick={handleAddIngrediente} icon="pi pi-plus-circle"/>
-                                        )}
-                                        </div>
+                                    {listaIngredientes.length !== 1 && (
+                                        <Button className="mr10" onClick={() => handleRemoveIngrediente(i)} icon ="pi pi-minus-circle"/>
+                                    )}
+                                    {listaIngredientes.length - 1 === i && (
+                                      <Button onClick={handleAddIngrediente} icon="pi pi-plus-circle"/>
+                                    )}
                                     </div>
-                                );
-                            })}
-                            
-                        </div>
-                        {submitted && !receta.ingredientes && <small className="p-invalid">Debe ingresar los ingredientes de su receta</small>}              
+                                </div>
+                            );
+                        })}
+
                     </div>
+                    {submitted && !receta.ingredientes && <small className="p-invalid">Debe ingresar los ingredientes de su receta</small>}
+                </div>
+                </div>
 
-                        <div>
-                            <Button onClick={confirmarCreacion} className="ui-button-warning">Guardar</Button>  
-                        </div>
-
-
+                <div>
+                    <Button onClick={confirmarCreacion} className="ui-button-warning">Guardar</Button>
+                </div>
             </div>
-
         );
-    
 }
+
 export default NewReceta;
 
 

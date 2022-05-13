@@ -5,8 +5,11 @@ import {getImagen} from "../imagen/getImagenCloud";
 import {scale} from "@cloudinary/url-gen/actions/resize";
 import {Adjust} from "@cloudinary/url-gen/actions/adjust";
 import {Link} from "react-router-dom";
+import useUser from "../../hooks/useUser";
 
 export default function Footer() {
+
+    const {user, setUser} = useUser()
     return (
         <div className={"footer-container"}>
             <div className={"footer-logo-container"}>
@@ -41,7 +44,24 @@ export default function Footer() {
                     </Link>
                 </div>
                 <div className={"footer-link-subsection gourmetic-card"}>
-
+                    <Link to={"/"}>
+                        Inicio
+                    </Link>
+                    <Link to={"/resultados"}>
+                        Buscar
+                    </Link>
+                    {user.tipo !== "guest" ?
+                        <Link to={"/profile"}>
+                            Perfil
+                        </Link>
+                        : ""
+                    }
+                    {user.tipo !== "guest" ?
+                        <Link to={"/receta/new"}>
+                            Nueva receta
+                        </Link>
+                        : ""
+                    }
                 </div>
             </div>
         </div>

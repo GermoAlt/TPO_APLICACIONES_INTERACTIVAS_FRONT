@@ -1,20 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from "react-router-dom";
 import RecipeList from './RecipeList';
+import Browser from "../../header/browser/Browser";
 
 export default function PanelBusqueda() {
     const params = useParams()
-    const [browsed,setBrowsed] = useState(params.browsed);
+    const [browsed,setBrowsed] = useState(params.browsed || "");
 
     useEffect(() => {
-        setBrowsed(params.browsed);
+        setBrowsed(params.browsed || "");
     },[params.browsed])
+
 
     return (
         <div className="grid profile-container">
             <div className="col-12 gourmetic-card" >
                 <div className="col-12 flex flex-wrap justify-content-center recipes-title">
-                    Resultados de búsqueda: {browsed}
+                    {browsed === "" ? <Browser/> : "Resultados de búsqueda: " + browsed}
                 </div>
             </div>
             <div className="col-12 gourmetic-card" >

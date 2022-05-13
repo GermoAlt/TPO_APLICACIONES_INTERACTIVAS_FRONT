@@ -9,9 +9,8 @@ import RecipeList from "../busqueda/RecipeList";
 export default function Home() {
     return (
         <div className={"home-container"}>
-            <Banner isGuest={false}/>
-            <Banner isGuest={true}/>
-            <div className={"home-banner-container gourmetic-card"}>
+            <Banner/>
+            <div className={"home-banner-container gourmetic-card home-card-reverse-wrap"}>
                 <div className={"home-banner-content-container"}>
                     <h1>
                         texto titulo ejemplo
@@ -35,7 +34,7 @@ export default function Home() {
                     <Login/>
                 </div>
             </div>
-            <RecipeList browsed={""}/>
+            <RecipeList rows={3}/>
         </div>
     )
 }
