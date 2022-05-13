@@ -10,6 +10,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import './recipe-list.css';
 
 import recipes from './recipes.json';
+import {Tooltip} from "primereact/tooltip";
 
 const RecipeList = (props) => {
     let browsed = props.browsed ? props.browsed : ""
@@ -127,6 +128,10 @@ const DataViewDemo = (props) => {
     const renderGridItem = (data) => {
         return (
                 <div className="product-grid-item gourmetic-card">
+                    <Tooltip target={"#grid-tooltip-"+data.id}>
+                        <h3>{data.name}</h3>
+                        <p>{data.description}</p>
+                    </Tooltip>
                     <div className="product-grid-item-top">
                         <div>
                             <i className="pi pi-tag product-category-icon"></i>
@@ -136,8 +141,8 @@ const DataViewDemo = (props) => {
                     <div className="product-grid-item-content">
                         <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={data.name} />
                         <Rating value={data.rating} readOnly cancel={false}></Rating>
-                        <div className="product-name">{data.name}</div>
-                        <div className="product-description">{data.description}</div>
+                        <div className="grid-tooltip product-name"  id={"grid-tooltip-" + data.id}>{data.name}</div>
+                        <div className="grid-tooltip product-description">{data.description}</div>
                     </div>
                     <div className="product-grid-item-bottom">
                         <Button style={{marginTop: '5%'}} icon="" label="Ver Receta" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={()=>onSelectRecipe(134652)}></Button>

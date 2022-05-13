@@ -23,6 +23,18 @@ const AuthButton = props => {
             }
         },
         {
+            label:'Buscar receta',
+            template: (item, options) => {
+                return userOptionTemplate("pi-search", "/resultados", item, options)
+            }
+        },
+        {
+            label:'Subir receta',
+            template: (item, options) => {
+                return userOptionTemplate("pi-plus", "/recetas/new", item, options)
+            }
+        },
+        {
             label:'Log out',
             command: () => {
                 changeUser({tipo:"guest"})
