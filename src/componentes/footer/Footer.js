@@ -21,25 +21,25 @@ export default function Footer() {
             </div>
             <div className={"footer-link-section"}>
                 <div className={"footer-link-subsection gourmetic-card"}>
-                    <Link to={""}>
+                    <Link to={"/resultados/?filterBy=Categoria&val=Postre"}>
                         Postres
                     </Link>
-                    <Link to={""}>
+                    <Link to={"/resultados/?filterBy=Categoria&val=Ensaladas"}>
                         Ensaladas
                     </Link>
-                    <Link to={""}>
-                        Sopa
+                    <Link to={"/resultados/?filterBy=Categoria&val=Sopas"}>
+                        Sopas
                     </Link>
-                    <Link to={""}>
+                    <Link to={"/resultados/?filterBy=Categoria&val=Guisos"}>
                         Guisos
                     </Link>
-                    <Link to={""}>
-                        Carnes
+                    <Link to={"/resultados/?filterBy=Categoria&val=Carne"}>
+                        Carne
                     </Link>
-                    <Link to={""}>
-                        Sin  gluten
+                    <Link to={"/resultados/?filterBy=Categoria&val=Sin gluten"}>
+                        Sin gluten
                     </Link>
-                    <Link to={""}>
+                    <Link to={"/resultados/?filterBy=Categoria&val=Vegetariano"}>
                         Vegetariano
                     </Link>
                 </div>

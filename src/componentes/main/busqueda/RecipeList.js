@@ -3,7 +3,7 @@ import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { Rating } from 'primereact/rating';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 
@@ -200,8 +200,13 @@ const Filters = ({products,setProducts,foundRecipes}) => {
         {label: 'Calificacion', value: 'Calificacion'},
         {label: 'Ingredientes', value: 'Ingredientes'}
     ];
-    const [filter,setFilter] = useState("");
-    const [inputValue, setInputValue] = useState("");
+
+    let searchParams = (new URL(document.location)).searchParams
+    let filterType = searchParams.get("filterBy")
+    let filterValue = searchParams.get("val")
+
+    const [filter,setFilter] = useState(filterType || "");
+    const [inputValue, setInputValue] = useState(filterValue || "");
     const [allIngredients, setAllIngredients] = useState([]);
 
     useEffect(() => {

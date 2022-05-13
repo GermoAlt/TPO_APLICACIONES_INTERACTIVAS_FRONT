@@ -17,7 +17,16 @@
     gap: 10px;
 }
 
-.avatar-image{
+.profile-avatar-image{
     height: 100%;
     width: 100%;
+}
+
+.profile-recipe-list-container{
+    background-color: white;
+    border: #ECB100 solid 1px;
+    border-radius: 25px;
+    min-width: 300px;
+    padding-top:15px;
+    box-shadow: rgba(236, 177, 0, 0.35) 1.95px 1.95px 2.6px;
 }

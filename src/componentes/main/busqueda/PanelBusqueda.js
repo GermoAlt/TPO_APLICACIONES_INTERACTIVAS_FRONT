@@ -6,6 +6,7 @@ import Browser from "../../header/browser/Browser";
 export default function PanelBusqueda() {
     const params = useParams()
     const [browsed,setBrowsed] = useState(params.browsed || "");
+    window.scrollTo(0,0)
 
     useEffect(() => {
         setBrowsed(params.browsed || "");

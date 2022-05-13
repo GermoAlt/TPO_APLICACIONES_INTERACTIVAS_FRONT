@@ -5,6 +5,8 @@ import '/node_modules/primeflex/primeflex.css';
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import 'primereact/resources/themes/saga-orange/theme.css';
+import "swiper/css";
+import "swiper/css/navigation";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";

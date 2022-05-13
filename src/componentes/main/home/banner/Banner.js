@@ -12,13 +12,15 @@ export default function Banner(props){
     if (user.tipo === "guest"){
         return (
             <div className={"home-banner-container gourmetic-card"}>
-                <AdvancedImage cldImg={getImagen("logo_no_text")} />
+                <div className={"home-banner-content-image"}>
+                    <AdvancedImage cldImg={getImagen("logo_no_text")}/>
+                </div>
                 <div className={"home-banner-content-container"}>
-                    <h1>
-                        texto titulo ejemplo
+                    <h1 className={"gourmetic-font home-banner-title"}>
+                        A que esperas para sumarte?
                     </h1>
-                    <h3>
-                        texto subtitulo ejemplo
+                    <h3 className={"home-banner-subtitle"}>
+                        Registrate ahora y unite a nuestra comunidad de amantes de la comida!
                     </h3>
                     <Login/>
                 </div>
@@ -27,13 +29,15 @@ export default function Banner(props){
     } else {
         return (
             <div className={"home-banner-container gourmetic-card"}>
-                <AdvancedImage cldImg={getImagen("logo_no_text")}/>
+                <div className={"home-banner-content-image"}>
+                    <AdvancedImage cldImg={getImagen("logo_no_text")}/>
+                </div>
                 <div className={"home-banner-content-container"}>
-                    <h1>
-                        texto titulo ejemplo
+                    <h1 className={"gourmetic-font home-banner-title"}>
+                        Animate a compartir tus recetas!
                     </h1>
-                    <h3>
-                        texto subtitulo ejemplo
+                    <h3 className={"home-banner-subtitle"}>
+                        Queremos que nos cuentes la famosa receta de tu abuela!
                     </h3>
                     <Button label={"Publicar mi receta"} icon={"pi pi-plus"} className={"p-button-rounded"}/>
                 </div>

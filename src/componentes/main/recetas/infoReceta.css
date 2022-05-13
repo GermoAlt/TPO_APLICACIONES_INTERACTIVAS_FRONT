@@ -5,6 +5,10 @@
     gap: 20px;
 }
 
+.info-receta-container .gourmetic-card{
+    padding: 30px;
+}
+
 .info-receta-titulo{
     font-family: 'Modak', cursive;
     font-size: 2.5rem;
@@ -15,17 +19,24 @@
     gap:25px;
     flex-wrap: wrap;
     align-items: stretch;
+    justify-content: space-between;
+    width: 100%;
+}
+
+@media screen and (min-width: 400px){
+    .info-receta-carousel-container{
+        display: flex;
+        max-width: 600px !important;
+    }
+
 }
 
 .info-receta-carousel-container{
-    width: 100%;
-    flex: 2;
-    min-width: 450px;
+    display: flex;
+        max-width: 380px;
 }
 
 .info-receta-carousel{
-    width: 100%;
-
 }
 
 .info-receta-imagen{
@@ -35,8 +46,10 @@
     min-width: 350px;
 }
 
+
 .info-receta-details{
-    flex: 1;
+    width: 40%;
+    flex:1;
     display: flex;
     flex-direction: column;
     gap: 20px;

@@ -11,6 +11,8 @@ import {Rating} from "primereact/rating";
 import {Tag} from "primereact/tag";
 import {Button} from "primereact/button";
 import {Editor} from "primereact/editor";
+import {Navigation} from "swiper";
+import {SwiperSlide, Swiper} from "swiper/react";
 
 
 export default function InfoReceta() {
@@ -43,13 +45,15 @@ export default function InfoReceta() {
 
     const imagenTemplate = (imagen) => {
         return(
-            <div className={`info-receta-imagen${errorClass}`}>
-                <AdvancedImage cldImg={getImagen("receta/"+imagen).roundCorners(byRadius(25))}
-                               plugins={[responsive({steps:1})]} onError={(e) => {
-                    setErrorClass(" image-not-found")
-                    mostrarError(e)
-                }}/>
-            </div>
+            <SwiperSlide key={Math.floor(Math.random() * 1010).toString()}>
+                <div className={`info-receta-imagen-carousel ${errorClass}`}>
+                    <AdvancedImage cldImg={getImagen("receta/"+imagen).roundCorners(byRadius(25))}
+                                   plugins={[responsive({steps:1})]} onError={(e) => {
+                        setErrorClass(" image-not-found")
+                        mostrarError(e)
+                    }}/>
+                </div>
+            </SwiperSlide>
         )
     }
 
@@ -75,7 +79,7 @@ export default function InfoReceta() {
             </div>
             <div className={"info-receta-central-panel"}>
                 {
-                    receta.categorias.length !== 1 ?
+                    receta.imagenes.length === 1 ?
                         <div className={`info-receta-imagen ${errorClass}`}>
                             <AdvancedImage cldImg={getImagen("receta/"+receta.imagenes[0])}
                                            plugins={[responsive({steps:1})]} onError={(e) => {
@@ -85,7 +89,9 @@ export default function InfoReceta() {
                         </div>
                     :
                     <div className={"gourmetic-card info-receta-carousel-container"}>
-                        <Carousel  className={"info-receta-carousel"} value={receta.imagenes} numVisible={1} numScroll={1} itemTemplate={imagenTemplate}/>
+                        <Swiper navigation={true} modules={[Navigation]} className={"info-receta-carousel"}>
+                            {receta.imagenes.map(imagen => {return imagenTemplate(imagen)})}
+                        </Swiper>
                     </div>
                 }
 
@@ -171,13 +177,13 @@ function buildTime(tiempoEnMinutos){
 
 function buildCategories(categorias) {
     return categorias.map(categoria => (
-        <Tag key={categoria} value={categoria} rounded />
+        <Tag key={Math.floor(Math.random() * 1010).toString()} value={categoria} rounded />
     ))
 }
 
 function buildIngredients(ingredientes){
     return ingredientes.map(ingrediente => (
-        <li key={ingrediente}>
+        <li key={Math.floor(Math.random() * 1010).toString()}>
             <b>{ingrediente.cantidad}</b> {ingrediente.ingrediente}
         </li>
     ))
@@ -189,7 +195,7 @@ function mostrarError(e){
 
 function buildSteps(pasos){
     return pasos.map(paso => (
-        <li key={paso.orden}>
+        <li key={Math.floor(Math.random() * 1010).toString()}>
             {paso.paso}
         </li>
     ))
