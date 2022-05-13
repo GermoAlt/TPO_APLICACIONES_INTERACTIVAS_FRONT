@@ -72,8 +72,9 @@ let recetaLimpia = {
 
 const guardarProducto = () => {
     setSubmitted(true);
-    if (receta.titulo.trim() && receta.descripcion.trim() && receta.dificultad==null &&
-        !receta.ingredientes.length) {
+    if (receta.titulo.trim() && receta.descripcion.trim() && receta.dificultad!=null && receta.tiempoPreparacion!=0 && 
+        receta.tiempoElaboracion!=0 && receta.categorias.length && receta.pasos.length && receta.ingredientes.length) {
+
         let listaRecetas = [...recetas];
         let recetaNueva = { ...receta };
         if (receta.id) {
@@ -84,7 +85,6 @@ const guardarProducto = () => {
         }
         else {
             recetaNueva.id = createId();
-            recetaNueva.image = '';
             listaRecetas.push(recetaNueva);
             toast.current.show({ severity: 'success', summary: 'Perfecto', detail: 'Receta creada', life: 3000 });
         }
@@ -131,6 +131,12 @@ const cargarCamposNumericos = (e, name) => {
     let recipe = { ...receta };
     recipe[`${name}`] = val;
 
+    setReceta(recipe);
+}
+
+const cargarCategorias = (categorias) => {
+    let recipe = { ...receta };
+    recipe.categorias=categorias;
     setReceta(recipe);
 }
 
@@ -330,7 +336,7 @@ const handleInputChangeIngredientes = (e, index) => {
                                     <span><h3>Categoría</h3></span>
                                     <div className={"new-receta-categorias"}>
                                         <span className="p-fluid">
-                                            <AutoComplete value={selectedCategorias} suggestions={filteredCategorias} completeMethod={searchCategoria} multiple onChange={(e) => setSelectedCategorias(e.value)} className={classNames({ 'p-invalid': submitted && !receta.categorias.length })}/>
+                                            <AutoComplete value={selectedCategorias} suggestions={filteredCategorias} completeMethod={searchCategoria} multiple onChange={(e) => {setSelectedCategorias(e.value); cargarCategorias(e.value);}} className={classNames({ 'p-invalid': submitted && !receta.categorias.length })}/>
                                         </span>
                                         {submitted && !receta.categorias.length && <small className="p-invalid">Debe ingresar al menos una categoría</small>}
                                     </div>
