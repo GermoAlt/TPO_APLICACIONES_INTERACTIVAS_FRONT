@@ -35,6 +35,12 @@
     justify-content: center;
     align-items: center;
     max-width: 200px;
+    max-height: 250px;
+}
+
+.home-banner-content-image > img{
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .home-banner-subtitle{

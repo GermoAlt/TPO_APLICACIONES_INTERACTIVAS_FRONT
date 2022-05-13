@@ -39,12 +39,12 @@ export default function Home() {
                     </div>
                 </div>
                 <div className={"home-banner-content-image"}>
-                    <AdvancedImage cldImg={getImagen("logo_no_text")}/>
+                    <AdvancedImage cldImg={getImagen("Untitlsasasaed_qnkvae")}/>
                 </div>
             </div>
             <div className={"home-banner-container gourmetic-card"}>
                 <div className={"home-banner-content-image"}>
-                    <AdvancedImage cldImg={getImagen("logo_no_text")}/>
+                    <AdvancedImage cldImg={getImagen("Untiaddaadtled_qeiiuq")}/>
                 </div>
                 <div className={"home-banner-content-container"}>
                     <h1 className={"gourmetic-font home-banner-title"}>
