@@ -42,12 +42,10 @@ const Profile = () => {
                         </div>
                     }
                 </div>
-                <div className="col-12 profile-recipe-list-container" >
-                    <div className="col-12 flex flex-wrap justify-content-center recipes-title">
-                        Mis Recetas
-                    </div>
-                        <RecipeList browsed={""} />
+                <div className="col-12 flex flex-wrap justify-content-center recipes-title gourmetic-card">
+                    <h3>Mis Recetas</h3>
                 </div>
+                <RecipeList browsed={""} />
             </div>
     );
 
