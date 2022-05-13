@@ -110,7 +110,7 @@ const DataViewDemo = (props) => {
         return (
             <div className="col-12">
                 <div className="product-list-item">
-                    <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={data.name} />
+                    <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.name} />
                     <div className="product-list-detail">
                         <div className="product-name">{data.name}</div>
                         <Rating value={data.rating} readOnly cancel={false}></Rating>
@@ -139,7 +139,7 @@ const DataViewDemo = (props) => {
                         </div>
                     </div>
                     <div className="product-grid-item-content">
-                        <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={data.name} />
+                        <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.name} />
                         <Rating value={data.rating} readOnly cancel={false}></Rating>
                         <div className="grid-tooltip product-name"  id={"grid-tooltip-" + data.id}>{data.name}</div>
                         <div className="grid-tooltip product-description">{data.description}</div>

@@ -5,9 +5,15 @@ import {getImagen} from "../../../imagen/getImagenCloud";
 import Login from "../../../header/login/Login";
 import {Button} from "primereact/button";
 import useUser from "../../../../hooks/useUser";
+import {useNavigate} from "react-router-dom";
 
 export default function Banner(props){
     const {user, changeUser} = useUser();
+    const navigate = useNavigate()
+
+    function redirectToNew() {
+        navigate("/receta/new")
+    }
 
     if (user.tipo === "guest"){
         return (
@@ -39,7 +45,8 @@ export default function Banner(props){
                     <h3 className={"home-banner-subtitle"}>
                         Queremos que nos cuentes la famosa receta de tu abuela!
                     </h3>
-                    <Button label={"Publicar mi receta"} icon={"pi pi-plus"} className={"p-button-rounded"}/>
+                    <Button label={"Publicar mi receta"} icon={"pi pi-plus"} className={"p-button-rounded"}
+                            onClick={()=>redirectToNew()}/>
                 </div>
             </div>
         )

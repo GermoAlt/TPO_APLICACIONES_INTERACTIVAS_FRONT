@@ -190,7 +190,7 @@ function buildIngredients(ingredientes){
 }
 
 function mostrarError(e){
-    e.target.src="https://png.pngtree.com/png-vector/20190917/ourmid/pngtree-not-found-line-icon-vectors-png-image_1737850.jpg"
+    e.target.src="https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png"
 }
 
 function buildSteps(pasos){
