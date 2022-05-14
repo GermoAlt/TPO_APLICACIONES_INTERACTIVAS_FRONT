@@ -4,6 +4,7 @@ import InfoReceta from "./recetas/InfoReceta";
 import Profile from "./perfil/Profile";
 import PanelBusqueda from "./busqueda/PanelBusqueda";
 import NewReceta from "./recetas/NewReceta";
+import EditorReceta from "./recetas/editorReceta/EditorReceta";
 
 export default function Main(){
     return (
@@ -11,6 +12,7 @@ export default function Main(){
             <Routes>
                 <Route exact path={"/"} element={<Home/>}/>
                 <Route path={"/receta/:id"} element={<InfoReceta/>}/>
+                <Route path={"/receta/:id/edit"} element={<EditorReceta/>}/>
                 <Route exact path={"/profile"} element={<Profile/>}/>
                 <Route path={"/resultados/:browsed"} element={<PanelBusqueda/>} />
                 <Route path={"/resultados/"} element={<PanelBusqueda/>} />

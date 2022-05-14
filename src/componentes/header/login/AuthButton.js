@@ -31,7 +31,7 @@ const AuthButton = props => {
         {
             label:'Subir receta',
             template: (item, options) => {
-                return userOptionTemplate("pi-plus", "/recetas/new", item, options)
+                return userOptionTemplate("pi-plus", "/receta/new", item, options)
             }
         },
         {
