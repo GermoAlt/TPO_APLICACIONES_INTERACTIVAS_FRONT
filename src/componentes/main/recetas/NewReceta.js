@@ -13,6 +13,7 @@ import { Toast } from 'primereact/toast';
 import { AutoComplete } from 'primereact/autocomplete';
 import { FileUpload } from 'primereact/fileupload';
 import { Tag } from 'primereact/tag';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -70,29 +71,11 @@ let recetaLimpia = {
     
     const [totalSize, setTotalSize] = useState(0);
     const fileUploadRef = useRef(null);
+    const [visible, setVisible] = useState(false);
 
-const confirmarCreacion = () =>{
-    toast.current.show(                
-        { severity: 'info', life:2000, closable: false, content: (
-        <div className="flex flex-column" style={{flex: '1'}}>
-            <div className="text-center">
-                <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
-                <h4>¿Confirma la creación de la receta?</h4>
-            </div>
-            <div className="grid p-fluid">
-                <div className="col-6">
-                    <Button type="button" label="Si" className="p-button-success" onClick={guardarProducto}/>
-                </div>
-                <div className="col-6">
-                    <Button type="button" label="No" className="p-button-secondary" />
-                </div>
-            </div>
-        </div>
-        )}
-    );
-}
 
 const guardarProducto = () => {
+    toast.current.clear();
     setSubmitted(true);
     if (receta.titulo.trim() && receta.descripcion.trim() && receta.dificultad!=null && receta.tiempoPreparacion!=0 && 
         receta.tiempoElaboracion!=0 && receta.categorias.length && receta.pasos.length && receta.ingredientes.length) {
@@ -310,11 +293,16 @@ const handleInputChangeIngredientes = (e, index) => {
             </div>
         )
     }
+
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+    }
+
     
     return (
         
             <div className={"new-receta-container"}>
-                <Toast ref={toast} position="bottom-right" />
+                <Toast ref={toast} position="center" />
                 <div className={"new-receta-details-item gourmetic-card"}>
                             <span><h1>Título de la receta</h1></span>
                             <InputText id="titulo" value={receta.titulo} required autoFocus
@@ -442,8 +430,10 @@ const handleInputChangeIngredientes = (e, index) => {
                 </div>
 
                 <div>
-                    <Button onClick={confirmarCreacion} className="ui-button-warning">Guardar</Button>
-                    {recetaAEditar ? <Button className="p-button-danger" label={"Eliminar"} icon={"pi pi-times"} style={{marginLeft:"20px"}}/> : ""}
+                    <ConfirmDialog visible={visible} onHide={() => setVisible(false)} message="¿Confirma la creacion de su receta?"
+                    header="" icon="pi pi-exclamation-triangle" accept={guardarProducto} reject={reject} />
+                    <Button onClick={() => setVisible(true)} icon="pi pi-check" label="Guardar" />
+
                 </div>
             </div>
         );
