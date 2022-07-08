@@ -29,10 +29,10 @@ export default function Home() {
             <div className={"home-banner-container gourmetic-card home-card-reverse-wrap"}>
                 <div className={"home-banner-content-container"}>
                     <h1 className={"gourmetic-font home-banner-title"}>
-                        Necesitas inspiración para tu proxima cena?
+                        ¿Necesitás inspiración para tu proxima cena?
                     </h1>
                     <h3 className={"home-banner-subtitle"}>
-                        Aprovechá todas las recetas que personas como vos ya cargaron!
+                        ¡Aprovechá todas las recetas que personas como vos ya cargaron!
                     </h3>
                     <div style={{marginLeft:"-10px"}}>
                         <Browser />

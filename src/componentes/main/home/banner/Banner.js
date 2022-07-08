@@ -23,10 +23,10 @@ export default function Banner(props){
                 </div>
                 <div className={"home-banner-content-container"}>
                     <h1 className={"gourmetic-font home-banner-title"}>
-                        A que esperas para sumarte?
+                        ¿A que esperás para sumarte?
                     </h1>
                     <h3 className={"home-banner-subtitle"}>
-                        Registrate ahora y unite a nuestra comunidad de amantes de la comida!
+                        ¡Registrate ahora y unite a nuestra comunidad de amantes de la comida!
                     </h3>
                     <Login/>
                 </div>

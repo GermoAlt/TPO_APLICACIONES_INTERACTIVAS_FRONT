@@ -65,20 +65,20 @@ const AuthButton = props => {
 
     const userOptionTemplate = (icon, path, item, options) => {
         return (
-            <li className={`p-menuitem`}>
+            <div className={`p-menuitem`}>
                 <Link to={`${path}`} className={"p-menuitem-link"}>
                     <span className={classNames(options.iconClassName, `pi pi-fw ${icon}`)}/>
                     <span className={options.labelClassName}>{item.label}</span>
                 </Link>
-            </li>
+            </div>
         )
     }
 
     const logoutTemplate = (icon, path, item, options) => {
         return (
-            <li className={`login-dropdown-option-logout-container`}>
+            <div className={`login-dropdown-option-logout-container`}>
                 <Button label="Logout" icon="pi pi-sign-out" className="login-dropdown-option-logout p-button-danger p-button-text" onClick={() => handleLogout()}/>
-            </li>
+            </div>
         )
     }
     if (user.tipo !== "guest") {
