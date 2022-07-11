@@ -9,6 +9,12 @@ HEADER
     justify-content: flex-end;
 }
 
+.app-header.visible{
+    position: fixed;
+    z-index: 10;
+    top: 0;
+}
+
 .p-tabmenu-nav{
     justify-content: center;
 }

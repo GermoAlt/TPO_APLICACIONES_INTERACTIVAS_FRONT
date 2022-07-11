@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import "./newReceta.css"
-import dataReceta from '../../../api/recetas.json'
+import dataReceta from '../../../api/json/recetas.json'
 import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../../imagen/getImagenCloud";
 import classNames from 'classnames';

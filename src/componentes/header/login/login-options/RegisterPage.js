@@ -4,8 +4,9 @@ import {Link} from "react-router-dom";
 import React, {useState} from "react";
 import useUser from "../../../../hooks/useUser";
 import {Button} from "primereact/button";
+import {Captcha} from "primereact/captcha";
 
-const RegisterUser = (props) => {
+const RegisterPage = (props) => {
     const [error, setError] = useState(false);
     const {user, changeUser} = useUser();
     const [username, setUsername] = useState('');
@@ -43,6 +44,7 @@ const RegisterUser = (props) => {
                 <div className="p-field">
                     <InputText keyfilter={/^[\d-]/} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={numero} onChange={(e) => setNumero(e.target.value)} placeholder={"Teléfono"}/>
                 </div>
+                <Captcha siteKey={"6LdGdNkgAAAAAFbmajrTqFAleWkgB4w-6p5szbfb"} />
             </div>
             <div className={"login-dialog-footer-container"}>
                 <span className={`login-dialog-error-message ${!error ? "hidden" : ""}`}>
@@ -62,4 +64,4 @@ const RegisterUser = (props) => {
 
 }
 
-export default RegisterUser;
+export default RegisterPage;

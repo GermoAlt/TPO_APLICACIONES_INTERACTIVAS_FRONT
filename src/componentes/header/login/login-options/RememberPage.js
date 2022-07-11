@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import useUser from "../../../../hooks/useUser";
 import {Button} from "primereact/button";
+import {Captcha} from "primereact/captcha";
 
 const LoginPage = (props) => {
     const [error, setError] = useState(false);
@@ -61,9 +62,7 @@ return(
             <div className="p-field">
                 <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={username} onChange={(e) => setUsername(e.target.value)} placeholder={"E-mail"}/>
             </div>
-            <div className="p-field">
-                <InputText className={`login-dialog-input ${error ? "p-invalid" : ""}`} type={"password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Contraseña"}/>
-            </div>
+            <Captcha siteKey={"6LdGdNkgAAAAAFbmajrTqFAleWkgB4w-6p5szbfb"} />
         </div>
         <div className={"login-dialog-footer-container"}>
             <span className={`login-dialog-error-message ${!error ? "hidden" : ""}`}>

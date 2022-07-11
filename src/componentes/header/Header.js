@@ -96,8 +96,13 @@ export default function Header(props) {
 
 
     return (
-        <div className="app-header p-d-flex">
-            <Toolbar left={leftContents} right={rightContents} />
-        </div>
+        <header style={{width:100 + "%"}}>
+            <div className="app-header visible p-d-flex">
+                <Toolbar left={leftContents} right={rightContents} />
+            </div>
+            <div style={{visibility:"hidden"}} className="app-header p-d-flex">
+                <Toolbar left={leftContents} right={rightContents} />
+            </div>
+        </header>
     );
 }

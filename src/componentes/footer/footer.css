@@ -4,7 +4,7 @@
     background-image: url("../../background_footer.png");
     background-attachment: fixed;
     background-position: left;
-    background-size: 10%;
+    background-size: 100px;
     display: flex;
     padding: 25px;
     align-content: center;

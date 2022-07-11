@@ -39,6 +39,7 @@ LOGIN
     flex-direction: column;
 }
 .login-dialog-sign-up-text{
+    margin-top: 5px;
     margin-left: auto;
 }
 

@@ -1,5 +1,5 @@
-import dataReceta from '../../../api/recetas.json'
-import dataReviews from '../../../api/calificaciones.json'
+import dataReceta from '../../../api/json/recetas.json'
+import dataReviews from '../../../api/json/calificaciones.json'
 import {useParams} from "react-router-dom";
 import "./infoReceta.css"
 import {AdvancedImage, responsive} from "@cloudinary/react";

@@ -11,7 +11,7 @@ export default function Footer() {
 
     const {user, setUser} = useUser()
     return (
-        <div className={"footer-container"}>
+        <footer className={"footer-container"}>
             <div className={"footer-logo-container"}>
                 <Link to={"/"}>
                     <AdvancedImage cldImg={getImagen("logo_full_horizontal")
@@ -64,7 +64,7 @@ export default function Footer() {
                     }
                 </div>
             </div>
-        </div>
+        </footer>
     )
 }
 
