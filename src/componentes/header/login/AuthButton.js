@@ -35,6 +35,12 @@ const AuthButton = props => {
             }
         },
         {
+            label:'dev testing',
+            template: (item, options) => {
+                return userOptionTemplate("pi-warning", "/dev-panel", item, options)
+            }
+        },
+        {
             label:'Log out',
             command: () => {
                 changeUser({tipo:"guest"})

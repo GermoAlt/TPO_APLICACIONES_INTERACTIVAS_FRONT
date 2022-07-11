@@ -5,18 +5,20 @@ import Profile from "./perfil/Profile";
 import PanelBusqueda from "./busqueda/PanelBusqueda";
 import NewReceta from "./recetas/NewReceta";
 import EditorReceta from "./recetas/editorReceta/EditorReceta";
+import DevPanel from "./DevPanel";
 
 export default function Main(){
     return (
         <div className={"main-content-container"}>
             <Routes>
-                <Route exact path={"/"} element={<Home/>}/>
+                <Route path={"/receta/new"} element={<NewReceta/>}/>
                 <Route path={"/receta/:id"} element={<InfoReceta/>}/>
                 <Route path={"/receta/:id/edit"} element={<EditorReceta/>}/>
-                <Route exact path={"/profile"} element={<Profile/>}/>
-                <Route path={"/resultados/:browsed"} element={<PanelBusqueda/>} />
+                <Route path={"/profile"} element={<Profile/>}/>
                 <Route path={"/resultados/"} element={<PanelBusqueda/>} />
-                <Route exact path={"/receta/new"} element={<NewReceta/>}/>
+                <Route path={"/resultados/:browsed"} element={<PanelBusqueda/>} />
+                <Route path={"/dev-panel"} element={<DevPanel/>} />
+                <Route path={"/"} element={<Home/>}/>
             </Routes>
         </div>
     )
