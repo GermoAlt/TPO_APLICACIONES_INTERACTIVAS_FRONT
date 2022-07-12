@@ -1,5 +1,5 @@
 import {Button} from "primereact/button";
-import {crearReceta, login} from "../../api/controller/apiController";
+import {crearRecipe, login} from "../../api/controller/apiController";
 import dataReceta from "../../api/json/recetas.json"
 
 export default function DevPanel(){
@@ -12,12 +12,12 @@ export default function DevPanel(){
 }
 
 function loginDev (){
-    login("user", "pass")
+    login("user", "pass").then(r => {console.log(r)})
 }
 
 function createReceta(){
     dataReceta = dataReceta[0]
     dataReceta.estado = "borrador"
     console.log(dataReceta)
-    crearReceta(dataReceta)
+    crearRecipe(dataReceta)
 }
