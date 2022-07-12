@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import "./newReceta.css"
 import dataReceta from '../../../api/json/recetas.json'
 import {AdvancedImage, responsive} from "@cloudinary/react";
@@ -11,16 +11,21 @@ import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
 import { AutoComplete } from 'primereact/autocomplete';
-import { FileUpload } from 'primereact/fileupload';
-import { Tag } from 'primereact/tag';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import useUser from "../../../hooks/useUser";
+import {Swiper, SwiperSlide} from "swiper/react";
+import {Navigation} from "swiper";
+import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
 
 
 const NewReceta = (props) => {
+
+
+
+
 
 let recetaLimpia = {
         "id": null,
@@ -37,8 +42,8 @@ let recetaLimpia = {
         "dificultad": null,
         "categorias": [],
         "rating": null,
-        "tiempoPreparacion": 0,
-        "tiempoElaboracion": 0,
+        "tiempoPreparacion": null,
+        "tiempoElaboracion": null,
         "porciones": "",
         "ingredientes": [
           {
@@ -48,22 +53,25 @@ let recetaLimpia = {
         ],
         "pasos": [
           {
-            "orden": 0,
+            "orden": 1,
             "paso": ""
           }
         ]
     }
 
-    const categorias= ["Postre", "Ensalada", "Sopa", "Guiso", "Carnes", "Sin gluten", "Vegetariano"];
+    const categorias= ["Postre", "Ensalada", "Sopa", "Guiso", "Carnes", "Sin gluten", "Vegetariano"]; //TODO: reemplazar por get
     const [recetas, setRecetas] = useState([...dataReceta]);
     const recetaAEditar = dataReceta.find(item => String(item.id) === props.id)
     const [recetaDialog, setMensaje] = useState(false);
     const [receta, setReceta] = useState(recetaAEditar || recetaLimpia);
     const [submitted, setSubmitted] = useState(false);
+    const [imagenes, setImagenes] = useState([])
     const toast = useRef(null);
     const [selectedCategories, setSelectedCategories] = useState(categorias.slice(0,0));
     const [filteredCategorias, setFilteredCategorias] = useState(null);
     const [selectedCategorias, setSelectedCategorias] = useState(receta.categorias);
+
+    const [errorClass, setErrorClass] = useState("")
     
     const chooseOptions = {icon: 'pi pi-fw pi-images', iconOnly: true, className: 'custom-choose-btn p-button-rounded p-button-outlined'};
     const uploadOptions = {icon: 'pi pi-fw pi-cloud-upload', iconOnly: true, className: 'custom-upload-btn p-button-success p-button-rounded p-button-outlined'};
@@ -71,16 +79,31 @@ let recetaLimpia = {
     
     const [totalSize, setTotalSize] = useState(0);
     const fileUploadRef = useRef(null);
-    const [visible, setVisible] = useState(false);
+    const [guardarVisible, setGuardarVisible] = useState(false);
+    const [publicarVisible, setPublicarVisible] = useState(false);
+
+    useEffect(()=>{
+        window.cloudinary.applyUploadWidget(document.getElementById('image-upload'),
+            { cloudName: "remote-german", uploadPreset: "gjr53ft0" }, (error, result) => {
+                if (!error && result && result.event === "success") {
+                    agregarImagen(result.info.public_id.split("/")[2])
+                }
+            });
+    }, [])
+
+    const agregarImagen = (url) => {
+        setImagenes(imagenes => [...imagenes, url])
+    }
 
 
-const guardarProducto = () => {
+const guardarProducto = (estado) => {
     toast.current.clear();
     setSubmitted(true);
-    if (receta.titulo.trim() && receta.descripcion.trim() && receta.dificultad!=null && receta.tiempoPreparacion!=0 && 
-        receta.tiempoElaboracion!=0 && receta.categorias.length && receta.pasos.length && receta.ingredientes.length) {
+    if (receta.titulo.trim() && receta.descripcion.trim() && receta.dificultad!=null && receta.tiempoPreparacion &&
+        receta.tiempoElaboracion && receta.categorias.length && receta.pasos.length && receta.ingredientes.length) {
+        receta.estado = estado
 
-        let listaRecetas = [...recetas];
+        let listaRecetas = [...recetas]; //cambiar por get
         let recetaNueva = { ...receta };
         if (receta.id) {
             const index = findIndexById(receta.id);
@@ -230,75 +253,25 @@ const handleInputChangeIngredientes = (e, index) => {
     }, 250);
 };
 
-    const onTemplateSelect = (e) => {
-        let _totalSize = totalSize;
-        Array.from(e.files).forEach(file => {
-            _totalSize += file.size;
-        });
-
-        setTotalSize(_totalSize);
-    }
-
-    const onTemplateUpload = (e) => {
-        let _totalSize = 0;
-        e.files.forEach(file => {
-            _totalSize += (file.size || 0);
-        });
-
-        setTotalSize(_totalSize);
-        toast.current.show({severity: 'info', summary: 'Success', detail: 'File Uploaded'});
-    }
-
-    const onTemplateRemove = (file, callback) => {
-        setTotalSize(totalSize - file.size);
-        callback();
-    }
-
-    const onTemplateClear = () => {
-        setTotalSize(0);
-    }
-
-    const headerTemplate = (options) => {
-        const { className, chooseButton, uploadButton, cancelButton } = options;
-
-        return (
-            <div className={className} style={{display: 'flex', alignItems: 'center'}}>
-                {chooseButton}
-                {cancelButton}
-            </div>
-        );
-    }
-
-    const itemTemplate = (file, props) => {
-        return (
-            <div className="flex align-items-center flex-wrap">
-                <div className="flex align-items-center" style={{width: '40%'}}>
-                    <img alt={file.name} role="presentation" src={file.objectURL} width={100} />
-                    <span className="flex flex-column text-left ml-3">
-                        {file.name}
-                        <small>{new Date().toLocaleDateString()}</small>
-                    </span>
+    const imagenTemplate = (imagen) => {
+        return(
+            <SwiperSlide key={Math.floor(Math.random() * 1010).toString()}>
+                <div className={`info-receta-imagen-carousel ${errorClass}`}>
+                    <AdvancedImage cldImg={getImagen("receta/"+imagen).roundCorners(byRadius(25))}
+                                   plugins={[responsive({steps:1})]} onError={(e) => {
+                        setErrorClass(" image-not-found")
+                        mostrarError(e)
+                    }}/>
                 </div>
-                <Tag value={props.formatSize} severity="warning" className="px-3 py-2" />
-                <Button type="button" icon="pi pi-times" className="p-button-outlined p-button-rounded p-button-danger ml-auto" onClick={() => onTemplateRemove(file, props.onRemove)} />
-            </div>
+            </SwiperSlide>
         )
     }
 
-    const emptyTemplate = () => {
-        return (
-            <div className="flex align-items-center flex-column">
-                <i className="pi pi-image mt-3 p-5" style={{'fontSize': '5em', borderRadius: '50%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)'}}></i>
-                <span style={{'fontSize': '1.2em', color: 'var(--text-color-secondary)'}} className="my-5">Arrastre sus imágenes</span>
-            </div>
-        )
+
+    function mostrarError(e){
+        e.target.src="https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png"
     }
 
-    const reject = () => {
-        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-    }
-
-    
     return (
         
             <div className={"new-receta-container"}>
@@ -312,16 +285,33 @@ const handleInputChangeIngredientes = (e, index) => {
                         </div>
 
                 <div className={"new-receta-container new-receta-container-large"}>
-                    <div className={"new-receta-details-item gourmetic-card new-receta-medium-container"}>
+                    <div className={"new-receta-container-card new-receta-details new-receta-medium-container"}>
                         <label><h3>Carga de imágenes</h3></label>
                         <div className={"new-receta-details-image-upload-container"}>
-                            <FileUpload ref={fileUploadRef} url="https://api.cloudinary.com/v1_1/dgse81k8x/upload" multiple accept="image/*" maxFileSize={1000000}
-                                onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
-                                headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
-                                chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
+                            <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap", justifyContent:"space-around", width:"100%"}}>
+                                <div style={{width:"100%"}}>
+                                    <div id={"image-upload"} />
+                                </div>
+                                {
+                                    imagenes.length !== 0 ?
+                                        imagenes.length === 1 ?
+                                            <div className={`info-receta-imagen ${errorClass}`}>
+                                                <AdvancedImage cldImg={getImagen("receta/"+imagenes[0])}
+                                                               plugins={[responsive({steps:1})]} onError={(e) => {
+                                                    setErrorClass("image-not-found")
+                                                    mostrarError(e)
+                                                }}/>
+                                            </div>
+                                        :
+                                            <div className={"gourmetic-card info-receta-carousel-container"}>
+                                                <Swiper navigation={true} modules={[Navigation]} className={"info-receta-carousel"}>
+                                                    {imagenes.map(imagen => {return imagenTemplate(imagen)})}
+                                                </Swiper>
+                                            </div>
+                                    : ""
+                                }
+                            </div>
                         </div>
-                    </div>
-                    <div className={"new-receta-container-card new-receta-details new-receta-medium-container"}>
                     <div className={"new-receta-details-item"}>
                         <label><h3>Descripción</h3></label>
                         <InputTextarea id="descripcion" value={receta.descripcion} onChange={(e) => cargarCamposReceta(e, 'descripcion')} className={classNames({ 'p-invalid': submitted && !receta.descripcion })}/>
@@ -429,10 +419,13 @@ const handleInputChangeIngredientes = (e, index) => {
                 </div>
                 </div>
 
-                <div>
-                    <ConfirmDialog visible={visible} onHide={() => setVisible(false)} message="¿Confirma la creacion de su receta?"
-                    header="" icon="pi pi-exclamation-triangle" accept={guardarProducto} reject={reject} />
-                    <Button onClick={() => setVisible(true)} icon="pi pi-check" label="Guardar" />
+                <div >
+                    <ConfirmDialog visible={publicarVisible} onHide={() => setPublicarVisible(false)} message="¿Confirma la publicación de su receta?"
+                    header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Publicada")}/>
+                    <ConfirmDialog visible={guardarVisible} onHide={() => setGuardarVisible(false)} message="¿Confirma el guardado de su receta como borrador?"
+                    header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Borrador")}/>
+                    <Button onClick={() => setPublicarVisible(true)} icon="pi pi-check" label="Publicar" />
+                    <Button onClick={() => setGuardarVisible(true)} icon="pi pi-check" label="Guardar como borrador" />
 
                 </div>
             </div>

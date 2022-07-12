@@ -1,8 +1,10 @@
 import {v4 as uuid} from "uuid";
 import {INSTANCE as api} from "../controller/apiController";
 
+const prefix = "/users"
+
 export function login(user, pass) {
-    api.post("/login", {email: user, password: pass}).then(r  =>{
+    api.post(prefix + "/login", {email: user, password: pass}).then(r  =>{
         switch (r.status) {
             case 200:
                 console.log("login exitoso")
@@ -15,9 +17,9 @@ export function login(user, pass) {
 }
 
 export function nuevoUsuario(user) {
-    api.post("/registration", {user})
+    api.post(prefix + "/registration", {user})
 }
 
 export function recuperarUsuario(email) {
-    api.post("/reset",{email:email, token:uuid})
+    api.post(prefix + "/reset",{email:email, token:uuid})
 }

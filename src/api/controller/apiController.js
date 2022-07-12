@@ -1,5 +1,6 @@
 import axios from "axios";
 import {login as userLogin, recuperarUsuario}  from "../service/userService";
+import {createReceta} from "../service/recetasService";
 
 export const INSTANCE = getInstance()
 
@@ -42,8 +43,8 @@ export function getRecetasByUser(userId){
 
 }
 
-export function createReceta(receta) {
-
+export function crearReceta(receta) {
+    createReceta(receta)
 }
 
 export function updateReceta(receta) {
@@ -63,5 +64,5 @@ export function createCalificacion(){
 }
 
 export function getCategorias(){
-    
+
 }

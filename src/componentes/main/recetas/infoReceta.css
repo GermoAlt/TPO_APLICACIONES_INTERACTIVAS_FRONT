@@ -36,7 +36,13 @@
         max-width: 380px;
 }
 
-.info-receta-carousel{
+.info-receta-carousel-container .swiper-button-next,
+.info-receta-carousel-container .swiper-button-prev {
+    color: #FFC107;
+}
+
+.info-receta-carousel img {
+    max-height: 350px;
 }
 
 .info-receta-imagen{
