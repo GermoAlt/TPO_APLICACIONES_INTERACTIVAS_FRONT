@@ -84,7 +84,7 @@ let recetaLimpia = {
 
     useEffect(()=>{
         window.cloudinary.applyUploadWidget(document.getElementById('image-upload'),
-            { cloudName: "remote-german", uploadPreset: "gjr53ft0" }, (error, result) => {
+            { cloudName: "remote-german", uploadPreset: "gjr53ft0", buttonCaption:"Cargar imágenes" }, (error, result) => {
                 if (!error && result && result.event === "success") {
                     agregarImagen(result.info.public_id.split("/")[2])
                 }
@@ -277,19 +277,26 @@ const handleInputChangeIngredientes = (e, index) => {
             <div className={"new-receta-container"}>
                 <Toast ref={toast} position="center" />
                 <div className={"new-receta-details-item gourmetic-card"}>
-                            <span><h1>Título de la receta</h1></span>
-                            <InputText id="titulo" value={receta.titulo} required autoFocus
-                                       onChange={(e) => cargarCamposReceta(e, 'titulo')}
-                                       className={classNames({ 'p-invalid': submitted && !receta.titulo })} />
-                            {submitted && !receta.titulo && <small className="p-invalid">El nombre es obligatorio</small>}
-                        </div>
+                    <span><h1>Título de la receta</h1></span>
+                    <InputText id="titulo" value={receta.titulo} required autoFocus
+                               onChange={(e) => cargarCamposReceta(e, 'titulo')}
+                               className={classNames({ 'p-invalid': submitted && !receta.titulo })} />
+                    {submitted && !receta.titulo && <small className="p-invalid">El nombre es obligatorio</small>}
+                </div>
+                <div className={"new-receta-details-item gourmetic-card"}>
+                    <div className={"new-receta-details-item"}>
+                        <label><h3>Descripción</h3></label>
+                        <InputTextarea id="descripcion" value={receta.descripcion} onChange={(e) => cargarCamposReceta(e, 'descripcion')} className={classNames({ 'p-invalid': submitted && !receta.descripcion })}/>
+                        {submitted && !receta.descripcion && <small className="p-invalid">La descripcion es obligatoria</small>}
+                    </div>
+                </div>
 
                 <div className={"new-receta-container new-receta-container-large"}>
                     <div className={"new-receta-container-card new-receta-details new-receta-medium-container"}>
                         <label><h3>Carga de imágenes</h3></label>
                         <div className={"new-receta-details-image-upload-container"}>
                             <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap", justifyContent:"space-around", width:"100%"}}>
-                                <div style={{width:"100%"}}>
+                                <div style={{width:"100%", marginBottom:"5px"}}>
                                     <div id={"image-upload"} />
                                 </div>
                                 {
@@ -302,47 +309,43 @@ const handleInputChangeIngredientes = (e, index) => {
                                                     mostrarError(e)
                                                 }}/>
                                             </div>
-                                        :
+                                            :
                                             <div className={"gourmetic-card info-receta-carousel-container"}>
                                                 <Swiper navigation={true} modules={[Navigation]} className={"info-receta-carousel"}>
                                                     {imagenes.map(imagen => {return imagenTemplate(imagen)})}
                                                 </Swiper>
                                             </div>
-                                    : ""
+                                        : ""
                                 }
                             </div>
                         </div>
-                    <div className={"new-receta-details-item"}>
-                        <label><h3>Descripción</h3></label>
-                        <InputTextarea id="descripcion" value={receta.descripcion} onChange={(e) => cargarCamposReceta(e, 'descripcion')} className={classNames({ 'p-invalid': submitted && !receta.descripcion })}/>
-                        {submitted && !receta.descripcion && <small className="p-invalid">La descripcion es obligatoria</small>}
                     </div>
-
-                    <div className={"new-receta-details-item"}>
-                        <span><h3>Dificultad</h3></span>
-                        <Rating id="dificultad" value={receta.dificultad} cancel={false} onChange={(e) => cargarCamposReceta(e, 'dificultad')} className={classNames({ 'p-invalid': submitted && !receta.dificultad })}/>
-                        {submitted && !receta.dificultad && <small className="p-invalid">La dificultad es obligatoria</small>}
-                    </div>
-                    <div className={"new-receta-details-item"}>
-                        <span><h3>Preparación</h3></span>
-                        <b><InputNumber value={receta.tiempoPreparacion} id="tiempoPreparacion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoPreparacion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoPreparacion })}/></b>
-                        {submitted && !receta.tiempoPreparacion && <small className="p-invalid">Debe ingresar tiempo de preparación</small>}
-                    </div>
-                    <div className={"new-receta-details-item"}>
-                        <span><h3>Elaboración</h3></span>
-                        <b><InputNumber id="tiempoElaboracion" value={receta.tiempoPreparacion} placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoElaboracion })}/></b>
-                        {submitted && !receta.tiempoElaboracion && <small className="p-invalid">Debe ingresar tiempo de elaboración</small>}
-                    </div>
-                    <div className={"new-receta-details-item"}>
-                        <span><h3>Categoría</h3></span>
-                        <div className={"new-receta-categorias"}>
-                                    <span className="p-fluid">
-                                        <AutoComplete value={selectedCategorias} suggestions={filteredCategorias} completeMethod={searchCategoria} multiple onChange={(e) => {setSelectedCategorias(e.value); cargarCategorias(e.value);}} className={classNames({ 'p-invalid': submitted && !receta.categorias.length })}/>
-                                    </span>
-                            {submitted && !receta.categorias.length && <small className="p-invalid">Debe ingresar al menos una categoría</small>}
+                    <div className={"new-receta-container-card new-receta-details new-receta-medium-container"}>
+                        <div className={"new-receta-details-item"}>
+                            <span><h3>Dificultad</h3></span>
+                            <Rating id="dificultad" value={receta.dificultad} cancel={false} onChange={(e) => cargarCamposReceta(e, 'dificultad')} className={classNames({ 'p-invalid': submitted && !receta.dificultad })}/>
+                            {submitted && !receta.dificultad && <small className="p-invalid">La dificultad es obligatoria</small>}
+                        </div>
+                        <div className={"new-receta-details-item"}>
+                            <span><h3>Preparación</h3></span>
+                            <b><InputNumber value={receta.tiempoPreparacion} id="tiempoPreparacion" placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoPreparacion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoPreparacion })}/></b>
+                            {submitted && !receta.tiempoPreparacion && <small className="p-invalid">Debe ingresar tiempo de preparación</small>}
+                        </div>
+                        <div className={"new-receta-details-item"}>
+                            <span><h3>Elaboración</h3></span>
+                            <b><InputNumber id="tiempoElaboracion" value={receta.tiempoPreparacion} placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoElaboracion })}/></b>
+                            {submitted && !receta.tiempoElaboracion && <small className="p-invalid">Debe ingresar tiempo de elaboración</small>}
+                        </div>
+                        <div className={"new-receta-details-item"}>
+                            <span><h3>Categoría</h3></span>
+                            <div className={"new-receta-categorias"}>
+                                        <span className="p-fluid">
+                                            <AutoComplete value={selectedCategorias} suggestions={filteredCategorias} completeMethod={searchCategoria} multiple onChange={(e) => {setSelectedCategorias(e.value); cargarCategorias(e.value);}} className={classNames({ 'p-invalid': submitted && !receta.categorias.length })}/>
+                                        </span>
+                                {submitted && !receta.categorias.length && <small className="p-invalid">Debe ingresar al menos una categoría</small>}
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
 
                 <div className={"new-receta-container new-receta-container-large"}>

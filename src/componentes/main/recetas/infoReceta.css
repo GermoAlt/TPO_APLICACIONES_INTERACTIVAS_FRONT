@@ -33,7 +33,7 @@
 
 .info-receta-carousel-container{
     display: flex;
-        max-width: 380px;
+    max-width: 380px;
 }
 
 .info-receta-carousel-container .swiper-button-next,
@@ -42,14 +42,31 @@
 }
 
 .info-receta-carousel img {
+    max-width: 535px;
     max-height: 350px;
+}
+
+.info-receta-imagen-carousel{
+    width: 100%
+}
+
+.info-receta-imagen-carousel img{
+    max-width: 100%;
+    border-radius: 25px;
 }
 
 .info-receta-imagen{
     padding: 0;
     display: flex;
     flex:2;
-    min-width: 350px;
+    max-width: 535px;
+    max-height: 350px;
+}
+
+.info-receta-imagen >img{
+    width: 100%;
+    border: #ECB100 solid 1px;
+    border-radius: 25px;
 }
 
 
@@ -86,11 +103,7 @@
     width: 25% !important;
 }
 
-.info-receta-imagen >img{
-    width: 100%;
-    border: #ECB100 solid 1px;
-    border-radius: 25px;
-}
+
 
 .info-receta-descripcion{
     font-size: 1.2rem;

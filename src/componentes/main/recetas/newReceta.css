@@ -198,3 +198,12 @@
     display: flex;
     justify-content: stretch;
 }
+
+.new-receta-details-image-upload-container ul{
+    display: none;
+}
+
+.cloudinary-button{
+    color: black;
+    background-color: #FFC107;
+}
