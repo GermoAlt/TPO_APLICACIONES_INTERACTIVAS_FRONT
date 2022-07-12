@@ -1,6 +1,13 @@
 import axios from "axios";
-import {login as userLogin, recuperarUsuario}  from "../service/userService";
-import {createReceta} from "../service/recetasService";
+import {getUsuarioById, login as userLogin, nuevoUsuario, recuperarUsuario} from "../service/userService";
+import {
+    createReceta,
+    deleteReceta,
+    getRecetaById,
+    getRecetas,
+    getRecetasByUser,
+    updateReceta
+} from "../service/recetasService";
 
 export const INSTANCE = getInstance()
 
@@ -16,46 +23,46 @@ function getInstance() {
 
 /* USUARIOS */
 export function login(user,pass){
-    userLogin(user, pass)
+    return userLogin(user, pass)
 }
 
 export function getUser(userId){
-
+    return getUsuarioById(userId)
 }
 
 export function newUser(data) {
-
+    return nuevoUsuario(data)
 }
 
 export function resetPassword(email) {
-    recuperarUsuario(email)
+    return recuperarUsuario(email)
 }
 
-export function getReceta(recetaId){
-
+export function getRecipe(recetaId){
+    return getRecetaById(recetaId)
 }
 
-export function getRecetas(){
-
+export function getRecipes(){
+    return getRecetas()
 }
 
-export function getRecetasByUser(userId){
-
+export function getRecipesByUser(userId){
+    return getRecetasByUser(userId)
 }
 
-export function crearReceta(receta) {
-    createReceta(receta)
+export function crearRecipe(receta) {
+    return createReceta(receta)
 }
 
-export function updateReceta(receta) {
-
+export function updateRecipe(receta) {
+    return updateReceta(receta)
 }
 
-export function deleteReceta(receta) {
-
+export function deleteRecipe(id) {
+    return deleteReceta(id)
 }
 
-export function getCalificacionesByReceta(recetaId){
+export function getCalificacionesByRecipe(recetaId){
 
 }
 
