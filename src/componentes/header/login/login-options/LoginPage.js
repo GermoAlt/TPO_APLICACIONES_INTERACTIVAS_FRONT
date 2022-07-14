@@ -1,62 +1,53 @@
 import {InputText} from "primereact/inputtext";
-import {Link} from "react-router-dom";
-import React, {useState} from "react";
-import axios from "axios";
+import React, {useRef, useState} from "react";
 import useUser from "../../../../hooks/useUser";
 import {Button} from "primereact/button";
+import {login} from "../../../../api/controller/apiController";
+import {Toast} from "primereact/toast";
 
 const LoginPage = (props) => {
     const [error, setError] = useState(false);
     const {user, changeUser} = useUser();
     const [errorMessage, setErrorMessage] = useState("");
+    const toast = useRef()
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const validateLogin = () => {
-        const userData = {username, password}
-                    handleSuccessfulLogin("admin")
-        // axios.post("http://localhost:8080/api/usuario/login", userData)
-        //     .then(res => {
-        //         if(res.data.tipo) {
-        //             handleSuccessfulLogin(res.data)
-        //         } else {
-        //             // showErrorMessage(res.data)
-        //             handleSuccessfulLogin("admin")
-        //         }
-        //     })
-        //     .catch(err => {
-        //         showErrorMessage("Error de ingreso. Vuelva a intentar en unos minutos.")
-        //     })
+        login(username, password).then((res) => {
+            console.log(res)
+            if(res.status === 200){
+                handleSuccessfulLogin(res)
+            } else {
+                showErrorMessage(res)
+            }
+        }).catch((e) => {
+            showErrorMessage(e)
+        })
     }
 
     const handleSuccessfulLogin = (response) => {
-        let user = {}
-        if(username.substring(0,1) === "a"){
-            user = {
-                name: "",
-                tipo: "instructor"
-            }
-        } else {
-            user = {
-                name: "Pedro",
-                tipo: "cliente"
-            }
-        }
-        changeUser(user)
-        localStorage.setItem('user', JSON.stringify(user))
+        console.log(response)
+        changeUser(response.data.loginUser.user)
+        localStorage.setItem('token', response.data.loginUser.token)
         setError(false);
         props.ocultar();
     }
 
 
     const showErrorMessage = (err) => {
-        setErrorMessage(err);
-        setError(true);
+        toast.current.show({
+            severity:"error",
+            summary:"Login incorrecto",
+            detail:err.response.data.message,
+            life:3000
+        })
     }
 
 return(
     <div>
+        <Toast ref={toast}/>
         <div className="p-fluid login-dialog-input-field-container">
             <div className="p-field">
                 <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={username} onChange={(e) => setUsername(e.target.value)} placeholder={"E-mail"}/>

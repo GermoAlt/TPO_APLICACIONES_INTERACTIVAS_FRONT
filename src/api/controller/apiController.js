@@ -8,6 +8,7 @@ import {
     getRecetasByUser,
     updateReceta
 } from "../service/recetasService";
+import {addToNewsletter} from "../service/newsletterService";
 
 export const INSTANCE = getInstance()
 
@@ -72,4 +73,8 @@ export function createCalificacion(){
 
 export function getCategorias(){
 
+}
+
+export function agregarNewsletter(mail){
+    return addToNewsletter()
 }

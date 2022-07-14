@@ -16,8 +16,7 @@ function loginDev (){
 }
 
 function createReceta(){
-    dataReceta = dataReceta[0]
-    dataReceta.estado = "borrador"
-    console.log(dataReceta)
-    crearRecipe(dataReceta)
+    const receta = dataReceta[0]
+    receta.estado = "borrador"
+    crearRecipe(receta)
 }

@@ -1,12 +1,15 @@
 import axios from "axios";
 import {InputText} from "primereact/inputtext";
 import {Link} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import useUser from "../../../../hooks/useUser";
 import {Button} from "primereact/button";
 import {Captcha} from "primereact/captcha";
+import {newUser} from "../../../../api/controller/apiController";
+import {Toast} from "primereact/toast";
 
 const RegisterPage = (props) => {
+    const toast = useRef()
     const [error, setError] = useState(false);
     const {user, changeUser} = useUser();
     const [username, setUsername] = useState('');
@@ -16,21 +19,37 @@ const RegisterPage = (props) => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const createUser = () => {
-        axios.post("http://localhost:8000/api/users/create", {
-            "username": username,
-            "password": password,
-            "tipo": "user"
-        })
-            .then(e => {
-                console.log(e)
-        })
-            .catch(error => {
-                console.log(error)
+        const user = {}
+        user.email = username
+        user.password = password
+        user.nombre = nombre
+        user.telefono = numero
+        user.idFoto = "default_image"
+
+        newUser(user).then((res) => {
+            localStorage.setItem('token', res.data.token)
+            toast.current.show({
+                severity:"success",
+                summary:"¡Exito!",
+                detail:"Tu cuenta fue creada con exito",
+                life:3000
             })
+            changeUser(res.data.user)
+            props.ocultar();
+        }).catch((e) => {
+            toast.current.show({
+                severity:"error",
+                summary:"Error",
+                detail:"Error al crear cuenta",
+                life:3000
+            })
+            console.log(e)
+        })
     }
 
     return(
         <div>
+            <Toast ref={toast}/>
             <div className="p-fluid login-dialog-input-field-container">
                 <div className="p-field">
                     <InputText keyfilter={"email"} className={`login-dialog-input ${error ? "p-invalid" : ""}`} value={username} onChange={(e) => setUsername(e.target.value)} placeholder={"E-mail"}/>
@@ -52,6 +71,9 @@ const RegisterPage = (props) => {
                 </span>
                 <div className={"login-dialog-sign-up-text p-mt-2"}>
                     <small>Ya tenes cuenta? <span className={"clickable"} onClick={() => props.setActionType('login')}>Hacé click aquí</span></small>
+                </div>
+                <div className={"login-dialog-sign-up-text p-mt-2"}>
+                    <small>Olvidaste tu cuenta? <span className={"clickable"} onClick={() => props.setActionType('remember')}>Hacé click aquí</span></small>
                 </div>
                 <br/>
                 <div className={"login-dialog-footer"}>

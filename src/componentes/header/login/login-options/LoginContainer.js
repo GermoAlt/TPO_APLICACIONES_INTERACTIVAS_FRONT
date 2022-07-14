@@ -33,7 +33,7 @@ const LoginContainer = (props) => {
             <div className={"login-dialog-content-container"}>
                 <AdvancedImage cldImg={getImagen("logo_full_vertical")}/>
                 <div className={"login-dialog-header-text"}>
-                    <h2>Acceder al sitio</h2>
+                    <h2>Recupero de cuenta</h2>
                 </div>
                 <RememberPage actionType={props.actionType} setActionType={(e) => props.setActionType(e)}
                            ocultar={() => props.ocultar()}/>
