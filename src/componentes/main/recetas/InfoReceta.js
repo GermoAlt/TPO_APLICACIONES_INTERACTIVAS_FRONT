@@ -16,6 +16,7 @@ import {SwiperSlide, Swiper} from "swiper/react";
 import {Panel} from "primereact/panel";
 import {SpeedDial} from "primereact/speeddial";
 
+import { getRecipe } from '../../../api/controller/apiController';
 
 export default function InfoReceta() {
     useEffect(() => {
@@ -26,8 +27,19 @@ export default function InfoReceta() {
     const [newRatingText, setNewRatingText] = useState("")
     const [newRatingValue, setNewRatingValue] = useState(0)
     const [reviews, setReviews] = useState([...dataReviews]);
-    const navigate = useParams()
-    const receta = dataReceta.find(item => String(item.id) === navigate.id)
+    const params = useParams()
+    //const receta = dataReceta.find(item => String(item.id) === navigate.id)
+
+    const [receta, setReceta] = useState({});
+
+    useEffect(() => {
+        getRecipe(params.id).then(res => {
+            console.log(res.data);
+            setReceta(res.data.recipe);
+        }).catch(err => {
+            console.log("Error: ", err);
+        })
+    },[])
 
     const submitReview = (e) => {
         // autor luego cambia por la data del user dinamico
@@ -83,7 +95,7 @@ export default function InfoReceta() {
             </div>
             <div className={"info-receta-central-panel"}>
                 {
-                    receta.imagenes.length === 1 ?
+                    receta.imagenes && receta.imagenes.length === 1 ?
                         <div className={`info-receta-imagen ${errorClass}`}>
                             <AdvancedImage cldImg={getImagen("receta/"+receta.imagenes[0])}
                                            plugins={[responsive({steps:1})]} onError={(e) => {
@@ -94,7 +106,7 @@ export default function InfoReceta() {
                     :
                     <div className={"gourmetic-card info-receta-carousel-container"}>
                         <Swiper navigation={true} modules={[Navigation]} className={"info-receta-carousel"}>
-                            {receta.imagenes.map(imagen => {return imagenTemplate(imagen)})}
+                            {receta.imagenes && receta.imagenes.map(imagen => {return imagenTemplate(imagen)})}
                         </Swiper>
                     </div>
                 }
@@ -180,17 +192,17 @@ function buildTime(tiempoEnMinutos){
 }
 
 function buildCategories(categorias) {
-    return categorias.map(categoria => (
+    return categorias? categorias.map(categoria => (
         <Tag key={Math.floor(Math.random() * 1010).toString()} value={categoria} rounded />
-    ))
+    )) : <></>
 }
 
 function buildIngredients(ingredientes){
-    return ingredientes.map(ingrediente => (
+    return ingredientes ? ingredientes.map(ingrediente => (
         <li key={Math.floor(Math.random() * 1010).toString()}>
             <b>{ingrediente.cantidad}</b> {ingrediente.ingrediente}
         </li>
-    ))
+    )) : <></>
 }
 
 function mostrarError(e){
@@ -198,23 +210,23 @@ function mostrarError(e){
 }
 
 function buildSteps(pasos){
-    return pasos.map(paso => (
+    return pasos ? pasos.map(paso => (
         <li key={Math.floor(Math.random() * 1010).toString()}>
             {paso.paso}
         </li>
-    ))
+    )) : <></>
 }
 
 function buildReviews(calificaciones) {
     //get reviews by receta => despues agregar de nuevo el idReceta para pegarle a la api
     //const calificaciones = dataReviews;
-    return calificaciones.map(calificacion => (
+    return calificaciones ? calificaciones.map(calificacion => (
             <div className={"gourmetic-card info-receta-calificacion"} key={calificacion.id}>
                 <Rating value={calificacion.calificacion} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
                 <b>{calificacion.autor.nombre}</b>
                 {calificacion.comentarios}
             </div>
         )
-    )
+    ) : <div></div>
 }
 
