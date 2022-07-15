@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
@@ -8,12 +8,13 @@ import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 
 import useUser from '../../../hooks/useUser';
-import {getRecipes, getRecipesByUser} from "../../../api/controller/apiController";
+import {deleteRecipe, getRecipes, getRecipesByUser} from "../../../api/controller/apiController";
 
 import './recipe-list.css';
 
 // import recipes from './recipes.json';
 import {Tooltip} from "primereact/tooltip";
+import { Toast } from 'primereact/toast';
 
 const RecipeList = (props) => {
     let browsed = props.browsed ? props.browsed : ""
@@ -132,6 +133,18 @@ const DataViewDemo = (props) => {
     const [layout, setLayout] = useState('grid');
     const sortOrder = 1;
     const sortField = "price";
+    const {user} = useUser();
+    const toast = useRef()
+
+    const handleDelete = (id) => {
+        deleteRecipe(id,user.jwt).then(res => {
+            console.log(res)
+            toast.current.show({ severity: 'success',detail: 'Receta eliminada con èxito!', life: 3000 });
+        }).catch(err => {
+            console.log("Error: ",err)
+            toast.current.show({ severity: 'error', detail: 'Ocurrió un error al eliminar la receta', life: 2000 });
+        });
+    }
 
     useState(() => {
         console.log("Recetas: ", foundRecipes);
@@ -188,6 +201,7 @@ const DataViewDemo = (props) => {
                     <div className="product-grid-item-bottom">
                         <Button style={{marginTop: '5%'}} label="Ver Receta" onClick={()=>onSelectRecipe(data._id)}></Button>
                         {isProfile ? <Button style={{marginTop: '5%', marginLeft:"2px"}} label="Editar Receta" onClick={()=>goToEditRecipe(data._id)}></Button>:""}
+                        {isProfile ? <Button style={{marginTop: '5%', marginLeft:"2px"}} label="Eliminar Receta" onClick={()=>handleDelete(data._id)}></Button>:""}
                     </div>
                 </div>
         );
@@ -231,6 +245,7 @@ const DataViewDemo = (props) => {
 
     return (
         <div className="dataview-demo">
+            <Toast ref={toast}/>
             <div className="gourmetic-card">
                 <DataView value={products} layout={layout} header={header}
                           itemTemplate={itemTemplate} paginator rows={props.rows}

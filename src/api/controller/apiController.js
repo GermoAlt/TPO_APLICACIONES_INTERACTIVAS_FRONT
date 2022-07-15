@@ -87,8 +87,8 @@ export function updateRecipe(receta, token) {
     return updateReceta(receta, token)
 }
 
-export function deleteRecipe(id) {
-    return deleteReceta(id)
+export function deleteRecipe(id, token) {
+    return deleteReceta(id, token)
 }
 
 export function getCalificacionesByRecipe(recetaId){

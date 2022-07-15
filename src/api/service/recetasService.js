@@ -24,6 +24,6 @@ export function getRecetasByUser(id){
     return api.get(prefix + "/recipes/" + id)
 }
 
-export function deleteReceta(id){
-    return api.delete(prefix + "/recipe/" + id)
+export function deleteReceta(id, token){
+    return apiToken(token).delete(prefix + "/recipe/" + id)
 }
