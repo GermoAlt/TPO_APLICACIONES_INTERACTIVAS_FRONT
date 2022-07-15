@@ -18,7 +18,6 @@
 ## Información general
 * El frontend de **Gourmetic** es una SPA desarrollada con React.JS.
 * Se debe contar con conocimientos previos en [JavaScript](https://www.javascript.com/)
-* La aplicación de desarrolló para funcionar en Chrome v103 o superior.
 
 ## Requisitos
 
@@ -29,7 +28,10 @@
 - [ Git ](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git/)
 
 ### Framework
-Para los componentes de la interfaz gráfica se utiliza [PrimeReact](https://www.primefaces.org/primereact/) que es una colección de componentes de PrimeFaces. 
+Para los componentes de la interfaz gráfica se utiliza [PrimeReact](https://www.primefaces.org/primereact/) que es una colección de componentes de PrimeFaces.
+
+### Navegador
+La aplicación de desarrolló para funcionar en Chrome v103 o superior.
 
 
 ## Instalación
@@ -38,8 +40,6 @@ Para clonar y ejecutar esta aplicación, necesitará [Git](https://git-scm.com) 
 ```bash
 # Clone this repository
 $ git clone https://github.com/GermoAlt/TPO_APLICACIONES_INTERACTIVAS_FRONT.git
-# Go into the repository
-$ cd 
 # Install dependencies
 $ npm install
 # Run the app
