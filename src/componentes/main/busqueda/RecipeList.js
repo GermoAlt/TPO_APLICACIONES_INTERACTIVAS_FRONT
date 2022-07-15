@@ -64,7 +64,7 @@ const RecipeList = (props) => {
     const recipeNotDuplicated = (recipeList,currentRecipe) => {
         let isDuplicated = true;
         recipeList.forEach(recipe => {
-            if(recipe.id === currentRecipe.id){
+            if(recipe._id === currentRecipe._id){
                 isDuplicated = false;
             }
         });
@@ -76,17 +76,19 @@ const RecipeList = (props) => {
             try{
                 let selectedRecipes = [];
                 recetas.forEach(recipe => {
-                    if(recipe.name.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
+                    if(recipe.titulo.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
                         selectedRecipes.push(recipe)
                     }
-                    if(recipe.description.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
+                    if(recipe.descripcion.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
                         selectedRecipes.push(recipe)
                     }
-                    if(recipe.category.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
-                        selectedRecipes.push(recipe)
-                    }
-                    recipe.ingredients.forEach(ingredient => {
-                        if(ingredient.toLowerCase().includes(browsed.toLowerCase())){
+                    recipe.categorias.forEach(cat => {
+                        if(cat.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
+                            selectedRecipes.push(recipe)
+                        }
+                    })
+                    recipe.ingredientes.forEach(ingredient => {
+                        if(ingredient.ingrediente.toLowerCase().includes(browsed.toLowerCase())){
                             if(recipeNotDuplicated(selectedRecipes,recipe)){
                                 selectedRecipes.push(recipe);
                             }
@@ -178,9 +180,9 @@ const DataViewDemo = (props) => {
                         </div>
                     </div>
                     <div className="product-grid-item-content">
-                        <img src={`images/product/${data.imagenes[0]}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.name} />
+                        <img src={`images/product/${data.imagenes[0]}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.titulo} />
                         <Rating value={data.dificultad} readOnly cancel={false}></Rating>
-                        <div className="grid-tooltip product-name"  id={"grid-tooltip-" + data.id}>{data.titulo}</div>
+                        <div className="grid-tooltip product-name"  id={"grid-tooltip-" + data._id}>{data.titulo}</div>
                         <div className="grid-tooltip product-description">{data.descripcion}</div>
                     </div>
                     <div className="product-grid-item-bottom">
@@ -268,8 +270,8 @@ const Filters = ({products,setProducts,foundRecipes}) => {
         recetas.forEach(receta => { // por cada receta
             let listaIngredientes = [...receta.ingredientes]; // tomo sus ingredientes
             listaIngredientes.forEach(ingrediente => {
-                if(ingredients === [] || ![...ingredients.map(ing => ing.ingrediente.toString().toLowerCase())].includes(ingrediente)){ // compruebo que no se repitan
-                    ingredients.push({"ingrediente":ingrediente,"code": ingrediente}); // formato requerido por el selector
+                if(ingredients === [] || ![...ingredients.map(ing => ing.ingrediente.toString().toLowerCase())].includes(ingrediente.ingrediente)){ // compruebo que no se repitan
+                    ingredients.push({"ingrediente":ingrediente.ingrediente,"code": ingrediente._id}); // formato requerido por el selector
                 }
             });
         })
@@ -282,8 +284,8 @@ const Filters = ({products,setProducts,foundRecipes}) => {
         }
         let newProducts = [];
         [...foundRecipes].forEach(recipe => { // por cada receta
-            let recipeIngredients = [...recipe.ingredients].map(ingredient => ingredient.toLowerCase()); // tomo sus ingredientes
-            let targetedIngredients = [...searchedIngredients].map(ingredient => ingredient.name.toLowerCase()) // tomo los ingredientes seleccionados
+            let recipeIngredients = [...recipe.ingredientes].map(ingredient => ingredient.ingrediente.toLowerCase()); // tomo sus ingredientes
+            let targetedIngredients = [...searchedIngredients].map(ingredient => ingredient.ingrediente.toLowerCase()) // tomo los ingredientes seleccionados
             let addRecipe = true;
             targetedIngredients.forEach(ingredienteBuscado => {
                 if(!recipeIngredients.includes(ingredienteBuscado)){ //si la receta no posee alguno de los ingredientes seleccionsados
@@ -309,16 +311,36 @@ const Filters = ({products,setProducts,foundRecipes}) => {
         }
     }
 
+    const filterCategories = () => {
+        if(inputValue===[]){
+            return [...foundRecipes];
+        }
+        let finalRecipes = []
+        foundRecipes.forEach(recipe => {
+            let applies = false;
+            let recipesCategoriesToMatch = recipe.categorias.map(cat => cat.toLowerCase());
+            recipesCategoriesToMatch.forEach(categ => {
+                if(categ.includes(inputValue.toLowerCase())){
+                    applies = true;
+                }
+            })
+            if(applies){
+                finalRecipes.push(recipe);
+            }
+        });
+        return finalRecipes;
+    }
+
     const handleInputChange = (value) => {
         setInputValue(value);
         let newProducts = [...foundRecipes];
         if(value!=="" && value!== []){
             switch(filter){
                 case "Categoria":
-                    newProducts = newProducts.filter(recipe => recipe.category.toLowerCase().includes(inputValue.toLowerCase()));
+                    newProducts = filterCategories(inputValue);
                     break;
                 case "Calificacion":
-                    newProducts = newProducts.filter(recipe => parseInt(recipe.rating) === parseInt(inputValue)); // el parseInt, hace que cualquier nota mayor/igual a 4 y menor a 5 pase el filtro
+                    newProducts = newProducts.filter(recipe => parseInt(recipe.dificultad) === parseInt(inputValue)); // el parseInt, hace que cualquier nota mayor/igual a 4 y menor a 5 pase el filtro
                     break;
                 case "Ingredientes":
                     newProducts = filterIngredients(inputValue)
@@ -345,7 +367,7 @@ const Filters = ({products,setProducts,foundRecipes}) => {
 
     const IngredientFilterInput = () => {
         return (<span>
-            <MultiSelect value={inputValue} options={allIngredients} onChange={(e) => handleInputChange(e.value)} optionLabel="name" placeholder="Seleccione Ingredientes" display="chip" />
+            <MultiSelect value={inputValue} options={allIngredients} onChange={(e) => handleInputChange(e.value)} optionLabel="ingrediente" placeholder="Seleccione Ingredientes" display="chip" />
         </span>);
     }
 
