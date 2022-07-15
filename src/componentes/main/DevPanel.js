@@ -14,7 +14,7 @@ export default function DevPanel(){
     function createReceta(){
         const receta = dataReceta[0]
         receta.estado = "borrador"
-        crearRecipe(receta, user.token)
+        crearRecipe(receta, user.jwt).then(res => console.log(res))
     }
 
     return (
