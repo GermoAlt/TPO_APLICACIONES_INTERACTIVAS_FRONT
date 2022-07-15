@@ -7,30 +7,59 @@ import {useNavigate} from "react-router-dom";
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 
+import useUser from '../../../hooks/useUser';
+import {getRecipes, getRecipesByUser} from "../../../api/controller/apiController";
+
 import './recipe-list.css';
 
-import recipes from './recipes.json';
+// import recipes from './recipes.json';
 import {Tooltip} from "primereact/tooltip";
 
 const RecipeList = (props) => {
     let browsed = props.browsed ? props.browsed : ""
     let rows = props.rows ? props.rows : 6
-    let isProfile = props.isProfile ? props.isProfile : false
+    //let isProfile = props.isProfile ? props.isProfile : false
+    const {user} = useUser();
+    
+    const [isProfile, setIsProfile] = useState(props.isProfile ? props.isProfile : false);
     const [isLoading, setIsLoading] = useState(false);
     const [finalRecipes,setFinalRecipes] = useState([]);
 
-    useEffect(async () => {
+    useEffect(() => {
         setIsLoading(true);
-        if(browsed !== ""){
-            setFinalRecipes([])
-            let filteredRecipes = await filterContent(browsed);
-            setFinalRecipes(filteredRecipes);
+        if(props.isProfile){
+            getRecipesByUser(user._id).then(res => {
+                if(browsed !== ""){
+                    filterContent(res.data.recipes).then(filteredRecipes => setFinalRecipes(filteredRecipes))
+                }
+                else{
+                    setFinalRecipes(res.data.recipes);
+                }
+            }).catch(err => {
+                console.log("Error: ", err)
+            })
+            
         }
         else{
-            setFinalRecipes([...recipes]);
+            getRecipes().then(res => {
+                if(browsed !== ""){
+                    filterContent(res.data.recipes).then(filteredRecipes => setFinalRecipes(filteredRecipes))
+                }
+                else{
+                    setFinalRecipes(res.data.recipes);
+                }
+            }).catch(err => {
+                console.log("Error: ", err)
+            })
         }
         setIsLoading(false);
     },[browsed]);
+
+    /*const parseRecipe = (recipes) => { // For recipe details
+        let parsedRecipe = {};
+        // logic
+        setRecipesparsedRecipes)
+    }*/
 
     const recipeNotDuplicated = (recipeList,currentRecipe) => {
         let isDuplicated = true;
@@ -42,11 +71,11 @@ const RecipeList = (props) => {
         return isDuplicated;
     }
 
-    const filterContent = () => {
+    const filterContent = (recetas) => {
         return new Promise((resolve,reject) => {
             try{
                 let selectedRecipes = [];
-                recipes.forEach(recipe => {
+                recetas.forEach(recipe => {
                     if(recipe.name.toLowerCase().includes(browsed.toLowerCase()) && recipeNotDuplicated(selectedRecipes,recipe)){
                         selectedRecipes.push(recipe)
                     }
@@ -67,8 +96,10 @@ const RecipeList = (props) => {
                 resolve([...selectedRecipes]);
             }
             catch(err){
+                console.log("Error: ",err)
                 alert("Something went wrong when searching for results: " + JSON.stringify(err));
-                reject([...recipes]);
+                setIsLoading(false);
+                reject(recetas);
             }
         })
     }
@@ -101,6 +132,7 @@ const DataViewDemo = (props) => {
     const sortField = "price";
 
     useState(() => {
+        console.log("Recetas: ", foundRecipes);
         setProducts([...foundRecipes]);
     },[browsedRecipes])
 
@@ -113,18 +145,17 @@ const DataViewDemo = (props) => {
     }
 
     const renderListItem = (data) => {
-        console.log(isProfile)
         return (
             <div className="col-12">
                 <div className="product-list-item">
                     <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.name} />
                     <div className="product-list-detail">
-                        <div className="product-name">{data.name}</div>
+                        <div className="product-name">{data.titulo}</div>
                         <Rating value={data.rating} readOnly cancel={false}></Rating>
-                        <div className="product-description">{data.description}</div>
+                        <div className="product-description">{data.descripcion}</div>
                     </div>
                     <div className="product-list-action">
-                        <div><span className="product-category">{data.category}</span><i className="pi pi-tag product-category-icon"></i></div>
+                        <div><span className="product-category">{data.categorias[0]}</span><i className="pi pi-tag product-category-icon"></i></div>
                         <Button style={{marginTop: '2%'}} label="Ver Receta" onClick={()=>onSelectRecipe(134652)}></Button>
                         {isProfile ? <Button style={{marginTop: '2%'}} label="Editar Receta" onClick={()=>goToEditRecipe(134652)}></Button>:""}
                     </div>
@@ -235,10 +266,10 @@ const Filters = ({products,setProducts,foundRecipes}) => {
         let ingredients = []
         let recetas = [...foundRecipes];
         recetas.forEach(receta => { // por cada receta
-            let listaIngredientes = [...receta.ingredients]; // tomo sus ingredientes
+            let listaIngredientes = [...receta.ingredientes]; // tomo sus ingredientes
             listaIngredientes.forEach(ingrediente => {
-                if(ingredients === [] || ![...ingredients.map(ing => ing.name.toLowerCase())].includes(ingrediente)){ // compruebo que no se repitan
-                    ingredients.push({"name":ingrediente,"code": ingrediente}); // formato requerido por el selector
+                if(ingredients === [] || ![...ingredients.map(ing => ing.ingrediente.toString().toLowerCase())].includes(ingrediente)){ // compruebo que no se repitan
+                    ingredients.push({"ingrediente":ingrediente,"code": ingrediente}); // formato requerido por el selector
                 }
             });
         })
