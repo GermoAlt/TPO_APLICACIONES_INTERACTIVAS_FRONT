@@ -18,3 +18,7 @@ export function recuperarUsuario(email) {
 export function getUsuarioById(id){
     return api.get(prefix + "/userById/" + id)
 }
+
+export function updateUsuario(user){
+    return api.put(prefix + "/update", user)
+}

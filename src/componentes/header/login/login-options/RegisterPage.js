@@ -24,7 +24,7 @@ const RegisterPage = (props) => {
         user.password = password
         user.nombre = nombre
         user.telefono = numero
-        user.idFoto = "default_image"
+        user.idFoto = "no_pfp_image"
 
         newUser(user).then((res) => {
             localStorage.setItem('token', res.data.token)

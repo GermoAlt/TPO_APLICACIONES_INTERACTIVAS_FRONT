@@ -1,5 +1,11 @@
 import axios from "axios";
-import {getUsuarioById, login as userLogin, nuevoUsuario, recuperarUsuario} from "../service/userService";
+import {
+    getUsuarioById,
+    login as userLogin,
+    nuevoUsuario,
+    recuperarUsuario,
+    updateUsuario
+} from "../service/userService";
 import {
     createReceta,
     deleteReceta,
@@ -33,6 +39,10 @@ export function getUser(userId){
 
 export function newUser(data) {
     return nuevoUsuario(data)
+}
+
+export function updateUser(user) {
+    return updateUsuario(user)
 }
 
 export function resetPassword(email) {

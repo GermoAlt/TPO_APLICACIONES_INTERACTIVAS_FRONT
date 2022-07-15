@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import { getImagen } from "../../imagen/getImagenCloud"
 
@@ -12,25 +12,77 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 
 import './profile.css';
-import profileData from './profile.json';
 import RecipeList from '../busqueda/RecipeList';
 import { Button } from 'primereact/button';
+import useUser from "../../../hooks/useUser";
+import {updateUser} from "../../../api/controller/apiController";
+import {Toast} from "primereact/toast";
 
 const Profile = () => {
+    const toast = useRef()
     const [displayResponsive, setDisplayResponsive] = useState(false);
     const [position, setPosition] = useState('center');
-    const [value1, setValue1] = useState('');
-    const [value2, setValue2] = useState('');
+    const {user, changeUser} = useUser()
+    const [editName, setEditName] = useState('');
+    const [editPassword, setEditPassword] = useState('');
+    const [confirmEditPassword, setConfirmEditPassword] = useState('');
+    let nuevaFoto = null
+
+    const widget = window.cloudinary.createUploadWidget(
+        {
+            cloudName: "remote-german",
+            uploadPreset: "gjr53ft0",
+            buttonCaption:"Cargar imágenes",
+            cropping: "true",
+            croppingAspectRatio:"1"
+        }, (error, result) => {
+            if (!error && result && result.event === "success") {
+                nuevaFoto = result.info.public_id.split("/")[2]
+            }
+        });
+
 
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
+    }
+
+    const guardarEdicion = (name) => {
+        if (editPassword === confirmEditPassword) {
+            onHide(name)
+            if (editName !== "") user.nombre = editName
+            if (nuevaFoto) user.idFoto = nuevaFoto
+            user.password = editPassword
+            changeUser(user)
+            updateUser(user).then((res) => {
+                toast.current.show({
+                    severity:"success",
+                    summary:"¡Exito!",
+                    detail:"Cambios realizados con exito",
+                    life:3000
+                })
+            }).catch((err) => {
+                toast.current.show({
+                    severity:"error",
+                    summary:"Error",
+                    detail:err.data.message,
+                    life:3000
+                })
+            })
+        } else {
+            toast.current.show({
+                severity:"error",
+                summary:"Error",
+                detail:"Los valores de contraseña no coinciden",
+                life:3000
+            })
+        }
     }
 
     const renderFooter = (name) => {
         return (
             <div>
                 <Button label="Cancelar" icon="pi pi-times" onClick={() => onHide(name)} className="p-button-text" />
-                <Button label="Guardar" icon="pi pi-check" onClick={() => onHide(name)} autoFocus />
+                <Button label="Guardar" icon="pi pi-check" onClick={() => guardarEdicion(name)} autoFocus />
             </div>
         );
     }
@@ -45,14 +97,13 @@ const Profile = () => {
             setPosition(position);
         }
     }
-    
-    const [user, setUser] = useState(profileData);
-    const image = getImagen(user.imageId).resize(thumbnail().width(250).height(250).gravity(focusOn(FocusOn.face()))).roundCorners(byRadius(150))
+    const image = getImagen("receta/" + user.idFoto).resize(thumbnail().width(250).height(250).gravity(focusOn(FocusOn.face()))).roundCorners(byRadius(150))
     useEffect(() => {
         window.scrollTo(0,0)
     }, []);
     return (
             <div className="grid profile-container">
+                <Toast ref={toast} />
                 <div className="col-12 col-offset-0 gourmetic-card">
                     {user?
                         <div className="grid h-20rem flex flex-wrap flex-row">
@@ -65,10 +116,13 @@ const Profile = () => {
                                 <Button type="button" icon='pi pi-pencil' onClick={() => onClick('displayResponsive')}/>
                                 <div className='grid flex flex-wrap align-items-center'>
                                         <div className="col-12 profile-name">
-                                            {user.name}
+                                            {user.nombre}
                                         </div>
                                         <div className="col-12 profile-description">
-                                            {user.description}
+                                            Mail: {user.email}
+                                        </div>
+                                        <div className="col-12 profile-description">
+                                            Telefono: {user.telefono}
                                         </div>
                                     
                                 </div>
@@ -77,16 +131,17 @@ const Profile = () => {
                                     <Dialog header="Editar perfil" visible={displayResponsive} onHide={() => onHide('displayResponsive')} breakpoints={{'960px': '75vw'}} style={{width: '50vw'}} footer={renderFooter('displayResponsive')}>
                                             <div className="field">
                                                 <label>Nombre</label>
-                                                <InputText id="name" value={user.name} />
+                                                <InputText id="name" value={editName} onChange={(e) => {setEditName(e.target.value)}}/>
                                             </div>
                                             <div className="">
                                                 <label>Nueva password</label>
-                                                <Password value={value1} onChange={(e) => setValue1(e.target.value)} toggleMask />
+                                                <Password value={editPassword} onChange={(e) => setEditPassword(e.target.value)} toggleMask />
                                             </div>
                                             <div className="field">
                                                 <label>Confirmar password</label>
-                                                <Password value={value2} onChange={(e) => setValue2(e.target.value)} toggleMask feedback={false}/>
+                                                <Password value={confirmEditPassword} onChange={(e) => setConfirmEditPassword(e.target.value)} toggleMask feedback={false}/>
                                             </div>
+                                        <Button label={"Editar foto"} icon={"pi pi-pencil"} onClick={()=>{widget.open()}} />
                                     </Dialog>
                             </div>
                         </div>: 
