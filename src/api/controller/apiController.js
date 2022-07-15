@@ -105,5 +105,5 @@ export function getCategorias(){
 }
 
 export function agregarNewsletter(mail){
-    return addToNewsletter()
+    return addToNewsletter(mail)
 }
