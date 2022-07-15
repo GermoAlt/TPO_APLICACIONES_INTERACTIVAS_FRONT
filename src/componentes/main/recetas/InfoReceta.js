@@ -1,12 +1,9 @@
-import dataReceta from '../../../api/json/recetas.json'
-import dataReviews from '../../../api/json/calificaciones.json'
 import {useParams} from "react-router-dom";
 import "./infoReceta.css"
 import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../../imagen/getImagenCloud";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
 import {useEffect, useState} from "react";
-import {Carousel} from "primereact/carousel";
 import {Rating} from "primereact/rating";
 import {Tag} from "primereact/tag";
 import {Button} from "primereact/button";
@@ -14,49 +11,52 @@ import {Editor} from "primereact/editor";
 import {Navigation} from "swiper";
 import {SwiperSlide, Swiper} from "swiper/react";
 import {Panel} from "primereact/panel";
-import {SpeedDial} from "primereact/speeddial";
 
-import { getRecipe } from '../../../api/controller/apiController';
+import {createCalificacion, getCalificacionesByRecipe, getRecipe} from '../../../api/controller/apiController';
+import useUser from "../../../hooks/useUser";
 
 export default function InfoReceta() {
     useEffect(() => {
         window.scrollTo(0,0)
     }, []);
+    const {user} = useUser()
     const [errorClass, setErrorClass] = useState("")
     const [mostrarEditor, setMostrarEditor] = useState(false)
     const [newRatingText, setNewRatingText] = useState("")
-    const [newRatingValue, setNewRatingValue] = useState(0)
-    const [reviews, setReviews] = useState([...dataReviews]);
+    const [newRatingValue, setNewRatingValue] = useState(1)
+    const [reviews, setReviews] = useState([]);
     const params = useParams()
-    //const receta = dataReceta.find(item => String(item.id) === navigate.id)
 
     const [receta, setReceta] = useState({});
 
     useEffect(() => {
         getRecipe(params.id).then(res => {
-            console.log(res.data);
             setReceta(res.data.recipe);
+            getCalificacionesByRecipe(params.id).then(res => {
+                setReviews(res.data.calificaciones)
+            })
         }).catch(err => {
             console.log("Error: ", err);
         })
     },[])
 
     const submitReview = (e) => {
-        // autor luego cambia por la data del user dinamico
         e.preventDefault();
+        let autor = {}
+        autor._id = user._id
+        autor.nombre = user.nombre
+        autor.email = user.email
+        autor.telefono = user.telefono
+        autor.idFoto = user.idFoto
         let newReview = {
-            "id": reviews.length,
-            "autor":
-              {
-                "id": 3312,
-                "nombre": "Mariana Suarez",
-                "mail": "marianasuarez@gmail.com",
-                "telefono": "5491164856165"
-              },
-            "calificacion": newRatingValue,
-            "comentarios": newRatingText
+            "idReceta": params.id,
+            "autor": autor,
+            "puntuacion": newRatingValue,
+            "comentario": newRatingText
         }
-        setReviews([...reviews,newReview]);
+        createCalificacion(newReview, user.jwt).then((res) => {
+            setReviews([...reviews, newReview])
+        })
     }
 
     const imagenTemplate = (imagen) => {
@@ -76,9 +76,6 @@ export default function InfoReceta() {
     const renderHeader = () => {
         return (
             <span className="ql-formats">
-                <button className="ql-bold" aria-label="Bold"/>
-                <button className="ql-italic" aria-label="Italic"/>
-                <button className="ql-underline" aria-label="Underline"/>
             </span>
         );
     }
@@ -149,10 +146,15 @@ export default function InfoReceta() {
             <div className={"info-receta-container-calificaciones"}>
                 <div className={"info-recetas-nueva-calificacion gourmetic-card"}>
                     <div className={"info-recetas-calificaciones-header"}>
-                        <h1>Reviews</h1>
+                        <h1>Calificaciones</h1>
                         <div className={"info-recetas-nueva-calificacion-button-container"}>
-                            <Button icon={mostrarEditor?"":"pi pi-plus"} label={mostrarEditor?"Cancelar":"Nueva calificación"}
-                                onClick={() => setMostrarEditor(!mostrarEditor)} className={mostrarEditor?"p-button-danger":""} />
+                            {user._id && receta.autor && user._id !== receta.autor._id ?
+                                <Button icon={mostrarEditor ? "" : "pi pi-plus"}
+                                        label={mostrarEditor ? "Cancelar" : "Nueva calificación"}
+                                        onClick={() => setMostrarEditor(!mostrarEditor)}
+                                        className={mostrarEditor ? "p-button-danger" : ""}/>
+                                : null
+                            }
                         </div>
                     </div>
                     <Panel toggleable collapsed={!mostrarEditor} headerTemplate={<div/>} onToggle={() => setMostrarEditor(!mostrarEditor)}>
@@ -218,15 +220,15 @@ function buildSteps(pasos){
 }
 
 function buildReviews(calificaciones) {
-    //get reviews by receta => despues agregar de nuevo el idReceta para pegarle a la api
-    //const calificaciones = dataReviews;
-    return calificaciones ? calificaciones.map(calificacion => (
-            <div className={"gourmetic-card info-receta-calificacion"} key={calificacion.id}>
-                <Rating value={calificacion.calificacion} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
+    return calificaciones.length > 0 ? calificaciones.map(calificacion => (
+            <div className={"gourmetic-card info-receta-calificacion"} key={calificacion._id}>
+                <Rating value={calificacion.puntuacion} readOnly stars={5} cancel={false} disabled className={"override-opacity"}/>
                 <b>{calificacion.autor.nombre}</b>
-                {calificacion.comentarios}
+                {calificacion.comentario}
             </div>
         )
-    ) : <div></div>
+    ) : <div className={"gourmetic-card info-receta-calificacion"} >
+        <p>No hay calificaciones. ¡Compartí tu opinion!</p>
+        </div>
 }
 

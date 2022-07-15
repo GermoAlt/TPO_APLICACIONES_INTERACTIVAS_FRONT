@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import { Button } from "primereact/button";
 import {TieredMenu} from "primereact/tieredmenu"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import classNames from "classnames";
 import useUser from "../../../hooks/useUser";
 
@@ -17,7 +17,7 @@ const AuthButton = props => {
 
     const items = [
         {
-            label:'Perfil',
+            label:'Mi perfil',
             template: (item, options) => {
                 return userOptionTemplate("pi-user", "/profile", item, options)
             }
@@ -32,12 +32,6 @@ const AuthButton = props => {
             label:'Subir receta',
             template: (item, options) => {
                 return userOptionTemplate("pi-plus", "/receta/new", item, options)
-            }
-        },
-        {
-            label:'dev testing',
-            template: (item, options) => {
-                return userOptionTemplate("pi-warning", "/dev-panel", item, options)
             }
         },
         {
@@ -91,7 +85,7 @@ const AuthButton = props => {
         return (
             <div>
                 <TieredMenu model={items} className={"pull-left"} popup ref={menu} />
-                <Button icon="pi pi-user"
+                <Button icon="pi pi-user" label={"Hola " + user.nombre.split(" ")[0]}
                         className="p-button-rounded button-login p-mr-2"
                         onClick={(event) => menu.current.toggle(event)} />
             </div>

@@ -15,6 +15,7 @@ import {
     updateReceta
 } from "../service/recetasService";
 import {addToNewsletter} from "../service/newsletterService";
+import {createReview, getReviewsByRecipe} from "../service/calificacionesService";
 
 export const INSTANCE = getInstance()
 export function instanceToken(token){
@@ -92,11 +93,11 @@ export function deleteRecipe(id, token) {
 }
 
 export function getCalificacionesByRecipe(recetaId){
-
+    return getReviewsByRecipe(recetaId)
 }
 
-export function createCalificacion(){
-
+export function createCalificacion(review, token){
+    return createReview(token, review)
 }
 
 export function getCategorias(){

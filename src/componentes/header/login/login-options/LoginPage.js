@@ -16,7 +16,6 @@ const LoginPage = (props) => {
 
     const validateLogin = () => {
         login(username, password).then((res) => {
-            console.log(res)
             if(res.status === 200){
                 handleSuccessfulLogin(res)
             } else {

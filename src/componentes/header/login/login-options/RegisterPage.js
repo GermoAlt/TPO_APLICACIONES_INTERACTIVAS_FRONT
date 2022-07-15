@@ -35,7 +35,7 @@ const RegisterPage = (props) => {
                 life:3000
             })
             let user = res.data.user
-            user.jwt = res.data.token
+            user.jwt = res.data.createdUser.token
             changeUser(user)
             props.ocultar();
         }).catch((e) => {

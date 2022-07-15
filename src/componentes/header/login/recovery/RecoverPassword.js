@@ -26,12 +26,10 @@ export default function RecoverPassword(){
     const resetAction = () => {
         if(passwordNueva !== "" && passwordNueva === confirmPasswordNueva) {
             recoverPassword(searchParams.get("uuid"), passwordNueva).then((res) => {
-                console.log(res)
                 changeUser(res.data.user.user)
                 localStorage.setItem("token", res.data.user.token)
                 navigate("/")
             }).catch((e) => {
-                console.log(e)
                 toast.current.show({
                     severity:"error",
                     summary:"Error",

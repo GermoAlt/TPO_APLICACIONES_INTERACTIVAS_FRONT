@@ -13,8 +13,19 @@
 }
 
 .profile-container{
-    margin: 1%;
-    gap: 10px;
+    display: flex;
+    padding:25px;
+    gap: 25px;
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+.profile-container .personal-info-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap:10px
 }
 
 .profile-avatar-image{
@@ -29,4 +40,36 @@
     min-width: 300px;
     padding-top:15px;
     box-shadow: rgba(236, 177, 0, 0.35) 1.95px 1.95px 2.6px;
+}
+
+.dialog-editar{
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+.dialog-editar .p-dialog-header {
+    flex-direction: row;
+}
+
+.dialog-editar > div{
+    display: flex;
+    flex-direction: column;
+    gap:25px;
+}
+
+.dialog-editar label {
+    display: block;
+}
+
+.dialog-editar > div .p-inputtext,
+.dialog-editar > div .p-password{
+    width: 100%
+}
+
+
+@media screen and (max-width: 400px) {
+    .profile-container{
+        flex-direction: column;
+    }
 }

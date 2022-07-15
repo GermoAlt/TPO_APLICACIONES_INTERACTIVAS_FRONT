@@ -1,6 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
 import "./newReceta.css"
-import dataReceta from '../../../api/json/recetas.json'
 import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../../imagen/getImagenCloud";
 import classNames from 'classnames';
@@ -58,13 +57,10 @@ const NewReceta = (props) => {
     }
 
     const categorias= ["Postre", "Ensalada", "Sopa", "Guiso", "Carnes", "Sin gluten", "Vegetariano"]; //TODO: reemplazar por get
-    const [recetas, setRecetas] = useState([...dataReceta]);
-    const [recetaDialog, setMensaje] = useState(false);
     const [receta, setReceta] = useState(recetaLimpia);
     const [submitted, setSubmitted] = useState(false);
     const [imagenes, setImagenes] = useState([])
     const toast = useRef(null);
-    const [selectedCategories, setSelectedCategories] = useState(categorias.slice(0,0));
     const [filteredCategorias, setFilteredCategorias] = useState(null);
     const [selectedCategorias, setSelectedCategorias] = useState(receta.categorias);
 
@@ -73,12 +69,6 @@ const NewReceta = (props) => {
 
     const [errorClass, setErrorClass] = useState("")
     
-    const chooseOptions = {icon: 'pi pi-fw pi-images', iconOnly: true, className: 'custom-choose-btn p-button-rounded p-button-outlined'};
-    const uploadOptions = {icon: 'pi pi-fw pi-cloud-upload', iconOnly: true, className: 'custom-upload-btn p-button-success p-button-rounded p-button-outlined'};
-    const cancelOptions = {icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined'};
-    
-    const [totalSize, setTotalSize] = useState(0);
-    const fileUploadRef = useRef(null);
     const [eliminarVisible, setEliminarVisible] = useState(false);
     const [editarVisible, setEditarVisible] = useState(false);
     const [guardarVisible, setGuardarVisible] = useState(false);
@@ -99,7 +89,6 @@ const NewReceta = (props) => {
     useEffect(() => {
         if(props.id){
             getRecipe(props.id).then(res => {
-                console.log(res.data)
                 setReceta(res.data.recipe)
                 setImagenes(res.data.recipe.imagenes)
                 setSelectedCategorias(res.data.recipe.categorias)
@@ -128,7 +117,6 @@ const guardarProducto = (estado) => {
             case "Borrador":
                 let newRecipe = {...receta, "estado": estado, "autor": user}
                 crearRecipe(newRecipe, user.jwt).then(res => {
-                    console.log("Res new recipe: ", res);
                     toast.current.show({ severity: 'success',detail: 'Receta creada!', life: 3000 });
                 }).catch(err => {
                     toast.current.show({ severity: 'error', detail: 'Ocurrió un error al crear la receta', life: 2000 });
@@ -136,7 +124,6 @@ const guardarProducto = (estado) => {
                 break;
             case "Editada":
                 updateRecipe(receta, user.jwt).then(res => {
-                    console.log("Res edit recipe: ", res);
                     toast.current.show({ severity: 'success', summary: 'Perfecto', detail: 'Receta modificada', life: 3000 });
                 }).catch(err => {
                     toast.current.show({ severity: 'error', detail: 'Ocurrió un error al editar la receta', life: 2000 });
@@ -146,7 +133,6 @@ const guardarProducto = (estado) => {
                 toast.current.show({ severity: 'error', detail: 'Error fatal durante creación o edición de la receta', life: 2000 });
                 break;
         }
-        setMensaje(false);
         setReceta(recetaLimpia);
     }else {
         toast.current.show({ severity: 'error', detail: 'Faltan datos para completar su receta', life: 2000 });

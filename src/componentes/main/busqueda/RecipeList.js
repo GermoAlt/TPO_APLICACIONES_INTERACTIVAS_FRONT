@@ -31,9 +31,7 @@ const RecipeList = (props) => {
     useEffect(() => {
         setIsLoading(true);
         if(props.isProfile){
-            console.log(user._id)
             getRecipesByUser(user._id).then(res => {
-                console.log(res)
                 if(browsed !== ""){
                     filterContent(res.data.recipes).then(filteredRecipes => setFinalRecipes(filteredRecipes))
                 }
@@ -137,16 +135,13 @@ const DataViewDemo = (props) => {
     const handleDelete = (data) => {
         setProducts(products.filter(i => i._id !== data._id))
         deleteRecipe(data._id,user.jwt).then(res => {
-            console.log(res)
             toast.current.show({ severity: 'success',detail: 'Receta eliminada con èxito!', life: 3000 });
         }).catch(err => {
-            console.log("Error: ",err)
             toast.current.show({ severity: 'error', detail: 'Ocurrió un error al eliminar la receta', life: 2000 });
         });
     }
 
     useState(() => {
-        console.log("Recetas: ", foundRecipes);
         setProducts([...foundRecipes]);
     },[browsedRecipes])
 
@@ -396,7 +391,7 @@ const Filters = ({products,setProducts,foundRecipes}) => {
         switch(filter){
             case "Categoria":
                 return CategoryFilterInput();
-            case "Calificacion":
+            case "Dificultad":
                 return RatingFilterInput();
             case "Ingredientes":
                 return IngredientFilterInput();

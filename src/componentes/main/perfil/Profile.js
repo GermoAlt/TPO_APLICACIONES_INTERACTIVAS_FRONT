@@ -17,11 +17,13 @@ import { Button } from 'primereact/button';
 import useUser from "../../../hooks/useUser";
 import {updateUser} from "../../../api/controller/apiController";
 import {Toast} from "primereact/toast";
+import {useNavigate} from "react-router-dom";
 
 const Profile = () => {
     const toast = useRef()
     const [displayResponsive, setDisplayResponsive] = useState(false);
     const [position, setPosition] = useState('center');
+    const navigate = useNavigate()
     const {user, changeUser} = useUser()
     const [editName, setEditName] = useState('');
     const [editPassword, setEditPassword] = useState('');
@@ -105,15 +107,14 @@ const Profile = () => {
             <div className="grid profile-container">
                 <Toast ref={toast} />
                 <div className="col-12 col-offset-0 gourmetic-card">
-                    {user?
-                        <div className="grid h-20rem flex flex-wrap flex-row">
-                            <div className="col-4 flex flex-wrap align-items-center justify-content-center">
+                    {user._id?
+                        <div className="profile-container">
+                            <div className="pfp-container">
                                 <div>
                                     <AdvancedImage cldImg={image} className="profile-avatar-image"/>
                                 </div>
                             </div>
-                            <div className="col-8 flex flex-wrap align-items-center">
-                                <Button type="button" icon='pi pi-pencil' onClick={() => onClick('displayResponsive')}/>
+                            <div className="personal-info-container">
                                 <div className='grid flex flex-wrap align-items-center'>
                                         <div className="col-12 profile-name">
                                             {user.nombre}
@@ -124,36 +125,41 @@ const Profile = () => {
                                         <div className="col-12 profile-description">
                                             Telefono: {user.telefono}
                                         </div>
-                                    
+
+                                </div>
+                                <div>
+                                    <Button label={"Editar mis datos"} type="button" icon='pi pi-pencil' onClick={() => onClick('displayResponsive')}/>
                                 </div>
                             </div>
-                            <div className='align-items-center'>
-                                    <Dialog header="Editar perfil" visible={displayResponsive} onHide={() => onHide('displayResponsive')} breakpoints={{'960px': '75vw'}} style={{width: '50vw'}} footer={renderFooter('displayResponsive')}>
-                                            <div className="field">
-                                                <label>Nombre</label>
-                                                <InputText id="name" value={editName} onChange={(e) => {setEditName(e.target.value)}}/>
-                                            </div>
-                                            <div className="">
-                                                <label>Nueva password</label>
-                                                <Password value={editPassword} onChange={(e) => setEditPassword(e.target.value)} toggleMask />
-                                            </div>
-                                            <div className="field">
-                                                <label>Confirmar password</label>
-                                                <Password value={confirmEditPassword} onChange={(e) => setConfirmEditPassword(e.target.value)} toggleMask feedback={false}/>
-                                            </div>
-                                        <Button label={"Editar foto"} icon={"pi pi-pencil"} onClick={()=>{widget.open()}} />
-                                    </Dialog>
-                            </div>
-                        </div>: 
-                        <div>
-                            Loading Profile Page...
-                        </div>
+                            <Dialog header="Editar perfil" visible={displayResponsive}
+                                    onHide={() => onHide('displayResponsive')}
+                                    className={"dialog-editar"} resizable={false} position={"center"} draggable={false}
+                                    dismissableMask={true}
+                                    footer={renderFooter('displayResponsive')}>
+                                    <div >
+                                        <label>Nombre</label>
+                                        <InputText id="name" value={editName} onChange={(e) => {setEditName(e.target.value)}}/>
+                                    </div>
+                                    <div className="">
+                                        <label>Nueva contraseña</label>
+                                        <Password value={editPassword} onChange={(e) => setEditPassword(e.target.value)} toggleMask />
+                                    </div>
+                                    <div className="">
+                                        <label>Confirmar contraseña nueva</label>
+                                        <Password value={confirmEditPassword} onChange={(e) => setConfirmEditPassword(e.target.value)} toggleMask feedback={false}/>
+                                    </div>
+                                <Button label={"Editar foto"} icon={"pi pi-pencil"} onClick={()=>{widget.open()}} />
+                            </Dialog>
+                        </div>:
+                        navigate("/")
                     }
                 </div>
                 <div className="col-12 flex flex-wrap justify-content-center recipes-title gourmetic-card">
                     <h3>Mis Recetas</h3>
                 </div>
-                <RecipeList isProfile={true} />
+                <div style={{flex:1}}>
+                    <RecipeList isProfile={true} />
+                </div>
             </div>
     );
 
