@@ -87,7 +87,7 @@ const AuthButton = props => {
             </div>
         )
     }
-    if (user.tipo !== "guest") {
+    if (user._id) {
         return (
             <div>
                 <TieredMenu model={items} className={"pull-left"} popup ref={menu} />
