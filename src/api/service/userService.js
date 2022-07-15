@@ -12,7 +12,8 @@ export function nuevoUsuario(user) {
 }
 
 export function recuperarUsuario(email) {
-    return api.post(prefix + "/reset",{email:email, token:uuid})
+    let token = uuid()
+    return api.post(prefix + "/reset",{email:email, token:token})
 }
 
 export function validarToken(token){

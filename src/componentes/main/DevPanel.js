@@ -5,7 +5,7 @@ import useUser from "../../hooks/useUser";
 
 export default function DevPanel(){
 
-    const {user, setUser} = useUser()
+    const {user, } = useUser()
 
     function loginDev (){
         login("user", "pass").then(r => {console.log(r)})

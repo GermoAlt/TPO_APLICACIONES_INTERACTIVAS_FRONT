@@ -2,12 +2,7 @@ import './login.css'
 
 import React, {useContext, useState} from "react";
 import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
 import AuthButton from "./AuthButton";
-import useUser from "../../../hooks/useUser";
-import axios from "axios";
-import {Link} from "react-router-dom";
 import LoginContainer from "./login-options/LoginContainer";
 
 const Login = (props) => {
