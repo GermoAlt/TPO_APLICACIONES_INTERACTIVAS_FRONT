@@ -8,7 +8,7 @@
   <a href="#introduccion">Introducción</a> •
   <a href="#informacion-general">Información general</a> •
   <a href="#requisitos">Requisitos</a> •
-  <a href="#instalacion">Instalación</a> •
+  <a href="#instalación">Instalación</a> •
   <a href="#support">Support</a> •
   <a href="#continuar">Continuar</a>
 </p>
