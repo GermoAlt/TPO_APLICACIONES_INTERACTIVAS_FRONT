@@ -1,6 +1,5 @@
-# Size Limit [![Cult Of Martians][cult-img]][cult]
-<img src="https://ai.github.io/size-limit/logo.svg" align="right"
-alt="Size Limit logo by Anton Lovchikov" width="120" height="178">
+![alt text](https://github.com/GermoAlt/TPO_APLICACIONES_INTERACTIVAS_FRONT/blob/prueba-readme/src/logo.svg?raw=true) 
+
 
 # Tabla de Contenidos
 1. [Introducción](#introduction)
