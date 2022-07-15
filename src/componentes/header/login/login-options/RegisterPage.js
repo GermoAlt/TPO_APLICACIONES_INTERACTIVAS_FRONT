@@ -38,11 +38,11 @@ const RegisterPage = (props) => {
             user.jwt = res.data.createdUser.token
             changeUser(user)
             props.ocultar();
-        }).catch((e) => {
+        }).catch(() => {
             toast.current.show({
                 severity:"error",
                 summary:"Error",
-                detail:"Error al crear cuenta",
+                detail:"Este usuario ya existe",
                 life:3000
             })
         })

@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import "./infoReceta.css"
 import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../../imagen/getImagenCloud";
@@ -20,6 +20,7 @@ export default function InfoReceta() {
         window.scrollTo(0,0)
     }, []);
     const {user} = useUser()
+    const navigate = useNavigate()
     const [errorClass, setErrorClass] = useState("")
     const [mostrarEditor, setMostrarEditor] = useState(false)
     const [newRatingText, setNewRatingText] = useState("")
@@ -86,6 +87,13 @@ export default function InfoReceta() {
         <div className={"info-receta-container"}>
             <div className={"gourmetic-card info-receta-titulo"}>
                 {receta.titulo}
+
+            {user._id && receta.autor && receta.autor._id === user._id ?
+                <div>
+                    <Button icon={"pi pi-pencil"} onClick={()=>navigate("edit")}/>
+                </div>
+                : null
+            }
             </div>
             <div className={"gourmetic-card info-receta-descripcion"}>
                 {receta.descripcion}

@@ -20,6 +20,7 @@ import {Navigation} from "swiper";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
 
 import {getRecipe, crearRecipe, updateRecipe, deleteRecipe} from '../../../api/controller/apiController';
+import {useNavigate} from "react-router-dom";
 
 
 const NewReceta = (props) => {
@@ -75,6 +76,7 @@ const NewReceta = (props) => {
     const [publicarVisible, setPublicarVisible] = useState(false);
 
     const {user} = useUser();
+    const navigate = useNavigate()
 
 
     useEffect(()=>{
@@ -89,6 +91,7 @@ const NewReceta = (props) => {
     useEffect(() => {
         if(props.id){
             getRecipe(props.id).then(res => {
+                if(res.data.recipe.autor._id !== user._id) navigate("/receta/"+props.id)
                 setReceta(res.data.recipe)
                 setImagenes(res.data.recipe.imagenes)
                 setSelectedCategorias(res.data.recipe.categorias)
@@ -416,22 +419,36 @@ const handleInputChangeIngredientes = (e, index) => {
 
                 
                     {props.id ? 
-                    <div>
+                    <div style={{display:"flex", flexDirection:"row", gap:15, justifyContent: "center"}}>
                         <ConfirmDialog visible={editarVisible} onHide={() => setEditarVisible(false)} message="¿Confirma la eliminación de su receta?"
                         header="" icon="pi pi-exclamation-triangle" accept={() => deleteReceta()}/>
-                        <Button onClick={() => setEditarVisible(true)} icon="pi pi-check" label="Confirmar cambios" />
+                        <div>
+                            <Button onClick={() => setEditarVisible(true)} icon="pi pi-check" label="Confirmar cambios" />
+                        </div>
                         <ConfirmDialog visible={eliminarVisible} onHide={() => setEliminarVisible(false)} message="¿Confirma la edición de su receta?"
                                        header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Editada")}/>
-                        <Button onClick={() => setEliminarVisible(true)} icon="pi pi-trash" label="Eliminar" />
+                        <div>
+                            <Button onClick={() => setEliminarVisible(true)} icon="pi pi-trash" label="Eliminar" />
+                        </div>
+                        <ConfirmDialog visible={guardarVisible} onHide={() => setGuardarVisible(false)} message="¿Confirma el guardado de su receta como borrador?"
+                                       header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Borrador")}/>
+                        <div>
+                            <Button onClick={() => setGuardarVisible(true)} icon="pi pi-check" label="Guardar como borrador" />
+
+                        </div>
                     </div>
                     :
-                    <div >
+                    <div style={{display:"flex", flexDirection:"row", gap:15, justifyContent: "center"}}>
                         <ConfirmDialog visible={publicarVisible} onHide={() => setPublicarVisible(false)} message="¿Confirma la publicación de su receta?"
                         header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Publicada")}/>
+                        <div>
+                            <Button onClick={() => setPublicarVisible(true)} icon="pi pi-check" label="Publicar" />
+                        </div>
                         <ConfirmDialog visible={guardarVisible} onHide={() => setGuardarVisible(false)} message="¿Confirma el guardado de su receta como borrador?"
                         header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Borrador")}/>
-                        <Button onClick={() => setPublicarVisible(true)} icon="pi pi-check" label="Publicar" />
-                        <Button onClick={() => setGuardarVisible(true)} icon="pi pi-check" label="Guardar como borrador" />
+                        <div>
+                            <Button onClick={() => setGuardarVisible(true)} icon="pi pi-check" label="Guardar como borrador" />
+                        </div>
                     </div>
                     }
             </div>

@@ -31,6 +31,12 @@
 
 }
 
+@media screen and (max-width: 400px){
+    .info-receta-imagen{
+        min-width: 90vw;
+    }
+}
+
 .info-receta-carousel-container{
     display: flex;
     max-width: 380px;
