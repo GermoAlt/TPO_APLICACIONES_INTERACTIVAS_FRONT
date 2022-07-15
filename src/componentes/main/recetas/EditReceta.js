@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from 'react';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 
@@ -8,7 +9,6 @@ import "./infoReceta.css"
 import {AdvancedImage, responsive} from "@cloudinary/react";
 import {getImagen} from "../../imagen/getImagenCloud";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
-import {useState} from "react";
 import {Carousel} from "primereact/carousel";
 import {Rating} from "primereact/rating";
 import {Tag} from "primereact/tag";
@@ -16,6 +16,7 @@ import {Button} from "primereact/button";
 import {Editor} from "primereact/editor";
 import { InputText } from 'primereact/inputtext';
 
+import { getRecipe } from '../../../api/controller/apiController';
 
 export default function EditReceta() {
     const [errorClass, setErrorClass] = useState("")
@@ -23,9 +24,22 @@ export default function EditReceta() {
     const [newRatingText, setNewRatingText] = useState("")
     const [newRatingValue, setNewRatingValue] = useState(0)
     const [reviews, setReviews] = useState([...dataReviews]);
-    const navigate = useParams()
-    const receta = dataReceta.find(item => String(item.id) === navigate.id)
+    const params = useParams()
+    //const receta = dataReceta.find(item => String(item.id) === navigate.id)
     const [edit, setEdit] = useState(dataReceta);
+    const [receta, setReceta] = useState({});
+    const [data, setData] = useState({});
+
+    useEffect(() => {
+        console.log(params)
+        getRecipe(params.id).then(res => {
+            console.log(res.data);
+            setReceta(res.data.recipe);
+            setData(res.data.recipe)
+        }).catch(err => {
+            console.log("Error: ", err);
+        })
+    },[])
 
     const imagenTemplate = (imagen) => {
         return(
@@ -50,7 +64,7 @@ export default function EditReceta() {
     }
 
     const header = renderHeader();
-    const [data, setData] = useState({receta});
+    
     
     const handleChange = (e) => {
         setData({...data, [e.target.name]: e.target.value});
@@ -70,7 +84,7 @@ export default function EditReceta() {
                 </div>
                 <div className={"info-receta-central-panel"}>
                     {
-                        receta.categorias.length !== 1 ?
+                        receta.categorias && receta.categorias.length !== 1 ?
                             <div className={`info-receta-imagen ${errorClass}`}>
                                 <AdvancedImage cldImg={getImagen("receta/"+receta.imagenes[0])}
                                             plugins={[responsive({steps:1})]} onError={(e) => {
@@ -80,7 +94,9 @@ export default function EditReceta() {
                             </div>
                         :
                         <div className={"gourmetic-card info-receta-carousel-container"}>
-                            <Carousel  className={"info-receta-carousel"} value={receta.imagenes} numVisible={1} numScroll={1} itemTemplate={imagenTemplate}/>
+                            {receta.imagenes ? 
+                            <Carousel  className={"info-receta-carousel"} value={receta.imagenes} numVisible={1} numScroll={1} itemTemplate={imagenTemplate}/> 
+                            : <></>}
                         </div>
                     }
 
@@ -140,17 +156,17 @@ function buildTime(tiempoEnMinutos){
 }
 
 function buildCategories(categorias) {
-    return categorias.map(categoria => (
+    return categorias ? categorias.map(categoria => (
         <Tag key={categoria} value={categoria} rounded />
-    ))
+    )) : <></>
 }
 
 function buildIngredients(ingredientes){
-    return ingredientes.map(ingrediente => (
+    return ingredientes ? ingredientes.map(ingrediente => (
         <li key={ingrediente}>
             <b>{ingrediente.cantidad}</b> {ingrediente.ingrediente}
         </li>
-    ))
+    )) : <></>
 }
 
 function mostrarError(e){
@@ -158,11 +174,11 @@ function mostrarError(e){
 }
 
 function buildSteps(pasos){
-    return pasos.map(paso => (
+    return pasos ? pasos.map(paso => (
         <li key={paso.orden}>
             {paso.paso}
         </li>
-    ))
+    )): <></>
 }
 
 

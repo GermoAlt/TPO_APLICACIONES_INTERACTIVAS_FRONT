@@ -83,8 +83,8 @@ export function crearRecipe(receta, token) {
     return createReceta(receta, token)
 }
 
-export function updateRecipe(receta) {
-    return updateReceta(receta)
+export function updateRecipe(receta, token) {
+    return updateReceta(receta, token)
 }
 
 export function deleteRecipe(id) {

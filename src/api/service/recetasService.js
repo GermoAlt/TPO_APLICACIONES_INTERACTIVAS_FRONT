@@ -6,8 +6,8 @@ export function createReceta(receta, token){
     return apiToken(token).post(prefix + "/recipe", receta)
 }
 
-export function updateReceta(receta){
-    return api.put(prefix + "/recipe/" + receta.id, receta).then(r => {
+export function updateReceta(receta, token){
+    return apiToken(token).put(prefix + "/recipe/" + receta._id, receta).then(r => {
         console.log(r)
     })
 }

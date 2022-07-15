@@ -20,14 +20,12 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation} from "swiper";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
 
+import { getRecipe, crearRecipe, updateRecipe } from '../../../api/controller/apiController';
+
 
 const NewReceta = (props) => {
 
-
-
-
-
-let recetaLimpia = {
+    let recetaLimpia = {
         "id": null,
         "titulo": "",
         "user" : {
@@ -61,15 +59,17 @@ let recetaLimpia = {
 
     const categorias= ["Postre", "Ensalada", "Sopa", "Guiso", "Carnes", "Sin gluten", "Vegetariano"]; //TODO: reemplazar por get
     const [recetas, setRecetas] = useState([...dataReceta]);
-    const recetaAEditar = dataReceta.find(item => String(item.id) === props.id)
     const [recetaDialog, setMensaje] = useState(false);
-    const [receta, setReceta] = useState(recetaAEditar || recetaLimpia);
+    const [receta, setReceta] = useState(recetaLimpia);
     const [submitted, setSubmitted] = useState(false);
     const [imagenes, setImagenes] = useState([])
     const toast = useRef(null);
     const [selectedCategories, setSelectedCategories] = useState(categorias.slice(0,0));
     const [filteredCategorias, setFilteredCategorias] = useState(null);
     const [selectedCategorias, setSelectedCategorias] = useState(receta.categorias);
+
+    const [stepList, setStepList] = useState(receta.pasos);
+    const [listaIngredientes, setListaIngredientes] = useState(receta.ingredientes);
 
     const [errorClass, setErrorClass] = useState("")
     
@@ -82,6 +82,9 @@ let recetaLimpia = {
     const [guardarVisible, setGuardarVisible] = useState(false);
     const [publicarVisible, setPublicarVisible] = useState(false);
 
+    const {user} = useUser();
+
+
     useEffect(()=>{
         window.cloudinary.applyUploadWidget(document.getElementById('image-upload'),
             { cloudName: "remote-german", uploadPreset: "gjr53ft0", buttonCaption:"Cargar imágenes" }, (error, result) => {
@@ -91,6 +94,21 @@ let recetaLimpia = {
             });
     }, [])
 
+    useEffect(() => {
+        if(props.id){
+            getRecipe(props.id).then(res => {
+                console.log(res.data)
+                setReceta(res.data.recipe)
+                setImagenes(res.data.recipe.imagenes)
+                setSelectedCategorias(res.data.recipe.categorias)
+                setStepList(res.data.recipe.pasos)
+                setListaIngredientes(res.data.recipe.ingredientes)
+            }).catch(err => {
+                console.log("Error: ", err);
+            })
+        }
+    },[])
+
     const agregarImagen = (url) => {
         setImagenes(imagenes => [...imagenes, url])
     }
@@ -99,25 +117,33 @@ let recetaLimpia = {
 const guardarProducto = (estado) => {
     toast.current.clear();
     setSubmitted(true);
+    
     if (receta.titulo.trim() && receta.descripcion.trim() && receta.dificultad!=null && receta.tiempoPreparacion &&
         receta.tiempoElaboracion && receta.categorias.length && receta.pasos.length && receta.ingredientes.length) {
-        receta.estado = estado
-
-        let listaRecetas = [...recetas]; //cambiar por get
-        let recetaNueva = { ...receta };
-        if (receta.id) {
-            const index = findIndexById(receta.id);
-
-            listaRecetas[index] = recetaNueva;
-            toast.current.show({ severity: 'success', summary: 'Perfecto', detail: 'Receta modificada', life: 3000 });
+        
+        switch(estado){
+            case "Publicada":
+            case "Borrador":
+                let newRecipe = {...receta, "estado": estado, "autor": user}
+                crearRecipe(newRecipe, user.jwt).then(res => {
+                    console.log("Res new recipe: ", res);
+                    toast.current.show({ severity: 'success',detail: 'Receta creada!', life: 3000 });
+                }).catch(err => {
+                    toast.current.show({ severity: 'error', detail: 'Ocurrió un error al crear la receta', life: 2000 });
+                })
+                break;
+            case "Editada":
+                updateRecipe(receta, user.jwt).then(res => {
+                    console.log("Res edit recipe: ", res);
+                    toast.current.show({ severity: 'success', summary: 'Perfecto', detail: 'Receta modificada', life: 3000 });
+                }).catch(err => {
+                    toast.current.show({ severity: 'error', detail: 'Ocurrió un error al editar la receta', life: 2000 });
+                })
+                break;
+            default:
+                toast.current.show({ severity: 'error', detail: 'Error fatal durante creación o edición de la receta', life: 2000 });
+                break;
         }
-        else {
-            recetaNueva.id = createId();
-            listaRecetas.push(recetaNueva);
-                toast.current.show({ severity: 'success',detail: 'Receta ' + recetaNueva.id + ' creada!', life: 3000 });
-        }
-
-        setRecetas(listaRecetas);
         setMensaje(false);
         setReceta(recetaLimpia);
     }else {
@@ -189,10 +215,6 @@ const onCategoryChange = (e) => {
     setReceta(recipe);
 
 }
-
-
-const [stepList, setStepList] = useState(receta.pasos);
-const [listaIngredientes, setListaIngredientes] = useState(receta.ingredientes);
 
 const handleInputChange = (e, index) => {
     let recipe = { ...receta };
@@ -422,15 +444,23 @@ const handleInputChangeIngredientes = (e, index) => {
                 </div>
                 </div>
 
-                <div >
-                    <ConfirmDialog visible={publicarVisible} onHide={() => setPublicarVisible(false)} message="¿Confirma la publicación de su receta?"
-                    header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Publicada")}/>
-                    <ConfirmDialog visible={guardarVisible} onHide={() => setGuardarVisible(false)} message="¿Confirma el guardado de su receta como borrador?"
-                    header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Borrador")}/>
-                    <Button onClick={() => setPublicarVisible(true)} icon="pi pi-check" label="Publicar" />
-                    <Button onClick={() => setGuardarVisible(true)} icon="pi pi-check" label="Guardar como borrador" />
-
-                </div>
+                
+                    {props.id ? 
+                    <div>
+                        <ConfirmDialog visible={publicarVisible} onHide={() => setPublicarVisible(false)} message="¿Confirma la edición de su receta?"
+                        header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Editada")}/>
+                        <Button onClick={() => setPublicarVisible(true)} icon="pi pi-check" label="Editar Receta" />
+                    </div>
+                    :
+                    <div >
+                        <ConfirmDialog visible={publicarVisible} onHide={() => setPublicarVisible(false)} message="¿Confirma la publicación de su receta?"
+                        header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Publicada")}/>
+                        <ConfirmDialog visible={guardarVisible} onHide={() => setGuardarVisible(false)} message="¿Confirma el guardado de su receta como borrador?"
+                        header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Borrador")}/>
+                        <Button onClick={() => setPublicarVisible(true)} icon="pi pi-check" label="Publicar" />
+                        <Button onClick={() => setGuardarVisible(true)} icon="pi pi-check" label="Guardar como borrador" />
+                    </div>
+                    }
             </div>
         );
 }

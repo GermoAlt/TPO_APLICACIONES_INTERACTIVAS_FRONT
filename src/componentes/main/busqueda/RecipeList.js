@@ -180,7 +180,7 @@ const DataViewDemo = (props) => {
                         </div>
                     </div>
                     <div className="product-grid-item-content">
-                        <img src={`images/product/${data.imagenes[0]}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.titulo} />
+                        <img src={`receta/${data.imagenes[0]}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.titulo} />
                         <Rating value={data.dificultad} readOnly cancel={false}></Rating>
                         <div className="grid-tooltip product-name"  id={"grid-tooltip-" + data._id}>{data.titulo}</div>
                         <div className="grid-tooltip product-description">{data.descripcion}</div>
