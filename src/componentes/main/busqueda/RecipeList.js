@@ -148,16 +148,16 @@ const DataViewDemo = (props) => {
         return (
             <div className="col-12">
                 <div className="product-list-item">
-                    <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.name} />
+                    <img src={`images/product/${data.imagenes[0]}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.titulo} />
                     <div className="product-list-detail">
                         <div className="product-name">{data.titulo}</div>
-                        <Rating value={data.rating} readOnly cancel={false}></Rating>
+                        <Rating value={data.dificultad} readOnly cancel={false}></Rating>
                         <div className="product-description">{data.descripcion}</div>
                     </div>
                     <div className="product-list-action">
                         <div><span className="product-category">{data.categorias[0]}</span><i className="pi pi-tag product-category-icon"></i></div>
-                        <Button style={{marginTop: '2%'}} label="Ver Receta" onClick={()=>onSelectRecipe(134652)}></Button>
-                        {isProfile ? <Button style={{marginTop: '2%'}} label="Editar Receta" onClick={()=>goToEditRecipe(134652)}></Button>:""}
+                        <Button style={{marginTop: '2%'}} label="Ver Receta" onClick={()=>onSelectRecipe(data._id)}></Button>
+                        {isProfile ? <Button style={{marginTop: '2%'}} label="Editar Receta" onClick={()=>goToEditRecipe(data._id)}></Button>:""}
                     </div>
                 </div>
             </div>
@@ -167,25 +167,25 @@ const DataViewDemo = (props) => {
     const renderGridItem = (data) => {
         return (
                 <div className="product-grid-item gourmetic-card">
-                    <Tooltip target={"#grid-tooltip-"+data.id}>
-                        <h3>{data.name}</h3>
-                        <p>{data.description}</p>
+                    <Tooltip target={"#grid-tooltip-"+data._id}>
+                        <h3>{data.titulo}</h3>
+                        <p>{data.descripcion}</p>
                     </Tooltip>
                     <div className="product-grid-item-top">
                         <div>
                             <i className="pi pi-tag product-category-icon"></i>
-                            <span className="product-category">{data.category}</span>
+                            <span className="product-category">{data.categorias[0]}</span>
                         </div>
                     </div>
                     <div className="product-grid-item-content">
-                        <img src={`images/product/${data.image}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.name} />
-                        <Rating value={data.rating} readOnly cancel={false}></Rating>
-                        <div className="grid-tooltip product-name"  id={"grid-tooltip-" + data.id}>{data.name}</div>
-                        <div className="grid-tooltip product-description">{data.description}</div>
+                        <img src={`images/product/${data.imagenes[0]}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.name} />
+                        <Rating value={data.dificultad} readOnly cancel={false}></Rating>
+                        <div className="grid-tooltip product-name"  id={"grid-tooltip-" + data.id}>{data.titulo}</div>
+                        <div className="grid-tooltip product-description">{data.descripcion}</div>
                     </div>
                     <div className="product-grid-item-bottom">
-                        <Button style={{marginTop: '5%'}} label="Ver Receta" onClick={()=>onSelectRecipe(134652)}></Button>
-                        {isProfile ? <Button style={{marginTop: '5%', marginLeft:"2px"}} label="Editar Receta" onClick={()=>goToEditRecipe(134652)}></Button>:""}
+                        <Button style={{marginTop: '5%'}} label="Ver Receta" onClick={()=>onSelectRecipe(data._id)}></Button>
+                        {isProfile ? <Button style={{marginTop: '5%', marginLeft:"2px"}} label="Editar Receta" onClick={()=>goToEditRecipe(data._id)}></Button>:""}
                     </div>
                 </div>
         );
