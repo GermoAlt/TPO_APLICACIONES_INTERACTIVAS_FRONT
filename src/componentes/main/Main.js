@@ -6,10 +6,11 @@ import PanelBusqueda from "./busqueda/PanelBusqueda";
 import NewReceta from "./recetas/NewReceta";
 import EditorReceta from "./recetas/editorReceta/EditorReceta";
 import DevPanel from "./DevPanel";
+import RecoverPassword from "../header/login/recovery/RecoverPassword";
 
 export default function Main(){
     return (
-        <div className={"main-content-container"}>
+        <main className={"main-content-container"}>
             <Routes>
                 <Route path={"/receta/new"} element={<NewReceta/>}/>
                 <Route path={"/receta/:id"} element={<InfoReceta/>}/>
@@ -18,8 +19,9 @@ export default function Main(){
                 <Route path={"/resultados/"} element={<PanelBusqueda/>} />
                 <Route path={"/resultados/:browsed"} element={<PanelBusqueda/>} />
                 <Route path={"/dev-panel"} element={<DevPanel/>} />
+                <Route path={"/reset"} element={<RecoverPassword/>} />
                 <Route path={"/"} element={<Home/>}/>
             </Routes>
-        </div>
+        </main>
     )
 }

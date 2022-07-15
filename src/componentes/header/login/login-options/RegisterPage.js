@@ -19,14 +19,14 @@ const RegisterPage = (props) => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const createUser = () => {
-        const user = {}
-        user.email = username
-        user.password = password
-        user.nombre = nombre
-        user.telefono = numero
-        user.idFoto = "no_pfp_image"
+        const createdUser = {}
+        createdUser.email = username
+        createdUser.password = password
+        createdUser.nombre = nombre
+        createdUser.telefono = numero
+        createdUser.idFoto = "no_pfp_image"
 
-        newUser(user).then((res) => {
+        newUser(createdUser).then((res) => {
             localStorage.setItem('token', res.data.token)
             toast.current.show({
                 severity:"success",
@@ -34,7 +34,9 @@ const RegisterPage = (props) => {
                 detail:"Tu cuenta fue creada con exito",
                 life:3000
             })
-            changeUser(res.data.user)
+            let user = res.data.user
+            user.jwt = res.data.token
+            changeUser(user)
             props.ocultar();
         }).catch((e) => {
             toast.current.show({
@@ -43,7 +45,6 @@ const RegisterPage = (props) => {
                 detail:"Error al crear cuenta",
                 life:3000
             })
-            console.log(e)
         })
     }
 
