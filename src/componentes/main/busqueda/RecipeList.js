@@ -12,24 +12,28 @@ import {deleteRecipe, getRecipes, getRecipesByUser} from "../../../api/controlle
 
 import './recipe-list.css';
 
-// import recipes from './recipes.json';
 import {Tooltip} from "primereact/tooltip";
 import { Toast } from 'primereact/toast';
+import {AdvancedImage} from "@cloudinary/react";
+import {getImagen} from "../../imagen/getImagenCloud";
+import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
+import {thumbnail} from "@cloudinary/url-gen/actions/resize";
 
 const RecipeList = (props) => {
     let browsed = props.browsed ? props.browsed : ""
     let rows = props.rows ? props.rows : 6
-    //let isProfile = props.isProfile ? props.isProfile : false
     const {user} = useUser();
     
-    const [isProfile, setIsProfile] = useState(props.isProfile ? props.isProfile : false);
+    const [isProfile, ] = useState(props.isProfile ? props.isProfile : false);
     const [isLoading, setIsLoading] = useState(false);
     const [finalRecipes,setFinalRecipes] = useState([]);
 
     useEffect(() => {
         setIsLoading(true);
         if(props.isProfile){
+            console.log(user._id)
             getRecipesByUser(user._id).then(res => {
+                console.log(res)
                 if(browsed !== ""){
                     filterContent(res.data.recipes).then(filteredRecipes => setFinalRecipes(filteredRecipes))
                 }
@@ -55,12 +59,6 @@ const RecipeList = (props) => {
         }
         setIsLoading(false);
     },[browsed]);
-
-    /*const parseRecipe = (recipes) => { // For recipe details
-        let parsedRecipe = {};
-        // logic
-        setRecipesparsedRecipes)
-    }*/
 
     const recipeNotDuplicated = (recipeList,currentRecipe) => {
         let isDuplicated = true;
@@ -136,8 +134,9 @@ const DataViewDemo = (props) => {
     const {user} = useUser();
     const toast = useRef()
 
-    const handleDelete = (id) => {
-        deleteRecipe(id,user.jwt).then(res => {
+    const handleDelete = (data) => {
+        setProducts(products.filter(i => i._id !== data._id))
+        deleteRecipe(data._id,user.jwt).then(res => {
             console.log(res)
             toast.current.show({ severity: 'success',detail: 'Receta eliminada con èxito!', life: 3000 });
         }).catch(err => {
@@ -163,7 +162,10 @@ const DataViewDemo = (props) => {
         return (
             <div className="col-12">
                 <div className="product-list-item">
-                    <img src={`images/product/${data.imagenes[0]}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.titulo} />
+                    <div style={{display:"flex", flexDirection:"column", gap:"5px", justifyContent:"space-around"}}>
+                        <AdvancedImage cldImg={getImagen(`receta/${data.imagenes[0]}`).roundCorners(byRadius(25)).resize(thumbnail().width(200))} />
+                        { data.estado === "Borrador" ? <span className={"status"}>BORRADOR</span> : null}
+                    </div>
                     <div className="product-list-detail">
                         <div className="product-name">{data.titulo}</div>
                         <Rating value={data.dificultad} readOnly cancel={false}></Rating>
@@ -171,8 +173,9 @@ const DataViewDemo = (props) => {
                     </div>
                     <div className="product-list-action">
                         <div><span className="product-category">{data.categorias[0]}</span><i className="pi pi-tag product-category-icon"></i></div>
-                        <Button style={{marginTop: '2%'}} label="Ver Receta" onClick={()=>onSelectRecipe(data._id)}></Button>
-                        {isProfile ? <Button style={{marginTop: '2%'}} label="Editar Receta" onClick={()=>goToEditRecipe(data._id)}></Button>:""}
+                        <Button style={{marginTop: '2%'}} icon={"pi pi-search"} label="Ver" onClick={()=>onSelectRecipe(data._id)}></Button>
+                        {isProfile ? <Button style={{marginTop: '2%'}} icon={"pi pi-pencil"} label="Editar" onClick={()=>goToEditRecipe(data._id)}></Button>:""}
+                        {isProfile ? <Button style={{marginTop: '2%'}} label="Eliminar" className="p-button-danger" icon={"pi pi-trash"}onClick={()=>handleDelete(data)}></Button>:""}
                     </div>
                 </div>
             </div>
@@ -191,17 +194,20 @@ const DataViewDemo = (props) => {
                             <i className="pi pi-tag product-category-icon"></i>
                             <span className="product-category">{data.categorias[0]}</span>
                         </div>
+                        <div>
+                            { data.estado === "Borrador" ? <span className={"status"}>BORRADOR</span> : null}
+                        </div>
                     </div>
                     <div className="product-grid-item-content">
-                        <img src={`receta/${data.imagenes[0]}`} onError={(e) => e.target.src='https://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png'} alt={data.titulo} />
+                        <AdvancedImage cldImg={getImagen(`receta/${data.imagenes[0]}`).roundCorners(byRadius(25)).resize(thumbnail().width(250))} />
                         <Rating value={data.dificultad} readOnly cancel={false}></Rating>
                         <div className="grid-tooltip product-name"  id={"grid-tooltip-" + data._id}>{data.titulo}</div>
                         <div className="grid-tooltip product-description">{data.descripcion}</div>
                     </div>
                     <div className="product-grid-item-bottom">
-                        <Button style={{marginTop: '5%'}} label="Ver Receta" onClick={()=>onSelectRecipe(data._id)}></Button>
-                        {isProfile ? <Button style={{marginTop: '5%', marginLeft:"2px"}} label="Editar Receta" onClick={()=>goToEditRecipe(data._id)}></Button>:""}
-                        {isProfile ? <Button style={{marginTop: '5%', marginLeft:"2px"}} label="Eliminar Receta" onClick={()=>handleDelete(data._id)}></Button>:""}
+                        <Button style={{marginTop: '5%'}} className="p-button-rounded" icon={"pi pi-search"} onClick={()=>onSelectRecipe(data._id)}></Button>
+                        {isProfile ? <Button style={{marginTop: '5%', marginLeft:"2px"}}  className="p-button-rounded" icon={"pi pi-pencil"} onClick={()=>goToEditRecipe(data._id)}></Button>:""}
+                        {isProfile ? <Button style={{marginTop: '5%', marginLeft:"2px"}} className="p-button-rounded p-button-danger" icon={"pi pi-trash"} onClick={()=>handleDelete(data)}></Button>:""}
                     </div>
                 </div>
         );
@@ -259,7 +265,7 @@ const DataViewDemo = (props) => {
 const Filters = ({products,setProducts,foundRecipes}) => {
     const filters =[
         {label: 'Categoria', value: 'Categoria'},
-        {label: 'Calificacion', value: 'Calificacion'},
+        {label: 'Dificultad', value: 'Dificultad'},
         {label: 'Ingredientes', value: 'Ingredientes'}
     ];
 
@@ -354,7 +360,7 @@ const Filters = ({products,setProducts,foundRecipes}) => {
                 case "Categoria":
                     newProducts = filterCategories(inputValue);
                     break;
-                case "Calificacion":
+                case "Dificultad":
                     newProducts = newProducts.filter(recipe => parseInt(recipe.dificultad) === parseInt(inputValue)); // el parseInt, hace que cualquier nota mayor/igual a 4 y menor a 5 pase el filtro
                     break;
                 case "Ingredientes":

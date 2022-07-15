@@ -20,7 +20,7 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation} from "swiper";
 import {byRadius} from "@cloudinary/url-gen/actions/roundCorners";
 
-import { getRecipe, crearRecipe, updateRecipe } from '../../../api/controller/apiController';
+import {getRecipe, crearRecipe, updateRecipe, deleteRecipe} from '../../../api/controller/apiController';
 
 
 const NewReceta = (props) => {
@@ -79,6 +79,8 @@ const NewReceta = (props) => {
     
     const [totalSize, setTotalSize] = useState(0);
     const fileUploadRef = useRef(null);
+    const [eliminarVisible, setEliminarVisible] = useState(false);
+    const [editarVisible, setEditarVisible] = useState(false);
     const [guardarVisible, setGuardarVisible] = useState(false);
     const [publicarVisible, setPublicarVisible] = useState(false);
 
@@ -151,23 +153,22 @@ const guardarProducto = (estado) => {
     }
 }
 
-const findIndexById = (id) => {
-    let index = -1;
-    for (let i = 0; i < recetas.length; i++) {
-        if (recetas[i].id === id) {
-            index = i;
-            break;
-        }
-    }
-    return index;
-}
-
-const createId = () => { 
-    let id = '';
-    for (let i = 0; i < 4; i++) {
-        id += Math.floor(Math.random() * 5);
-    }
-    return id;
+const deleteReceta = () => {
+        deleteRecipe(props.id).then(r => {
+            toast.current.show({
+                severity:"success",
+                summary:"¡Exito!",
+                detail:"La receta ha sido eliminada",
+                life:3000
+            })
+        }).catch((e) => {
+            toast.current.show({
+                severity:"error",
+                summary:"Error",
+                detail:e.message,
+                life:3000
+            })
+        })
 }
 
 
@@ -193,28 +194,6 @@ const cargarCategorias = (categorias) => {
     setReceta(recipe);
 }
 
-const onCategoryChange = (e) => {
-    let recipe = { ...receta };
-    let _selectedCategories = [...selectedCategories];
-
-    if (e.checked) {
-        _selectedCategories.push(e.value);
-    }
-    else {
-        for (let i = 0; i < _selectedCategories.length; i++) {
-            const selectedCategory = _selectedCategories[i];
-
-            if (selectedCategory.key === e.value.key) {
-                _selectedCategories.splice(i, 1);
-                break;
-            }
-        }
-    }
-    setSelectedCategories(_selectedCategories);
-    recipe.categorias = _selectedCategories;
-    setReceta(recipe);
-
-}
 
 const handleInputChange = (e, index) => {
     let recipe = { ...receta };
@@ -229,6 +208,11 @@ const handleInputChange = (e, index) => {
   const handleRemove = index => {
     const list = [...stepList];
     list.splice(index, 1);
+    let i = 1;
+    list.forEach(item => {
+        item.orden = i
+        i++
+    })
     setStepList(list);
   };
 
@@ -447,9 +431,12 @@ const handleInputChangeIngredientes = (e, index) => {
                 
                     {props.id ? 
                     <div>
-                        <ConfirmDialog visible={publicarVisible} onHide={() => setPublicarVisible(false)} message="¿Confirma la edición de su receta?"
-                        header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Editada")}/>
-                        <Button onClick={() => setPublicarVisible(true)} icon="pi pi-check" label="Editar Receta" />
+                        <ConfirmDialog visible={editarVisible} onHide={() => setEditarVisible(false)} message="¿Confirma la eliminación de su receta?"
+                        header="" icon="pi pi-exclamation-triangle" accept={() => deleteReceta()}/>
+                        <Button onClick={() => setEditarVisible(true)} icon="pi pi-check" label="Confirmar cambios" />
+                        <ConfirmDialog visible={eliminarVisible} onHide={() => setEliminarVisible(false)} message="¿Confirma la edición de su receta?"
+                                       header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Editada")}/>
+                        <Button onClick={() => setEliminarVisible(true)} icon="pi pi-trash" label="Eliminar" />
                     </div>
                     :
                     <div >
