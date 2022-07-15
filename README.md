@@ -5,8 +5,8 @@
 
 
 <p align="center">
-  <a href="#introduccion">Introducción</a> •
-  <a href="#informacion-general">Información general</a> •
+  <a href="#introducción">Introducción</a> •
+  <a href="#información-general">Información general</a> •
   <a href="#requisitos">Requisitos</a> •
   <a href="#instalación">Instalación</a> •
   <a href="#support">Support</a> •
