@@ -1,9 +1,9 @@
-import {INSTANCE as api} from "../controller/apiController";
+import {INSTANCE as api, instanceToken as apiToken} from "../controller/apiController";
 
 const prefix = "/recipes"
 
-export function createReceta(receta){
-    return api.post(prefix + "/recipe", receta)
+export function createReceta(receta, token){
+    return apiToken(token).post(prefix + "/recipe", receta)
 }
 
 export function updateReceta(receta){

@@ -28,9 +28,10 @@ const LoginPage = (props) => {
     }
 
     const handleSuccessfulLogin = (response) => {
-        console.log(response)
-        changeUser(response.data.loginUser.user)
-        localStorage.setItem('token', response.data.loginUser.token)
+        let user = response.data.loginUser.user
+        user.jwt = response.data.loginUser.token
+        changeUser(user)
+        localStorage.setItem('token', user.jwt)
         setError(false);
         props.ocultar();
     }

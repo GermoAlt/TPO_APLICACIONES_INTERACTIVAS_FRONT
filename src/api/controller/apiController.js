@@ -2,9 +2,9 @@ import axios from "axios";
 import {
     getUsuarioById,
     login as userLogin,
-    nuevoUsuario,
+    nuevoUsuario, recuperarContrasena,
     recuperarUsuario,
-    updateUsuario
+    updateUsuario, validarToken
 } from "../service/userService";
 import {
     createReceta,
@@ -17,6 +17,16 @@ import {
 import {addToNewsletter} from "../service/newsletterService";
 
 export const INSTANCE = getInstance()
+export function instanceToken(token){
+    return axios.create({
+        baseURL: 'http://localhost:3600',
+        headers: {
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    })
+}
 
 function getInstance() {
     return axios.create({
@@ -49,6 +59,14 @@ export function resetPassword(email) {
     return recuperarUsuario(email)
 }
 
+export function validateToken(token) {
+    return validarToken(token)
+}
+
+export function recoverPassword(token, password) {
+    return recuperarContrasena(token, password)
+}
+
 export function getRecipe(recetaId){
     return getRecetaById(recetaId)
 }
@@ -61,8 +79,8 @@ export function getRecipesByUser(userId){
     return getRecetasByUser(userId)
 }
 
-export function crearRecipe(receta) {
-    return createReceta(receta)
+export function crearRecipe(receta, token) {
+    return createReceta(receta, token)
 }
 
 export function updateRecipe(receta) {

@@ -97,7 +97,7 @@ const Profile = () => {
             setPosition(position);
         }
     }
-    const image = getImagen("receta/" + user.idFoto).resize(thumbnail().width(250).height(250).gravity(focusOn(FocusOn.face()))).roundCorners(byRadius(150))
+    const image = getImagen("receta/" + user.idFoto).resize(thumbnail().width(250).height(250)).roundCorners(byRadius(150))
     useEffect(() => {
         window.scrollTo(0,0)
     }, []);

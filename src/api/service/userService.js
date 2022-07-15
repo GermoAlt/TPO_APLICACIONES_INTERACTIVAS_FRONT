@@ -15,6 +15,14 @@ export function recuperarUsuario(email) {
     return api.post(prefix + "/reset",{email:email, token:uuid})
 }
 
+export function validarToken(token){
+    return api.post(prefix + "/usertoken", {token:token})
+}
+
+export function recuperarContrasena(token, password){
+    return api.post(prefix + "/password", {token, password})
+}
+
 export function getUsuarioById(id){
     return api.get(prefix + "/userById/" + id)
 }
