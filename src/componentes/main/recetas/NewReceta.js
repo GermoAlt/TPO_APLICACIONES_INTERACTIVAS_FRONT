@@ -114,7 +114,9 @@ const guardarProducto = (estado) => {
     
     if (receta.titulo.trim() && receta.descripcion.trim() && receta.dificultad!=null && receta.tiempoPreparacion &&
         receta.tiempoElaboracion && receta.categorias.length && receta.pasos.length && receta.ingredientes.length) {
-        
+
+        receta.imagenes = imagenes
+
         switch(estado){
             case "Publicada":
             case "Borrador":
@@ -328,7 +330,7 @@ const handleInputChangeIngredientes = (e, index) => {
                         </div>
                         <div className={"new-receta-details-item"}>
                             <span><h3>Elaboración</h3></span>
-                            <b><InputNumber id="tiempoElaboracion" value={receta.tiempoPreparacion} placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoElaboracion })}/></b>
+                            <b><InputNumber id="tiempoElaboracion" value={receta.tiempoElaboracion} placeholder='Cantidad de minutos' onValueChange={(e) => cargarCamposNumericos(e, 'tiempoElaboracion')} integeronly className={classNames({ 'p-invalid': submitted && !receta.tiempoElaboracion })}/></b>
                             {submitted && !receta.tiempoElaboracion && <small className="p-invalid">Debe ingresar tiempo de elaboración</small>}
                         </div>
                         <div className={"new-receta-details-item"}>
