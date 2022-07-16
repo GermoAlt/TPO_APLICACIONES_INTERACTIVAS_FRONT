@@ -116,29 +116,26 @@ const guardarProducto = (estado) => {
         receta.tiempoElaboracion && receta.categorias.length && receta.pasos.length && receta.ingredientes.length) {
 
         receta.imagenes = imagenes
+        receta.estado = estado
+        receta.autor = user
 
-        switch(estado){
-            case "Publicada":
-            case "Borrador":
-                let newRecipe = {...receta, "estado": estado, "autor": user}
-                crearRecipe(newRecipe, user.jwt).then(res => {
-                    toast.current.show({ severity: 'success',detail: 'Receta creada!', life: 3000 });
-                }).catch(err => {
-                    toast.current.show({ severity: 'error', detail: 'Ocurrió un error al crear la receta', life: 2000 });
-                })
-                break;
-            case "Editada":
-                updateRecipe(receta, user.jwt).then(res => {
-                    toast.current.show({ severity: 'success', summary: 'Perfecto', detail: 'Receta modificada', life: 3000 });
-                }).catch(err => {
-                    toast.current.show({ severity: 'error', detail: 'Ocurrió un error al editar la receta', life: 2000 });
-                })
-                break;
-            default:
-                toast.current.show({ severity: 'error', detail: 'Error fatal durante creación o edición de la receta', life: 2000 });
-                break;
+        if(!props.id){
+            crearRecipe(receta, user.jwt).then(res => {
+                toast.current.show({ severity: 'success',detail: 'Receta creada!', life: 3000 });
+                console.log(res)
+                navigate("/receta/"+res.data.createdRecipe._id)
+            }).catch(err => {
+                toast.current.show({ severity: 'error', detail: 'Ocurrió un error al crear la receta', life: 2000 });
+            })
+        } else {
+            updateRecipe(receta, user.jwt).then(res => {
+                toast.current.show({ severity: 'success', summary: 'Perfecto', detail: 'Receta modificada', life: 3000 });
+                navigate("/receta/"+props.id)
+            }).catch(err => {
+                toast.current.show({ severity: 'error', detail: 'Ocurrió un error al editar la receta', life: 2000 });
+            })
+
         }
-        setReceta(recetaLimpia);
     }else {
         toast.current.show({ severity: 'error', detail: 'Faltan datos para completar su receta', life: 2000 });
     }
@@ -420,39 +417,46 @@ const handleInputChangeIngredientes = (e, index) => {
                 </div>
 
                 
-                    {props.id ? 
-                    <div style={{display:"flex", flexDirection:"row", gap:15, justifyContent: "center"}}>
-                        <ConfirmDialog visible={editarVisible} onHide={() => setEditarVisible(false)} message="¿Confirma la eliminación de su receta?"
-                        header="" icon="pi pi-exclamation-triangle" accept={() => deleteReceta()}/>
-                        <div>
-                            <Button onClick={() => setEditarVisible(true)} icon="pi pi-check" label="Confirmar cambios" />
-                        </div>
-                        <ConfirmDialog visible={eliminarVisible} onHide={() => setEliminarVisible(false)} message="¿Confirma la edición de su receta?"
-                                       header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Editada")}/>
-                        <div>
-                            <Button onClick={() => setEliminarVisible(true)} icon="pi pi-trash" label="Eliminar" />
-                        </div>
-                        <ConfirmDialog visible={guardarVisible} onHide={() => setGuardarVisible(false)} message="¿Confirma el guardado de su receta como borrador?"
-                                       header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Borrador")}/>
-                        <div>
-                            <Button onClick={() => setGuardarVisible(true)} icon="pi pi-check" label="Guardar como borrador" />
-
-                        </div>
-                    </div>
+                    {props.id ?
+                            //guardar
+                            <div style={{display:"flex", flexDirection:"row", gap:15, justifyContent: "center"}}>
+                                <ConfirmDialog visible={editarVisible} onHide={() => setEditarVisible(false)} message="¿Confirma la publicación de su receta?"
+                                header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Publicada")}/>
+                                { receta.estado && receta.estado === "Borrador" ?
+                                    <div>
+                                        <Button onClick={() => setPublicarVisible(true)} icon="pi pi-check" label="Publicar" />
+                                    </div>
+                                    : null
+                                }
+                                <div>
+                                    <Button onClick={() => setEliminarVisible(true)} icon="pi pi-check" label="Confirmar edicion" />
+                                </div>
+                                <div>
+                                    <Button onClick={() => setGuardarVisible(true)} icon="pi pi-save" label="Guardar como borrador" />
+                                </div>
+                                <div>
+                                    <Button onClick={() => setGuardarVisible(true)} icon="pi pi-trash" label="Eliminar" />
+                                </div>
+                            </div>
                     :
+                        //NEW
                     <div style={{display:"flex", flexDirection:"row", gap:15, justifyContent: "center"}}>
-                        <ConfirmDialog visible={publicarVisible} onHide={() => setPublicarVisible(false)} message="¿Confirma la publicación de su receta?"
-                        header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Publicada")}/>
                         <div>
                             <Button onClick={() => setPublicarVisible(true)} icon="pi pi-check" label="Publicar" />
                         </div>
-                        <ConfirmDialog visible={guardarVisible} onHide={() => setGuardarVisible(false)} message="¿Confirma el guardado de su receta como borrador?"
-                        header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Borrador")}/>
                         <div>
                             <Button onClick={() => setGuardarVisible(true)} icon="pi pi-check" label="Guardar como borrador" />
                         </div>
                     </div>
                     }
+                        <ConfirmDialog visible={editarVisible} onHide={() => setEditarVisible(false)} message="¿Confirma la edición de su receta?"
+                                       header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto(receta.estado)}/>
+                        <ConfirmDialog visible={guardarVisible} onHide={() => setGuardarVisible(false)} message="¿Confirma el guardado de su receta como borrador?"
+                                       header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Borrador")}/>
+                        <ConfirmDialog visible={eliminarVisible} onHide={() => setEliminarVisible(false)} message="¿Confirma el borrado de su receta?"
+                                       header="" icon="pi pi-exclamation-triangle" accept={() => deleteReceta()}/>
+                        <ConfirmDialog visible={publicarVisible} onHide={() => setPublicarVisible(false)} message="¿Confirma la publicación de su receta?"
+                                       header="" icon="pi pi-exclamation-triangle" accept={() => guardarProducto("Publicada")}/>
             </div>
         );
 }

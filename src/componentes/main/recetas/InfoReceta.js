@@ -14,6 +14,7 @@ import {Panel} from "primereact/panel";
 
 import {createCalificacion, getCalificacionesByRecipe, getRecipe} from '../../../api/controller/apiController';
 import useUser from "../../../hooks/useUser";
+import {updateReceta} from "../../../api/service/recetasService";
 
 export default function InfoReceta() {
     useEffect(() => {
@@ -57,7 +58,10 @@ export default function InfoReceta() {
         }
         createCalificacion(newReview, user.jwt).then((res) => {
             setReviews([...reviews, newReview])
+            updateReceta(receta, user.jwt).then()
         })
+
+        receta.rating.push(newRatingValue)
     }
 
     const imagenTemplate = (imagen) => {
