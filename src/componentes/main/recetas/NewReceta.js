@@ -122,7 +122,6 @@ const guardarProducto = (estado) => {
         if(!props.id){
             crearRecipe(receta, user.jwt).then(res => {
                 toast.current.show({ severity: 'success',detail: 'Receta creada!', life: 3000 });
-                console.log(res)
                 navigate("/receta/"+res.data.createdRecipe._id)
             }).catch(err => {
                 toast.current.show({ severity: 'error', detail: 'Ocurrió un error al crear la receta', life: 2000 });
